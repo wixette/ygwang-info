@@ -1,0 +1,6 @@
+
+
+The 3rd version of ppz site. All contents are static pages plus JS code, which
+can be served by light weight http servers, such as lighttpd.
+
+
