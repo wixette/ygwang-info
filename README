@@ -1,6 +1,21 @@
 
 
-The 3rd version of ppz site. All contents are static pages plus JS code, which
-can be served by light weight http servers, such as lighttpd.
+The 3rd version of ppz site. All contents are static pages plus JavaScript code,
+which can be served by light weight http servers, such as lighttpd.
+
+To update the site contents, edit the files under the following dirs:
+
+./contents/
+./contents/poems
+./contents/photos
+
+To deploy the site for debugging:
+
+./deploy.py ~/www/ppz
+
+To finalize and deploy the site with compiled JavaScript code:
+
+./deploy.py ~/www/ppz opt
+
 
 
