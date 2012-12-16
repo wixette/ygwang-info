@@ -1,26 +1,57 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 
 """The site deployer.
 """
 
 
+from django.conf import settings
+from django.template import Context, Template
+import codecs
+import datetime
 import os
+import shutil
 import sys
+import time
+
+
+# Constant names of dirs, files, paths, commands, etc.
+_CLOSURE_DIR = os.path.join('closure-library-read-only', 'closure')
+_CALCDEPS_COMMAND = os.path.join('bin', 'calcdeps.py')
+_JS_COMPILER_JAR = os.path.join('closure-compiler-latest', 'compiler.jar')
+_JS_LINTER_COMMAND = 'gjslint'
+_TEMPLATE_DIR = 'templates'
+_JS_DIR = 'js'
+_POEM_DIR = 'poems'
+_PHOTO_DIR = 'photos'
+_IMAGE_DIR = 'images'
+_STATIC_DIR = 'static'
+_PUBS_DIR = 'pubs'
+_SITE_TITLE = '平平仄'
+_SITE_DESC = '王咏刚的个人主页'
+
+# Django templates for separate pages. A list of [template_file_name,
+# target_dir_name]. template_file_name must not be empty. If target_dir_name is
+# empty, the file(s) will be rendered to the root of the target dir.
+_PAGE_TEMPLATES = [
+    [ 'index.html', '' ],
+    ]
+
+# Static dirs/files. A list of [src_dir_name, target_dir_name,
+# file_name]. src_dir_name must not be empty. If target_dir_name is empty, the
+# file(s) will be copied to the root of the target dir. If file_name is empty,
+# all files under src_dir_name will be copied.
+_STATIC_CONTENTS = [
+    [_IMAGE_DIR, _IMAGE_DIR, ''],
+    [_STATIC_DIR, '', 'robots.txt'],
+    [_STATIC_DIR, _PUBS_DIR, 'r5rscn.pdf']
+    ]
 
 
 class SiteDeployer(object):
   """Util class to compile and deploy the site.
   """
-
-  _CLOSURE_DIR = os.path.join('closure-library-read-only', 'closure')
-
-  _CALCDEPS_COMMAND = os.path.join('bin', 'calcdeps.py')
-
-  _JS_COMPILER_JAR = os.path.join('closure-compiler-latest', 'compiler.jar')
-
-  _JS_LINTER_COMMAND = 'gjslint'
-
   def __init__(self, src_dir, target_dir, compile_js_code):
     """Inits the attributes.
 
@@ -35,23 +66,81 @@ class SiteDeployer(object):
     self._compile = compile_js_code
     self.check_prerequisites()
 
+    # The context dict used to render Django templates. The defaults values are
+    # assigned here.
+    self._context  = {
+        'title': _SITE_TITLE,
+        'sub_title': '',
+        'description': _SITE_DESC,
+        'cur_year': datetime.datetime.now().year,
+        'is_tab_poem': True,
+        'is_tab_photo': False,
+        'is_tab_social': False,
+        'poem_list': [],
+        'the_poem': {},
+        'max_length': 0,
+        'photo_list': []
+        }
+
+    # Inits Django environment settings.
+    settings.configure(DEBUG=True, TEMPLATE_DEBUG=True)
+
   def check_prerequisites(self):
     """Checks if required dirs, files, etc. exist.
     """
     parent_dir = os.path.dirname(self._src_dir)
-    self._closure_dir = os.path.join(parent_dir, SiteDeployer._CLOSURE_DIR)
+    self._closure_dir = os.path.join(parent_dir, _CLOSURE_DIR)
     self._compiler_path = os.path.join(parent_dir,
-                                       SiteDeployer._JS_COMPILER_JAR)
+                                       _JS_COMPILER_JAR)
     for path in (self._closure_dir, self._compiler_path):
       if not os.path.exists(path):
         print 'Required %s does not exist.' % dir
     self._calcdeps_command = os.path.join(self._closure_dir,
-                                          SiteDeployer._CALCDEPS_COMMAND)
+                                          _CALCDEPS_COMMAND)
+
+  def copy_static_contents(self):
+    """Copies the static contents which do not require template rendering to the
+    target dir.
+    """
+    for from_dir_name, to_dir_name, file_name in _STATIC_CONTENTS:
+      from_dir = os.path.join(self._src_dir, from_dir_name)
+      to_dir = os.path.join(self._target_dir, to_dir_name)
+      if not os.path.exists(to_dir):
+        os.makedirs(to_dir)
+      for f in [x for x in os.listdir(from_dir)
+                if (not file_name) or file_name == x]:
+        from_file = os.path.join(from_dir, f)
+        to_file = os.path.join(to_dir, f)
+        print '  %s to %s' % (from_file, to_file)
+        shutil.copy2(from_file, to_file)
+
+  def render_page_templates(self):
+    """Renders Django page templates and copies the results to the target dir.
+    """
+    for file_name, to_dir_name in _PAGE_TEMPLATES:
+      from_file = os.path.join(self._src_dir, _TEMPLATE_DIR, file_name)
+      to_file = os.path.join(self._target_dir, to_dir_name, file_name)
+      print '  %s' % to_file
+      template_string = codecs.open(from_file, 'r', 'utf_8').read()
+      template = Template(template_string)
+      context = Context(self._context)
+      result = template.render(context)
+      codecs.open(to_file, 'w', 'utf_8').write(result)
 
   def deploy(self):
     """Deploys the site.
     """
     print 'Deploying...'
+    DEPLOY_STEPS = [
+        [self.copy_static_contents, 'Copy static constents'],
+        [self.render_page_templates, 'Render page templates']
+        ]
+    for step_function, step_name in DEPLOY_STEPS:
+      print '\n%s:' % step_name
+      start_time = time.clock()
+      step_function()
+      end_time = time.clock()
+      print '  %.4f secs' % (end_time - start_time)
 
 
 def main():
