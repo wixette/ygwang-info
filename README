@@ -5,17 +5,13 @@ which can be served by light weight http servers, such as lighttpd.
 
 To update the site contents, edit the files under the following dirs:
 
-./contents/
-./contents/poems
-./contents/photos
+./poems
+./photos
 
 To deploy the site for debugging:
 
 ./deploy.py ~/www/ppz
 
-To finalize and deploy the site with compiled JavaScript code:
+Or, to finalize and deploy the site with compiled JavaScript code:
 
 ./deploy.py ~/www/ppz opt
-
-
-
