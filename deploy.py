@@ -7,7 +7,7 @@
 
 
 from django.conf import settings
-from django.template import Context, Template
+from django.template.loader import render_to_string
 import codecs
 import datetime
 import os
@@ -28,8 +28,6 @@ _PHOTO_DIR = 'photos'
 _IMAGE_DIR = 'images'
 _STATIC_DIR = 'static'
 _PUBS_DIR = 'pubs'
-_SITE_TITLE = '平平仄'
-_SITE_DESC = '王咏刚的个人主页'
 
 # Django templates for separate pages. A list of [template_file_name,
 # target_dir_name]. template_file_name must not be empty. If target_dir_name is
@@ -69,9 +67,7 @@ class SiteDeployer(object):
     # The context dict used to render Django templates. The defaults values are
     # assigned here.
     self._context  = {
-        'title': _SITE_TITLE,
-        'sub_title': '',
-        'description': _SITE_DESC,
+        'sub_title': '诗歌',
         'cur_year': datetime.datetime.now().year,
         'is_tab_poem': True,
         'is_tab_photo': False,
@@ -83,7 +79,11 @@ class SiteDeployer(object):
         }
 
     # Inits Django environment settings.
-    settings.configure(DEBUG=True, TEMPLATE_DEBUG=True)
+    settings.configure(DEBUG=True, TEMPLATE_DEBUG=True,
+                       TEMPLATE_DIRS=[os.path.join(self._src_dir,
+                                                   _TEMPLATE_DIR)])
+
+    print os.path.join(self._src_dir, _TEMPLATE_DIR)
 
   def check_prerequisites(self):
     """Checks if required dirs, files, etc. exist.
@@ -118,13 +118,14 @@ class SiteDeployer(object):
     """Renders Django page templates and copies the results to the target dir.
     """
     for file_name, to_dir_name in _PAGE_TEMPLATES:
-      from_file = os.path.join(self._src_dir, _TEMPLATE_DIR, file_name)
+      # from_file = os.path.join(self._src_dir, _TEMPLATE_DIR, file_name)
       to_file = os.path.join(self._target_dir, to_dir_name, file_name)
       print '  %s' % to_file
-      template_string = codecs.open(from_file, 'r', 'utf_8').read()
-      template = Template(template_string)
-      context = Context(self._context)
-      result = template.render(context)
+      result = render_to_string(file_name, self._context)
+      # template_string = codecs.open(from_file, 'r', 'utf_8').read()
+      # template = Template(template_string)
+      # context = Context(self._context)
+      # result = template.render(context)
       codecs.open(to_file, 'w', 'utf_8').write(result)
 
   def deploy(self):
