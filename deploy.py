@@ -18,9 +18,10 @@ import time
 
 # Constant names of dirs, files, paths, commands, etc.
 _CLOSURE_DIR = os.path.join('closure-library-read-only', 'closure')
-_CALCDEPS_COMMAND = os.path.join('bin', 'calcdeps.py')
 _JS_COMPILER_JAR = os.path.join('closure-compiler-latest', 'compiler.jar')
 _JS_LINTER_COMMAND = 'gjslint'
+_DEPSWRITER_COMMAND = 'python %s --root_with_prefix=\"%s ../js\" > %s'
+_DEPS_FILE = 'deps.js'
 _TEMPLATE_DIR = 'templates'
 _JS_DIR = 'js'
 _POEM_DIR = 'poems'
@@ -45,6 +46,12 @@ _STATIC_CONTENTS = [
     [_IMAGE_DIR, _IMAGE_DIR, ''],
     [_STATIC_DIR, '', 'robots.txt'],
     [_STATIC_DIR, _PUBS_DIR, 'r5rscn.pdf']
+    ]
+
+# JS source code.
+_JS_CODE = [
+    'lucky.js',
+    'util.js'
     ]
 
 
@@ -84,8 +91,6 @@ class SiteDeployer(object):
                        TEMPLATE_DIRS=[os.path.join(self._src_dir,
                                                    _TEMPLATE_DIR)])
 
-    print os.path.join(self._src_dir, _TEMPLATE_DIR)
-
   def check_prerequisites(self):
     """Checks if required dirs, files, etc. exist.
     """
@@ -96,8 +101,6 @@ class SiteDeployer(object):
     for path in (self._closure_dir, self._compiler_path):
       if not os.path.exists(path):
         print 'Required %s does not exist.' % dir
-    self._calcdeps_command = os.path.join(self._closure_dir,
-                                          _CALCDEPS_COMMAND)
 
   def copy_static_contents(self):
     """Copies the static contents which do not require template rendering to the
@@ -115,39 +118,83 @@ class SiteDeployer(object):
         print '  %s to %s' % (from_file, to_file)
         shutil.copy2(from_file, to_file)
 
-  def render_page_templates(self):
+  def render_pages(self):
     """Renders Django page templates and copies the results to the target dir.
     """
     for file_name, to_dir_name in _PAGE_TEMPLATES:
-      # from_file = os.path.join(self._src_dir, _TEMPLATE_DIR, file_name)
       to_file = os.path.join(self._target_dir, to_dir_name, file_name)
       print '  %s' % to_file
       result = render_to_string(file_name, self._context)
-      # template_string = codecs.open(from_file, 'r', 'utf_8').read()
-      # template = Template(template_string)
-      # context = Context(self._context)
-      # result = template.render(context)
       codecs.open(to_file, 'w', 'utf_8').write(result)
+
+  def copy_closure_code(self):
+    """Copies Closure source library code to the target js dir.
+    """
+    from_dir = os.path.join(self._closure_dir, 'goog')
+    to_dir = os.path.join(self._target_dir, 'closure')
+    if os.path.exists(to_dir):
+      print '  Closure dir %s already exists.' % to_dir
+    else:
+      print '  %s to %s' % (from_dir, to_dir)
+      shutil.copytree(from_dir, to_dir)
+
+  def copy_js_code(self):
+    """Copies JS code to the target js dir.
+    """
+    for file_name in _JS_CODE:
+      from_file = os.path.join(self._src_dir, _JS_DIR, file_name)
+      js_dir = os.path.join(self._target_dir, _JS_DIR)
+      if not os.path.exists(js_dir):
+        os.makedirs(js_dir)
+      to_file = os.path.join(js_dir, file_name)
+      print '  %s to %s' % (from_file, to_file)
+      shutil.copy2(from_file, to_file)
+
+  def gen_js_deps(self):
+    js_dir = os.path.join(self._target_dir, _JS_DIR)
+    deps_file = os.path.join(js_dir, _DEPS_FILE)
+    depswriter_path = os.path.join(self._closure_dir,
+                                   'bin', 'build', 'depswriter.py')
+    cmd = _DEPSWRITER_COMMAND % (depswriter_path, js_dir, deps_file)
+    print '  %s' % cmd
+    os.system(cmd)
 
   def deploy(self):
     """Deploys the site.
     """
     print 'Deploying...'
+    # For which compile mode a deploy step is executed.
+    class _CompileMode(object):
+      DEB = 0x1
+      OPT = 0x2
+      BOTH = 0x4
+
+    # List of [step_function, step_name, compile_mode]
     DEPLOY_STEPS = [
-        [self.copy_static_contents, 'Copy static constents'],
-        [self.render_page_templates, 'Render page templates']
+        [self.copy_static_contents, 'Copy static constents', _CompileMode.BOTH],
+        [self.render_pages, 'Render page templates', _CompileMode.BOTH],
+        [self.copy_closure_code, 'Copy Google Closure code', _CompileMode.DEB],
+        [self.copy_js_code, 'Copy JS code', _CompileMode.DEB],
+        [self.gen_js_deps, 'Generate JS dependencies', _CompileMode.DEB],
         ]
-    for step_function, step_name in DEPLOY_STEPS:
-      print '\n%s:' % step_name
-      start_time = time.clock()
-      step_function()
-      end_time = time.clock()
-      print '  %.4f secs' % (end_time - start_time)
+
+    if self._compile:
+      current_mode = _CompileMode.OPT
+    else:
+      current_mode = _CompileMode.DEB
+
+    for step_function, step_name, compile_mode in DEPLOY_STEPS:
+      if compile_mode | current_mode:
+        print '\n%s:' % step_name
+        start_time = time.clock()
+        step_function()
+        end_time = time.clock()
+        print '  %.4f secs' % (end_time - start_time)
 
 
 def main():
   if len(sys.argv) <= 1:
-    print 'Usage: %s <target_dir> [dbg|opt]' % sys.argv[0]
+    print 'Usage: %s <target_dir> [deb|opt]' % sys.argv[0]
     print 'Example: %s ~/www/ppz' % sys.argv[0]
     print 'Example: %s ~/www/ppz opt' % sys.argv[0]
     sys.exit(1)

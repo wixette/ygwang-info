@@ -1,6 +1,6 @@
 body,p,h1,h2,h3,h4,table,td,th,ul,ol,textarea,input{
 font-family:verdana,helvetica,arial,sans-serif;
-color:#333;
+color:#666;
 }
 
 body,div,img,h1,h2,h3,p,ul,li{
@@ -18,10 +18,10 @@ p{
 line-height:2em;
 }
 
-a:link{color:#777;}
-a:visited{color:#777;}
+a:link{color:#666;}
+a:visited{color:#666;}
 a:hover{color:#C00;}
-a:active{color:#777;}
+a:active{color:#666;}
 
 #box1{
 position:absolute;
@@ -98,6 +98,11 @@ left:100px;
 top:30px;
 }
 
+#nav0 a:link {color:#999;}
+#nav0 a:visited {color:#999;}
+#nav0 a:hover {color:#C00;}
+#nav0 a:active {color:#999;}
+
 #nav1{
 position:absolute;
 font-size:50px;
@@ -151,6 +156,7 @@ text-align:center;
 #nav4 a:active {color:#DDD;}
 
 #page{
+width:700px;
 margin:155px auto 30px 280px;
 }
 
@@ -165,6 +171,6 @@ list-style:none;
 
 #footer{
 font-size:80%;
-width:100%;
+width:700px;
 margin:125px auto 250px 280px;
 }

@@ -6,6 +6,11 @@
 <title>平平仄 | {% if sub_title %}{{sub_title|escape }}{% else %}王咏刚的个人主页{% endif %}</title>
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 <link rel="stylesheet" type="text/css" href="main.css">
+<script src="closure/base.js"></script>
+<script src="js/deps.js"></script>
+<script>
+goog.require('ppz.lucky');
+</script>
 </head>
 <body>
 <div id=box1></div>
@@ -20,5 +25,5 @@
   <div id=nav1><a href="poems.html">诗歌</a></div>
   <div id=nav2><a href="photos.html">照片</a></div>
   <div id=nav3><a href="pubs.html">著述</a></div>
-  <div id=nav4><a href="#lucky">发呆……</a></div>
+  <div id=nav4><a href="#lucky" onclick="ppz.lucky.start();return false;">发呆……</a></div>
 </div>
