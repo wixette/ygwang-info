@@ -34,6 +34,7 @@ _PUBS_DIR = 'pubs'
 # empty, the file(s) will be rendered to the root of the target dir.
 _PAGE_TEMPLATES = [
     [ 'index.html', '' ],
+    [ 'main.css', '' ],
     ]
 
 # Static dirs/files. A list of [src_dir_name, target_dir_name,
@@ -67,7 +68,7 @@ class SiteDeployer(object):
     # The context dict used to render Django templates. The defaults values are
     # assigned here.
     self._context  = {
-        'sub_title': '诗歌',
+        'sub_title': '',
         'cur_year': datetime.datetime.now().year,
         'is_tab_poem': True,
         'is_tab_photo': False,

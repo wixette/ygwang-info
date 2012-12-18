@@ -1,0 +1,170 @@
+body,p,h1,h2,h3,h4,table,td,th,ul,ol,textarea,input{
+font-family:verdana,helvetica,arial,sans-serif;
+color:#333;
+}
+
+body,div,img,h1,h2,h3,p,ul,li{
+margin:0;
+padding:0;
+border:0;
+}
+
+h1{
+font-size:24px;
+line-height:5em;
+}
+
+p{
+line-height:2em;
+}
+
+a:link{color:#777;}
+a:visited{color:#777;}
+a:hover{color:#C00;}
+a:active{color:#777;}
+
+#box1{
+position:absolute;
+top:0;
+left:250px;
+width:125px;
+height:125px;
+background-color:#C0C0C0;
+z-index:-999;
+}
+
+#box2{
+position:absolute;
+top:125px;
+left:800px;
+width:125px;
+height:125px;
+background-color:#F3F3F3;
+z-index:-999;
+}
+
+#box3{
+position:absolute;
+top:450px;
+left:125px;
+width:125px;
+height:125px;
+background-color:#EDEDED;
+z-index:-999;
+}
+
+#box4{
+position:absolute;
+top:575px;
+left:0;
+width:125px;
+height:125px;
+background-color:#B7B7B7;
+z-index:-999;
+}
+
+#logo{
+position:absolute;
+top:0;
+left:0;
+width:250px;
+height:125px;
+}
+
+#logo img{
+position:absolute;
+width:40px;
+height:40px;
+left:180px;
+top:55px;
+}
+
+#nav{
+position:absolute;
+top:125px;
+width:250px;
+height:325px;
+}
+
+#nav a:link {text-decoration:none;}
+#nav a:visited {text-decoration:none;}
+#nav a:hover {text-decoration:none;}
+#nav a:active {text-decoration:none;}
+
+#nav0{
+position:absolute;
+font-size:42px;
+left:100px;
+top:30px;
+}
+
+#nav1{
+position:absolute;
+font-size:50px;
+left:40px;
+top:70px;
+text-align:center;
+}
+
+#nav1 a:link {color:#AAA;}
+#nav1 a:visited {color:#AAA;}
+#nav1 a:hover {color:#C00;}
+#nav1 a:active {color:#AAA;}
+
+#nav2{
+position:absolute;
+font-size:54px;
+left:70px;
+top:105px;
+text-align:right;
+}
+
+#nav2 a:link {color:#BBB;}
+#nav2 a:visited {color:#BBB;}
+#nav2 a:hover {color:#C00;}
+#nav2 a:active {color:#BBB;}
+
+#nav3{
+position:absolute;
+font-size:42px;
+left:55px;
+top:170px;
+text-align:center;
+}
+
+#nav3 a:link {color:#CCC;}
+#nav3 a:visited {color:#CCC;}
+#nav3 a:hover {color:#C00;}
+#nav3 a:active {color:#CCC;}
+
+#nav4{
+position:absolute;
+font-size:24px;
+left:80px;
+top:235px;
+text-align:center;
+}
+
+#nav4 a:link {color:#DDD;}
+#nav4 a:visited {color:#DDD;}
+#nav4 a:hover {color:#C00;}
+#nav4 a:active {color:#DDD;}
+
+#page{
+margin:155px auto 30px 280px;
+}
+
+#page ul{
+margin-left:2em;
+}
+
+#page li{
+line-height:3em;
+list-style:none;
+}
+
+#footer{
+font-size:80%;
+width:100%;
+margin:125px auto 250px 280px;
+}
