@@ -35,3 +35,19 @@ ppz.util.setElementTransform = function(element, x, y, angle) {
     element.style[prefix + 'Transform'] = value;
   }
 };
+
+/**
+ * Requests an anmiation frame update.
+ * @param {function()} callback The function called on the next frame.
+ */
+ppz.util.requestAnimationFrame = function(callback) {
+  var requestFunc = window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      function(c) {
+        window.setTimeout(c, 17);
+      };
+  requestFunc(callback);
+};
