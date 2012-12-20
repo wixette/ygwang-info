@@ -6,11 +6,15 @@
 <title>平平仄 | {% if sub_title %}{{sub_title|escape }}{% else %}王咏刚的个人主页{% endif %}</title>
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 <link rel="stylesheet" type="text/css" href="main.css">
+{% if compile %}
+<script src="ppz_compiled.js"></script>
+{% else %}
 <script src="closure/base.js"></script>
 <script src="js/deps.js"></script>
 <script>
 goog.require('ppz.lucky');
 </script>
+{% endif %}
 </head>
 <body>
 <div id=root>

@@ -18,6 +18,8 @@ import time
 
 # Constant names of dirs, files, paths, commands, etc.
 _CLOSURE_DIR = os.path.join('closure-library-read-only', 'closure')
+_CLOSURE_THIRD_PARTY_DIR = os.path.join('closure-library-read-only',
+                                        'third_party', 'closure')
 _JS_COMPILER_JAR = os.path.join('closure-compiler-latest', 'compiler.jar')
 _JS_LINTER_COMMAND = 'gjslint'
 _DEPSWRITER_COMMAND = 'python %s --root_with_prefix=\"%s ../js\" > %s'
@@ -29,6 +31,15 @@ _PHOTO_DIR = 'photos'
 _IMAGE_DIR = 'images'
 _STATIC_DIR = 'static'
 _PUBS_DIR = 'pubs'
+_COMPILE_COMMAND = 'python %s/bin/build/closurebuilder.py \
+--root=%s \
+--root=%s \
+--root=%s \
+--namespace="ppz.lucky" \
+--output_mode=compiled \
+--compiler_jar=%s \
+--compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" \
+--output_file=%s/ppz_compiled.js'
 
 # Django templates for separate pages. A list of [template_file_name,
 # target_dir_name]. template_file_name must not be empty. If target_dir_name is
@@ -75,6 +86,7 @@ class SiteDeployer(object):
     # The context dict used to render Django templates. The defaults values are
     # assigned here.
     self._context  = {
+        'compile': self._compile,
         'sub_title': '',
         'cur_year': datetime.datetime.now().year,
         'is_tab_poem': True,
@@ -96,11 +108,16 @@ class SiteDeployer(object):
     """
     parent_dir = os.path.dirname(self._src_dir)
     self._closure_dir = os.path.join(parent_dir, _CLOSURE_DIR)
+    self._closure_third_party_dir = os.path.join(parent_dir,
+                                                 _CLOSURE_THIRD_PARTY_DIR)
     self._compiler_path = os.path.join(parent_dir,
                                        _JS_COMPILER_JAR)
-    for path in (self._closure_dir, self._compiler_path):
+    for path in [self._closure_dir,
+                 self._closure_third_party_dir,
+                 self._compiler_path]:
       if not os.path.exists(path):
         print 'Required %s does not exist.' % dir
+        sys.exit(1)
 
   def copy_static_contents(self):
     """Copies the static contents which do not require template rendering to the
@@ -138,6 +155,16 @@ class SiteDeployer(object):
       print '  %s to %s' % (from_dir, to_dir)
       shutil.copytree(from_dir, to_dir)
 
+  def lint_js_code(self):
+    """Lints JS code.
+    """
+    for file_name in _JS_CODE:
+      js_file = os.path.join(self._src_dir, _JS_DIR, file_name)
+      cmd = '%s \"%s\"' % (_JS_LINTER_COMMAND, js_file)
+      print '  %s' % cmd
+      if os.system(cmd):
+        sys.exit(1)
+
   def copy_js_code(self):
     """Copies JS code to the target js dir.
     """
@@ -157,7 +184,30 @@ class SiteDeployer(object):
                                    'bin', 'build', 'depswriter.py')
     cmd = _DEPSWRITER_COMMAND % (depswriter_path, js_dir, deps_file)
     print '  %s' % cmd
-    os.system(cmd)
+    if os.system(cmd):
+      sys.exit(1)
+
+  def compile_js_code(self):
+    """Compiles JS code.
+    """
+    target_js_dir = os.path.join(self._target_dir, _JS_DIR)
+    target_closure_dir = os.path.join(self._target_dir, 'closure')
+    # Deletes uncompiled JS code if exists.
+    for path in [target_js_dir, target_closure_dir]:
+      if os.path.exists(path):
+        print '  Delete uncompiled JS code path %s' % path
+        shutil.rmtree(path)
+    # Compiles the code
+    cmd = _COMPILE_COMMAND % (self._closure_dir,
+                              self._closure_dir,
+                              self._closure_third_party_dir,
+                              os.path.join(self._src_dir, _JS_DIR),
+                              self._compiler_path,
+                              self._target_dir)
+    print '  %s' % cmd
+    if os.system(cmd):
+      sys.exit(1)
+
 
   def deploy(self):
     """Deploys the site.
@@ -167,15 +217,17 @@ class SiteDeployer(object):
     class _CompileMode(object):
       DEB = 0x1
       OPT = 0x2
-      BOTH = 0x4
+      BOTH = 0x3
 
     # List of [step_function, step_name, compile_mode]
     DEPLOY_STEPS = [
         [self.copy_static_contents, 'Copy static constents', _CompileMode.BOTH],
         [self.render_pages, 'Render page templates', _CompileMode.BOTH],
         [self.copy_closure_code, 'Copy Google Closure code', _CompileMode.DEB],
+        [self.lint_js_code, 'Lint JS code', _CompileMode.BOTH],
         [self.copy_js_code, 'Copy JS code', _CompileMode.DEB],
         [self.gen_js_deps, 'Generate JS dependencies', _CompileMode.DEB],
+        [self.compile_js_code, 'Compile JS code', _CompileMode.OPT],
         ]
 
     if self._compile:
@@ -184,12 +236,15 @@ class SiteDeployer(object):
       current_mode = _CompileMode.DEB
 
     for step_function, step_name, compile_mode in DEPLOY_STEPS:
-      if compile_mode | current_mode:
+      if compile_mode & current_mode:
         print '\n%s:' % step_name
-        start_time = time.clock()
+        start_time = time.time()
         step_function()
-        end_time = time.clock()
+        end_time = time.time()
         print '  %.4f secs' % (end_time - start_time)
+
+    print
+    print 'Done.'
 
 
 def main():
