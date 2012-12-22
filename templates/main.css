@@ -70,6 +70,7 @@ top:0;
 left:0;
 width:250px;
 height:125px;
+overflow:hidden;
 }
 
 #logo img{
@@ -86,6 +87,7 @@ left:0;
 top:125px;
 width:250px;
 height:325px;
+overflow:hidden;
 }
 
 #nav a:link {text-decoration:none;}
@@ -176,6 +178,7 @@ position:relative;
 width:720px;
 height:480px;
 background-color:#000;
+overflow:hidden;
 }
 
 #prev{
