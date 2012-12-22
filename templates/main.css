@@ -37,7 +37,7 @@ z-index:-999;
 #box2{
 position:absolute;
 top:125px;
-left:800px;
+left:1000px;
 width:125px;
 height:125px;
 background-color:#F3F3F3;
@@ -82,6 +82,7 @@ top:55px;
 
 #nav{
 position:absolute;
+left:0;
 top:125px;
 width:250px;
 height:325px;
@@ -157,7 +158,7 @@ text-align:center;
 #nav4 a:active {color:#DDD;}
 
 #page{
-width:700px;
+width:720px;
 margin:155px auto 30px 280px;
 }
 
@@ -168,6 +169,33 @@ margin-left:2em;
 #page li{
 line-height:3em;
 list-style:none;
+}
+
+#canvas{
+position:relative;
+width:720px;
+height:480px;
+background-color:#000;
+}
+
+#prev{
+position:absolute;
+color:#fff;
+left:10px;
+top:450px;
+width:70px;
+height:20px;
+text-align:center;
+}
+
+#next{
+position:absolute;
+color:#fff;
+left:640px;
+top:450px;
+width:70px;
+height:20px;
+text-align:center;
 }
 
 #footer{

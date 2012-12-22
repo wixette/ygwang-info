@@ -28,6 +28,7 @@ _TEMPLATE_DIR = 'templates'
 _JS_DIR = 'js'
 _POEM_DIR = 'poems'
 _PHOTO_DIR = 'photos'
+_LUCKY_DIR = 'pacman'
 _IMAGE_DIR = 'images'
 _STATIC_DIR = 'static'
 _PUBS_DIR = 'pubs'
@@ -36,6 +37,7 @@ _COMPILE_COMMAND = 'python %s/bin/build/closurebuilder.py \
 --root=%s \
 --root=%s \
 --namespace="ppz.lucky" \
+--namespace="ppz.photos" \
 --output_mode=compiled \
 --compiler_jar=%s \
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" \
@@ -46,6 +48,7 @@ _COMPILE_COMMAND = 'python %s/bin/build/closurebuilder.py \
 # empty, the file(s) will be rendered to the root of the target dir.
 _PAGE_TEMPLATES = [
     [ 'index.html', '' ],
+    [ 'photos.html', '' ],
     [ 'main.css', '' ],
     ]
 
@@ -55,6 +58,8 @@ _PAGE_TEMPLATES = [
 # all files under src_dir_name will be copied.
 _STATIC_CONTENTS = [
     [_IMAGE_DIR, _IMAGE_DIR, ''],
+    [_PHOTO_DIR, _PHOTO_DIR, ''],
+    [_LUCKY_DIR, _LUCKY_DIR, ''],
     [_STATIC_DIR, '', 'robots.txt'],
     [_STATIC_DIR, _PUBS_DIR, 'r5rscn.pdf']
     ]
@@ -62,6 +67,7 @@ _STATIC_CONTENTS = [
 # JS source code.
 _JS_CODE = [
     'lucky.js',
+    'photos.js',
     'util.js'
     ]
 
@@ -86,6 +92,7 @@ class SiteDeployer(object):
     # The context dict used to render Django templates. The defaults values are
     # assigned here.
     self._context  = {
+        'template_name': '',
         'compile': self._compile,
         'sub_title': '',
         'cur_year': datetime.datetime.now().year,
@@ -141,6 +148,7 @@ class SiteDeployer(object):
     for file_name, to_dir_name in _PAGE_TEMPLATES:
       to_file = os.path.join(self._target_dir, to_dir_name, file_name)
       print '  %s' % to_file
+      self._context['template_name'] = file_name
       result = render_to_string(file_name, self._context)
       codecs.open(to_file, 'w', 'utf_8').write(result)
 

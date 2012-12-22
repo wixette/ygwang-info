@@ -13,10 +13,15 @@
 <script src="js/deps.js"></script>
 <script>
 goog.require('ppz.lucky');
+goog.require('ppz.photos');
 </script>
 {% endif %}
 </head>
+{% if template_name == "photos.html" %}
+<body onload="ppz.photos.init();">
+{% else %}
 <body>
+{% endif %}
 <div id=root>
 <div id=box1></div>
 <div id=box2></div>
@@ -26,7 +31,7 @@ goog.require('ppz.lucky');
   <img src="images/logo.png" alt=""></img>
 </div>
 <div id=nav>
-  <div id=nav0><a href="">关于</a></div>
+  <div id=nav0><a href="index.html">关于</a></div>
   <div id=nav1><a href="poems.html">诗歌</a></div>
   <div id=nav2><a href="photos.html">照片</a></div>
   <div id=nav3><a href="pubs.html">著述</a></div>

@@ -13,7 +13,7 @@ goog.require('ppz.util');
  * @const
  * @private
  */
-ppz.lucky.LUCKY_URL_ = 'http://www.google.com/logos/2010/pacman10-hp.html';
+ppz.lucky.LUCKY_URL_ = 'pacman/index.html';
 
 /**
  * The steps of fade-out animation.
