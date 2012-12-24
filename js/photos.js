@@ -111,6 +111,13 @@ ppz.photos.loadingElems_ = null;
 ppz.photos.frameCount_ = 0;
 
 /**
+ * The slide show timer.
+ * @type {?number}
+ * @private
+ */
+ppz.photos.timer_ = null;
+
+/**
  * Updates the loading effect.
  * @private
  */
@@ -160,8 +167,13 @@ ppz.photos.getUrl_ = function() {
  */
 ppz.photos.show_ = function() {
   var url = ppz.photos.getUrl_();
-  window.console.log(url);
   goog.style.setTransparentBackgroundImage(ppz.photos.canvasElem_, url);
+  ppz.photos.clearTimer_();
+  ppz.photos.timer_ = window.setTimeout(function() {
+    ppz.photos.currentPhotoIndex_++;
+    ppz.photos.currentPhotoIndex_ %= ppz.photos.NUM_;
+    ppz.photos.load_();
+  }, ppz.photos.INTERVAL_);
 };
 
 /**
@@ -190,6 +202,17 @@ ppz.photos.stopLoading_ = function() {
 };
 
 /**
+ * Clears the slide show timer.
+ * @private
+ */
+ppz.photos.clearTimer_ = function() {
+  if (ppz.photos.timer_ != null) {
+    window.clearTimeout(ppz.photos.timer_);
+  }
+  ppz.photos.timer_ = null;
+};
+
+/**
  * Loads the current photo.
  * @private
  */
@@ -206,7 +229,6 @@ ppz.photos.load_ = function() {
     var elem = document.createElement('img');
     goog.events.listen(elem, 'load',
                        function() {
-                         window.console.log('loaded');
                          ppz.photos.stopLoading_();
                          ppz.photos.show_();
                        });
@@ -231,7 +253,6 @@ ppz.photos.shuffle_ = function() {
       ppz.photos.playlist_[j] = tmp;
     }
   }
-  window.console.log(ppz.photos.playlist_);
 };
 
 /**
