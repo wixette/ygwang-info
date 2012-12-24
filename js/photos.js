@@ -5,7 +5,7 @@
 goog.provide('ppz.photos');
 
 goog.require('goog.events');
-goog.require('goog.string');
+goog.require('goog.string.format');
 goog.require('goog.style');
 goog.require('ppz.util');
 
@@ -143,12 +143,23 @@ ppz.photos.loadingLoop_ = function() {
 };
 
 /**
+ * Gets the URL of the current photo.
+ * @return {string} The URL of the photo.
+ * @private
+ */
+ppz.photos.getUrl_ = function() {
+  var index = ppz.photos.playlist_[ppz.photos.currentPhotoIndex_];
+  var number = goog.string.format('%03d', index);
+  var url = 'photos/' + number + '.JPG';
+  return url;
+};
+
+/**
  * Shows the current photo.
  * @private
  */
 ppz.photos.show_ = function() {
-  var number = goog.string.format('%03d', ppz.photos.currentPhotoIndex_);
-  var url = 'images/' + number + '.JPG';
+  var url = ppz.photos.getUrl_();
   window.console.log(url);
   goog.style.setTransparentBackgroundImage(ppz.photos.canvasElem_, url);
 };
@@ -183,7 +194,8 @@ ppz.photos.stopLoading_ = function() {
  * @private
  */
 ppz.photos.load_ = function() {
-  if (ppz.photos.photoCache_[ppz.photos.currentPhotoIndex_]) {
+  var index = ppz.photos.playlist_[ppz.photos.currentPhotoIndex_];
+  if (ppz.photos.photoCache_[index]) {
     // If the cached image already exists, simply set the background of the
     // canvas.
     ppz.photos.show_();
@@ -191,15 +203,15 @@ ppz.photos.load_ = function() {
     // Otherwise, loads the image in a hidden img element while showing the
     // loading effect.
     ppz.photos.startLoading_();
-    ppz.photos.photoCache_[ppz.photos.currentPhotoIndex_] =
-        document.createElement('img');
-    goog.events.listen(ppz.photos.photoCache_[ppz.photos.currentPhotoIndex_],
-                       'load',
+    var elem = document.createElement('img');
+    goog.events.listen(elem, 'load',
                        function() {
                          window.console.log('loaded');
-//                         ppz.photos.stopLoading_();
-//                         ppz.photos.show_();
+                         ppz.photos.stopLoading_();
+                         ppz.photos.show_();
                        });
+    elem.src = ppz.photos.getUrl_();
+    ppz.photos.photoCache_[index] = elem;
   }
 };
 
@@ -211,12 +223,15 @@ ppz.photos.shuffle_ = function() {
   for (var i = 0; i < ppz.photos.NUM_; i++) {
     ppz.photos.playlist_[i] = i;
   }
-  for (var i = 0; i < ppz.photos.NUM_ - 2; i++) {
-    var j = Math.floor(Math.random() * (i + 2));
-    var tmp = ppz.photos.playlist_[i];
-    ppz.photos.playlist_[i] = ppz.photos.playlist_[j];
-    ppz.photos.playlist_[j] = tmp;
+  for (var i = 1; i < ppz.photos.NUM_; i++) {
+    var j = Math.floor(Math.random() * (i + 1));
+    if (j != i) {
+      var tmp = ppz.photos.playlist_[i];
+      ppz.photos.playlist_[i] = ppz.photos.playlist_[j];
+      ppz.photos.playlist_[j] = tmp;
+    }
   }
+  window.console.log(ppz.photos.playlist_);
 };
 
 /**
