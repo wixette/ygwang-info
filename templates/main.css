@@ -179,9 +179,14 @@ width:720px;
 height:480px;
 background-color:#000;
 overflow:hidden;
+transition: 1s;
+-moz-transition: 1s;
+-webkit-transition: 1s;
+-o-transition: 1s;
 }
 
 #prev{
+cursor:pointer;
 position:absolute;
 color:#fff;
 left:10px;
@@ -189,9 +194,11 @@ top:450px;
 width:70px;
 height:20px;
 text-align:center;
+text-shadow: 2px 2px 4px #000;
 }
 
 #next{
+cursor:pointer;
 position:absolute;
 color:#fff;
 left:640px;
@@ -199,6 +206,7 @@ top:450px;
 width:70px;
 height:20px;
 text-align:center;
+text-shadow: 2px 2px 4px #000;
 }
 
 #footer{

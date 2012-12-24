@@ -97,6 +97,20 @@ ppz.photos.photoCache_ = new Array(ppz.photos.NUM_);
 ppz.photos.canvasElem_ = null;
 
 /**
+ * The prev element.
+ * @type {Element}
+ * @private
+ */
+ppz.photos.prevElem_ = null;
+
+/**
+ * The next element.
+ * @type {Element}
+ * @private
+ */
+ppz.photos.nextElem_ = null;
+
+/**
  * Elements for loading effect.
  * @type {Array.<Element>}
  * @private
@@ -256,10 +270,42 @@ ppz.photos.shuffle_ = function() {
 };
 
 /**
+ * Shows the previous photo.
+ * @private
+ */
+ppz.photos.prev_ = function() {
+  ppz.photos.clearTimer_();
+  ppz.photos.currentPhotoIndex_--;
+  if (ppz.photos.currentPhotoIndex_ < 0) {
+    ppz.photos.currentPhotoIndex_ = ppz.photos.NUM_ - 1;
+  }
+  ppz.photos.load_();
+};
+
+/**
+ * Shows the next photo.
+ * @private
+ */
+ppz.photos.next_ = function() {
+  ppz.photos.clearTimer_();
+  ppz.photos.currentPhotoIndex_++;
+  ppz.photos.currentPhotoIndex_ %= ppz.photos.NUM_;
+  ppz.photos.load_();
+};
+
+/**
  * Inits the slideshow and starts to load photos.
  */
 ppz.photos.init = function() {
   ppz.photos.canvasElem_ = document.getElementById('canvas');
+  ppz.photos.prevElem_ = document.getElementById('prev');
+  ppz.photos.nextElem_ = document.getElementById('next');
+  goog.events.listen(ppz.photos.prevElem_, 'click', function() {
+    ppz.photos.prev_();
+  });
+  goog.events.listen(ppz.photos.nextElem_, 'click', function() {
+    ppz.photos.next_();
+  });
   ppz.photos.loadingElems_ = new Array(ppz.photos.LOADING_.length);
   for (var i = 0; i < ppz.photos.LOADING_.length; i++) {
     var elem = document.createElement('div');
