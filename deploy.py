@@ -53,6 +53,7 @@ _PAGE_TEMPLATES = [
     [ 'index.html', '', None],
     [ 'poems.html', '', '咏刚的诗'],
     [ 'photos.html', '', '咏刚的照片' ],
+    [ 'pubs.html', '', '著译文字' ],
     [ 'main.css', '', None ],
     [ 'sitemap.xml', '', None ],
     [ 'atomfeed.xml', '', None ],
@@ -66,8 +67,7 @@ _STATIC_CONTENTS = [
     [_IMAGE_DIR, _IMAGE_DIR, ''],
     [_PHOTO_DIR, _PHOTO_DIR, ''],
     [_LUCKY_DIR, _LUCKY_DIR, ''],
-    [_STATIC_DIR, '', 'robots.txt'],
-    [_STATIC_DIR, _PUBS_DIR, 'r5rscn.pdf']
+    [_STATIC_DIR, '', 'robots.txt']
     ]
 
 # JS source code.
