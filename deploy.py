@@ -27,6 +27,7 @@ _DEPS_FILE = 'deps.js'
 _TEMPLATE_DIR = 'templates'
 _JS_DIR = 'js'
 _POEM_DIR = 'poems'
+_POEMS_LINK_TEMPLATE = 'poem_%04d.html'
 _PHOTO_DIR = 'photos'
 _LUCKY_DIR = 'pacman'
 _IMAGE_DIR = 'images'
@@ -50,6 +51,7 @@ _PAGE_TEMPLATES = [
     [ 'index.html', '' ],
     [ 'photos.html', '' ],
     [ 'main.css', '' ],
+    [ 'sitemap.xml', '' ],
     ]
 
 # Static dirs/files. A list of [src_dir_name, target_dir_name,
@@ -96,13 +98,7 @@ class SiteDeployer(object):
         'compile': self._compile,
         'sub_title': '',
         'cur_year': datetime.datetime.now().year,
-        'is_tab_poem': True,
-        'is_tab_photo': False,
-        'is_tab_social': False,
-        'poem_list': [],
-        'the_poem': {},
-        'max_length': 0,
-        'photo_list': []
+        'poems': []
         }
 
     # Inits Django environment settings.
@@ -142,6 +138,28 @@ class SiteDeployer(object):
         print '  %s to %s' % (from_file, to_file)
         shutil.copy2(from_file, to_file)
 
+  def prepare_poems(self):
+    """Generates poems and stores them into the template context.
+    """
+    poem_dir = os.path.join(self._src_dir, _POEM_DIR)
+    self._context['poems'] = []
+    for f in [x for x in os.listdir(poem_dir) if x.endswith('.txt')]:
+      lines = codecs.open(os.path.join(poem_dir, f), 'r', 'utf_8').readlines()
+      title = lines[0].strip()
+      date = lines[1].strip()
+      poem = u''.join(lines[2:])
+      self._context['poems'].append( {
+          'title': title,
+          'date': date,
+          'poem': poem,
+          'link': ''
+          })
+    self._context['poems'].sort(lambda x, y: cmp(x['date'], y['date']))
+    for index, p in enumerate(self._context['poems']):
+      link = _POEMS_LINK_TEMPLATE % index
+      self._context['poems'][index]['link'] = link
+      print '  %s, %s, %s' % (p['date'], p['link'], p['title'])
+
   def render_pages(self):
     """Renders Django page templates and copies the results to the target dir.
     """
@@ -151,6 +169,11 @@ class SiteDeployer(object):
       self._context['template_name'] = file_name
       result = render_to_string(file_name, self._context)
       codecs.open(to_file, 'w', 'utf_8').write(result)
+
+  def render_poems(self):
+    """Renders seperate poem pages.
+    """
+    pass
 
   def copy_closure_code(self):
     """Copies Closure source library code to the target js dir.
@@ -230,7 +253,9 @@ class SiteDeployer(object):
     # List of [step_function, step_name, compile_mode]
     DEPLOY_STEPS = [
         [self.copy_static_contents, 'Copy static constents', _CompileMode.BOTH],
+        [self.prepare_poems, 'Prepare poems', _CompileMode.BOTH],
         [self.render_pages, 'Render page templates', _CompileMode.BOTH],
+        [self.render_poems, 'Render poems', _CompileMode.BOTH],
         [self.copy_closure_code, 'Copy Google Closure code', _CompileMode.DEB],
         [self.lint_js_code, 'Lint JS code', _CompileMode.BOTH],
         [self.copy_js_code, 'Copy JS code', _CompileMode.DEB],
