@@ -52,6 +52,7 @@ _PAGE_TEMPLATES = [
     [ 'photos.html', '' ],
     [ 'main.css', '' ],
     [ 'sitemap.xml', '' ],
+    [ 'atomfeed.xml', '' ],
     ]
 
 # Static dirs/files. A list of [src_dir_name, target_dir_name,
@@ -98,6 +99,7 @@ class SiteDeployer(object):
         'compile': self._compile,
         'sub_title': '',
         'cur_year': datetime.datetime.now().year,
+        'last_update_time': '',
         'poems': []
         }
 
@@ -155,6 +157,7 @@ class SiteDeployer(object):
           'link': ''
           })
     self._context['poems'].sort(lambda x, y: cmp(x['date'], y['date']))
+    self._context['last_update_time'] = self._context['poems'][-1]['date']
     for index, p in enumerate(self._context['poems']):
       link = _POEMS_LINK_TEMPLATE % index
       self._context['poems'][index]['link'] = link

@@ -4,7 +4,7 @@
       <loc>http://www.pingpingze.com/</loc>
       <changefreq>weekly</changefreq>
    </url>
-   {% for poem in poems %}
+   {% for poem in poems reversed %}
    <url>
       <loc>http://www.pingpingze.com/{{ poem.link }}</loc>
       <changefreq>monthly</changefreq>
