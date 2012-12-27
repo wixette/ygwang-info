@@ -1,0 +1,12 @@
+{% include 'header.html' %}
+<div id=page>
+
+<h1>{{ poem_title|escape }}</h1>
+<p class=info>王咏刚&nbsp;{{ poem_date }}</p>
+<pre id=poem>
+{{ poem_content|escape }}</p>
+</pre>
+<p class=info>&#x25a0;&nbsp;<a href="poems.html">更多咏刚的诗</a>&nbsp;&#x25a0;</p>
+
+</div> <!-- page -->
+{% include 'footer.html' %}

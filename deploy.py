@@ -27,6 +27,7 @@ _DEPS_FILE = 'deps.js'
 _TEMPLATE_DIR = 'templates'
 _JS_DIR = 'js'
 _POEM_DIR = 'poems'
+_POEM_TEMPLATE = 'poem.html'
 _POEMS_LINK_TEMPLATE = 'poem_%04d.html'
 _PHOTO_DIR = 'photos'
 _LUCKY_DIR = 'pacman'
@@ -45,14 +46,16 @@ _COMPILE_COMMAND = 'python %s/bin/build/closurebuilder.py \
 --output_file=%s/ppz_compiled.js'
 
 # Django templates for separate pages. A list of [template_file_name,
-# target_dir_name]. template_file_name must not be empty. If target_dir_name is
-# empty, the file(s) will be rendered to the root of the target dir.
+# target_dir_name, sub_title]. template_file_name must not be empty. If
+# target_dir_name is empty, the file(s) will be rendered to the root of the
+# target dir.
 _PAGE_TEMPLATES = [
-    [ 'index.html', '' ],
-    [ 'photos.html', '' ],
-    [ 'main.css', '' ],
-    [ 'sitemap.xml', '' ],
-    [ 'atomfeed.xml', '' ],
+    [ 'index.html', '', None],
+    [ 'poems.html', '', '咏刚的诗'],
+    [ 'photos.html', '', '咏刚的照片' ],
+    [ 'main.css', '', None ],
+    [ 'sitemap.xml', '', None ],
+    [ 'atomfeed.xml', '', None ],
     ]
 
 # Static dirs/files. A list of [src_dir_name, target_dir_name,
@@ -100,7 +103,10 @@ class SiteDeployer(object):
         'sub_title': '',
         'cur_year': datetime.datetime.now().year,
         'last_update_time': '',
-        'poems': []
+        'poems': [],
+        'poem_title': '',
+        'poem_date': '',
+        'poem_content': ''
         }
 
     # Inits Django environment settings.
@@ -166,17 +172,29 @@ class SiteDeployer(object):
   def render_pages(self):
     """Renders Django page templates and copies the results to the target dir.
     """
-    for file_name, to_dir_name in _PAGE_TEMPLATES:
+    for file_name, to_dir_name, sub_title in _PAGE_TEMPLATES:
       to_file = os.path.join(self._target_dir, to_dir_name, file_name)
       print '  %s' % to_file
       self._context['template_name'] = file_name
+      if sub_title:
+        self._context['sub_title'] = sub_title
       result = render_to_string(file_name, self._context)
       codecs.open(to_file, 'w', 'utf_8').write(result)
 
-  def render_poems(self):
-    """Renders seperate poem pages.
+  def render_individual_poems(self):
+    """Renders individual poem pages.
     """
-    pass
+    for index, p in enumerate(self._context['poems']):
+      self._context['sub_title'] = p['title']
+      self._context['poem_title'] = p['title']
+      date = '.'.join(p['date'].split('-')[0:2])
+      self._context['poem_date'] = date
+      self._context['poem_content'] = p['poem']
+      to_file = os.path.join(self._target_dir,
+                             _POEMS_LINK_TEMPLATE % index)
+      print '  %s' % to_file
+      result = render_to_string(_POEM_TEMPLATE, self._context)
+      codecs.open(to_file, 'w', 'utf_8').write(result)
 
   def copy_closure_code(self):
     """Copies Closure source library code to the target js dir.
@@ -258,7 +276,7 @@ class SiteDeployer(object):
         [self.copy_static_contents, 'Copy static constents', _CompileMode.BOTH],
         [self.prepare_poems, 'Prepare poems', _CompileMode.BOTH],
         [self.render_pages, 'Render page templates', _CompileMode.BOTH],
-        [self.render_poems, 'Render poems', _CompileMode.BOTH],
+        [self.render_individual_poems, 'Render poems', _CompileMode.BOTH],
         [self.copy_closure_code, 'Copy Google Closure code', _CompileMode.DEB],
         [self.lint_js_code, 'Lint JS code', _CompileMode.BOTH],
         [self.copy_js_code, 'Copy JS code', _CompileMode.DEB],

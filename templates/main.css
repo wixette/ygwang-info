@@ -4,7 +4,7 @@ font-size:95%;
 color:#666;
 }
 
-body,div,img,h1,h2,h3,p,ul,li{
+body,div,img,h1,h2,h3,p,ul,li,pre{
 margin:0;
 padding:0;
 border:0;
@@ -37,7 +37,7 @@ z-index:-999;
 #box2{
 position:absolute;
 top:125px;
-left:1000px;
+left:1020px;
 width:125px;
 height:125px;
 background-color:#F3F3F3;
@@ -161,7 +161,7 @@ text-align:center;
 
 #page{
 width:720px;
-margin:155px auto 30px 280px;
+margin:160px auto 30px 300px;
 }
 
 #page ul{
@@ -207,6 +207,31 @@ width:70px;
 height:20px;
 text-align:center;
 text-shadow:2px 2px 4px #000;
+}
+
+#page table{
+width:720px;
+}
+
+#page table,th,tr,td{
+border:0;
+text-align:left;
+}
+
+#page td{
+line-height:3em;
+}
+
+#page p.info{
+font-size:80%;
+letter-spacing:0.3em;
+}
+
+#poem{
+margin:50px auto 50px auto;
+font-size:14px;
+letter-spacing:0.2em;
+line-height:2em;
 }
 
 #footer{

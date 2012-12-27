@@ -9,7 +9,7 @@
   <logo>/logo.png</logo>
   {% for poem in poems reversed %}
   <entry>
-    <title>{{ poem.title }}</title>
+    <title>{{ poem.title|escape }}</title>
     <link href="/{{ poem.link }}" />
     <id>tag:pingpingze.com,{{ poem.date }}:/{{ poem.link }}</id>
     <updated>{{ poem.date }}</updated>

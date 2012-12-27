@@ -1,0 +1,14 @@
+{% include 'header.html' %}
+<div id=page>
+
+<h1>咏刚的诗</h1>
+<table>
+{% for poem in poems reversed %}
+{% if forloop.counter0|divisibleby:3 %}<tr>{% endif %}
+    <td><a href="{{ poem.link }}">{{ poem.title|escape }}</a></td>
+{% if forloop.counter|divisibleby:3 %}</tr>{% endif %}
+{% endfor %}
+</table>
+
+</div> <!-- page -->
+{% include 'footer.html' %}
