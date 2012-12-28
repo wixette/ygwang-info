@@ -101,7 +101,7 @@ def GenIndex(file_path):
     char_string = ''
     for char, notes in rhymes[rhyme_name]:
       char_string += \
-        '<span class=ch>%s</span>' % char
+        '#%s=' % char
       if notes:
         char_string += '%s,' % notes.replace('"', '\\\"')
       else:

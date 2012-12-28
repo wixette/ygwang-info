@@ -2,10 +2,28 @@
 <html lang="zh-CN" id="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>平水韵速查</title>
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-
+<style>
+body{
+margin:2em;
+font-size:95%;
+font-family:verdana,helvetica,arial,sans-serif;
+color:#666;
+}
+#footer{
+font-size:small;
+margin-top:2em;
+}
+h3{
+margin-top:2em;
+}
+#result{width:100%;}
+a:link{color:#666;}
+a:visited{color:#666;}
+a:hover{color:#C00;}
+a:active{color:#666;}
+</style>
 {% if compile %}
 <script src="ppz_compiled.js"></script>
 {% else %}
@@ -18,7 +36,19 @@ goog.require('ppz.helper');
 </head>
 <body onload="ppz.helper.init();">
 
-<div id=canvas></div>
+<div id=msg></div>
+<div id=canvas>
+<form onsubmit="ppz.helper.onSubmit();return false;">
+<p>输入要查询的一个或多个汉字：<input type=text id=q name=q size=10 value=""><input type=submit></p>
+</form>
+<p>&nbsp;</p>
+<div id=result></div>
+<p>&nbsp;</p>
+<div id=footer>
+<p><a href="#" onclick="ppz.helper.showAllRhymes();return false;">平水韵总表</a></p>
+<p><a href="index.html">平平仄/王咏刚的个人主页</a></p>
+</div>
+</div> <!-- canvas -->
 
 <!-- Google Analytics Code -->
 <script type="text/javascript">
