@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN" id="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>平水韵速查</title>
+<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+
+{% if compile %}
+<script src="ppz_compiled.js"></script>
+{% else %}
+<script src="closure/base.js"></script>
+<script src="js/deps.js"></script>
+<script>
+goog.require('ppz.helper');
+</script>
+{% endif %}
+</head>
+<body onload="ppz.helper.init();">
+
+<div id=canvas></div>
+
+<!-- Google Analytics Code -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-5280595-1");
+pageTracker._trackPageview();
+</script>
+<!-- End of Google Analytics Code -->
+
+</body>
+</html>

@@ -40,41 +40,46 @@ _COMPILE_COMMAND = 'python %s/bin/build/closurebuilder.py \
 --root=%s \
 --namespace="ppz.lucky" \
 --namespace="ppz.photos" \
+--namespace="ppz.helper" \
 --output_mode=compiled \
 --compiler_jar=%s \
 --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" \
 --output_file=%s/ppz_compiled.js'
 
 # Django templates for separate pages. A list of [template_file_name,
-# target_dir_name, sub_title]. template_file_name must not be empty. If
-# target_dir_name is empty, the file(s) will be rendered to the root of the
-# target dir.
+# target_dir_name, target_file_name, sub_title]. template_file_name must not be
+# empty. If target_dir_name is not privided, the file(s) will be rendered to the
+# root of the target dir. If target_file_name is not provided, the
+# templeate_file_name will be used.
 _PAGE_TEMPLATES = [
-    [ 'index.html', '', None],
-    [ 'poems.html', '', '咏刚的诗'],
-    [ 'photos.html', '', '咏刚的照片' ],
-    [ 'pubs.html', '', '著译文字' ],
-    [ 'main.css', '', None ],
-    [ 'sitemap.xml', '', None ],
-    [ 'atomfeed.xml', '', None ],
+    [ 'index.html', None, None, None],
+    [ 'poems.html', None, None, '咏刚的诗'],
+    [ 'photos.html', None, None, '咏刚的照片' ],
+    [ 'pubs.html', None, None, '著译文字' ],
+    [ 'helper.html', None, None, None ],
+    [ 'main.css', None, None, None ],
+    [ 'sitemap.xml', None, None, None ],
+    [ 'atomfeed.xml', None, None, None ],
     ]
 
 # Static dirs/files. A list of [src_dir_name, target_dir_name,
-# file_name]. src_dir_name must not be empty. If target_dir_name is empty, the
-# file(s) will be copied to the root of the target dir. If file_name is empty,
-# all files under src_dir_name will be copied.
+# file_name]. src_dir_name must not be empty. If target_dir_name is not
+# provided, the file(s) will be copied to the root of the target dir. If
+# file_name is not provided, all files under src_dir_name will be copied.
 _STATIC_CONTENTS = [
-    [_IMAGE_DIR, _IMAGE_DIR, ''],
-    [_PHOTO_DIR, _PHOTO_DIR, ''],
-    [_LUCKY_DIR, _LUCKY_DIR, ''],
-    [_STATIC_DIR, '', 'robots.txt']
+    [_IMAGE_DIR, _IMAGE_DIR, None],
+    [_PHOTO_DIR, _PHOTO_DIR, None],
+    [_LUCKY_DIR, _LUCKY_DIR, None],
+    [_STATIC_DIR, None, 'robots.txt'],
+    [_STATIC_DIR, None, 'rhymes.json']
     ]
 
 # JS source code.
 _JS_CODE = [
     'lucky.js',
     'photos.js',
-    'util.js'
+    'util.js',
+    'helper.js'
     ]
 
 
@@ -135,6 +140,10 @@ class SiteDeployer(object):
     target dir.
     """
     for from_dir_name, to_dir_name, file_name in _STATIC_CONTENTS:
+      if not to_dir_name:
+        to_dir_name = ''
+      if not file_name:
+        file_name = ''
       from_dir = os.path.join(self._src_dir, from_dir_name)
       to_dir = os.path.join(self._target_dir, to_dir_name)
       if not os.path.exists(to_dir):
@@ -172,8 +181,12 @@ class SiteDeployer(object):
   def render_pages(self):
     """Renders Django page templates and copies the results to the target dir.
     """
-    for file_name, to_dir_name, sub_title in _PAGE_TEMPLATES:
-      to_file = os.path.join(self._target_dir, to_dir_name, file_name)
+    for file_name, to_dir_name, to_file_name, sub_title in _PAGE_TEMPLATES:
+      if not to_dir_name:
+        to_dir_name = ''
+      if not to_file_name:
+        to_file_name = file_name
+      to_file = os.path.join(self._target_dir, to_dir_name, to_file_name)
       print '  %s' % to_file
       self._context['template_name'] = file_name
       if sub_title:
