@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import codecs
+import os
+import sys
 import urllib
 
 rhymes_list = []
@@ -31,8 +33,8 @@ def IterateOnChar(line):
       yield (c, notes)
     i += 1
 
-def LoadRhymes():
-  f = codecs.open('psy_merged.txt', 'r', 'utf_8')
+def LoadRhymes(file_path):
+  f = codecs.open(file_path, 'r', 'utf_8')
   rhyme_name = None
   for line in f:
     line = line.strip()
@@ -48,73 +50,73 @@ def LoadRhymes():
         else:
           char_index[char] = [ (rhyme_name, notes) ]
 
-def LoadPhrases():
-  f = codecs.open('poetry_phrases.txt', 'r', 'utf_8')
+def LoadPhrases(file_path):
+  f = codecs.open(file_path, 'r', 'utf_8')
   for line in f:
     line = line.strip()
     if line:
       char, poetry_phrases = line.split('\t')
       phrases[char] = poetry_phrases
 
-def GenRhymeIndex():
-  f = codecs.open('rhymes_index.py', 'w', 'utf_8')
-  f.write(u'# -*- coding: utf-8 -*-\n')
-  f.write(u'RHYMES_LIST = [\n')
-  for rhyme_name in rhymes_list:
-    f.write(u'u\'%s\',\n' % rhyme_name)
-  f.write(u']\n')
+def GenIndex(file_path):
+  f = codecs.open(file_path, 'w', 'utf_8')
+  f.write(u'{\n')
+  f.write(u'"RHYMES_LIST":[\n')
+  for i, rhyme_name in enumerate(rhymes_list):
+    if i > 0:
+      f.write(u',\n')
+    f.write(u'"%s"' % rhyme_name)
+  f.write(u'],\n')
 
-  f.write(u'RHYMES_ID_MAPPING = {\n')
+  f.write(u'"RHYMES_ID_MAPPING":{\n')
   sizes = [0, 15, 15, 29, 30, 17]
   i = 1
   j = 1
   for rhyme_name in rhymes_list:
-    f.write(u'(%d, %d): u\'%s\',\n' % (i, j, rhyme_name))
+    if i > 1 or j > 1:
+      f.write(u',\n')
+    f.write(u'"%d_%d":"%s"' % (i, j, rhyme_name))
     j += 1
     if j > sizes[i]:
       j = 1
       i += 1
-  f.write(u'}\n')
+  f.write(u'},\n')
 
-  f.write(u'RHYMES_NAME_MAPPING = {\n')
+  f.write(u'"RHYMES_NAME_MAPPING":{\n')
   sizes = [0, 15, 15, 29, 30, 17]
   i = 1
   j = 1
   for rhyme_name in rhymes_list:
-    f.write(u'u\'%s\': (%d, %d),\n' % (rhyme_name, i, j))
+    if i > 1 or j > 1:
+      f.write(u',\n')
+    f.write(u'"%s":[%d,%d]' % (rhyme_name, i, j))
     j += 1
     if j > sizes[i]:
       j = 1
       i += 1
-  f.write(u'}\n')
+  f.write(u'},\n')
 
-  f.write(u'RHYMES_TABLE = {\n')
-  for rhyme_name in rhymes_list:
+  f.write(u'"RHYMES_TABLE":{\n')
+  for i, rhyme_name in enumerate(rhymes_list):
     char_string = ''
     for char, notes in rhymes[rhyme_name]:
-      utf8_char = codecs.getencoder('utf_8')(char)[0]
+      char_string += \
+        '<span class=ch>%s</span>' % char
       if notes:
-        char_string += \
-        '<a href="/helper?q=%s">%s</a><span class=notes>%s</span>, ' % (
-            urllib.quote(utf8_char),
-            char,
-            notes)
+        char_string += '%s,' % notes.replace('"', '\\\"')
       else:
-        char_string += '<a href="/helper?q=%s">%s</a>, ' % (
-            urllib.quote(utf8_char),
-            char)
-    f.write(u'u\'%s\': u\'%s\',\n' % (rhyme_name, char_string[:-2]))
-  f.write(u'}\n')
+        char_string += ','
+    if i > 0:
+      f.write(u',\n')
+    f.write(u'"%s":"%s"' % (rhyme_name, char_string[:-1]))
+  f.write(u'},\n')
 
-def GenPoetryIndex():
-  f = codecs.open('poetry_index.py', 'w', 'utf_8')
-  f.write(u'# -*- coding: utf-8 -*-\n')
-  f.write(u'POETRY_INDEX = {\n')
+  f.write(u'"POETRY_INDEX":{\n')
   keys1 = set(phrases.keys())
   keys2 = set(char_index.keys())
   keys = list(keys1 | keys2)
   keys.sort()
-  for char in keys:
+  for i, char in enumerate(keys):
     rhyme_name_string = u'N/A'
     phrase_string = u'N/A'
     if char in char_index:
@@ -124,17 +126,28 @@ def GenPoetryIndex():
       rhyme_name_string = rhyme_name_string[:-1]
     if char in phrases:
       phrase_string = phrases[char]
-    if rhyme_name_string != u'N/A' or phrase_string != u'N/A':
-      f.write(u'u\'%s\': (u\'%s\', u\'%s\'),\n' % (char,
-                                                   rhyme_name_string,
-                                                   phrase_string))
+    if i > 0:
+      f.write(u',\n')
+    s = u'"%s":["%s","%s"]' % (char, rhyme_name_string, phrase_string)
+    f.write(s.replace('"N/A"', 'null'))
   f.write(u'}\n')
 
-if __name__ == '__main__':
-  LoadRhymes()
-  LoadPhrases()
+  f.write(u'}\n')
+
+
+def main():
+  src_dir = os.path.split(os.path.realpath(sys.modules['__main__'].__file__))[0]
+  parent_dir = os.path.split(src_dir)[0]
+  rhymes_path = os.path.join(src_dir, 'psy_merged.txt')
+  phrases_path = os.path.join(src_dir, 'poetry_phrases.txt');
+  LoadRhymes(rhymes_path)
+  LoadPhrases(phrases_path)
   print len(rhymes)
   print len(char_index)
   print len(phrases)
-  GenRhymeIndex()
-  GenPoetryIndex()
+  index_path = os.path.join(parent_dir, 'static', 'rhymes.json')
+  GenIndex(index_path)
+
+
+if __name__ == '__main__':
+  main()
