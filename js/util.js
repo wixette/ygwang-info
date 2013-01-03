@@ -78,3 +78,41 @@ ppz.util.requestAnimationFrame = function(callback) {
 
   return ppz.util.requestAnimationFrame(callback);
 };
+
+/**
+ * Saves a value in local storage.
+ * @param {string} key The local storage key.
+ * @param {string} value The value to set.
+ */
+ppz.util.setLocalStorageValue = function(key, value) {
+  if (window.localStorage) {
+    window.localStorage.setItem(key, value);
+  }
+};
+
+/**
+ * Reads a value from local storage. Returns null if local storage is not
+ * supported.
+ * @param {string} key The local storage key.
+ * @return {?string} value The stored value or null if the key was not
+ *     in local storage or local storage is unsupported.
+ */
+ppz.util.getLocalStorageString = function(key) {
+  return (window.localStorage &&
+      /** @type {?string} */ (window.localStorage.getItem(key))) || null;
+};
+
+/**
+ * Reads a numeric value from local storage. Returns null if local storage is
+ * not supported.
+ * @param {string} key The local storage key.
+ * @return {?number} value The stored value or null if the key was not
+ *     in local storage or local storage is unsupported.
+ */
+ppz.util.getLocalStorageNumber = function(key) {
+  var value = ppz.util.getLocalStorageString(key);
+  if (value) {
+    return parseFloat(value);
+  }
+  return null;
+};

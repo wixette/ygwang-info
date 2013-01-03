@@ -6,6 +6,7 @@ goog.provide('ppz.helper');
 
 goog.require('goog.dom');
 goog.require('goog.events');
+goog.require('goog.json');
 goog.require('goog.net.XhrIo');
 goog.require('goog.structs.Set');
 goog.require('goog.style');
@@ -118,7 +119,9 @@ ppz.helper.showCanvas_ = function(visible) {
   goog.style.showElement(ppz.helper.canvas_, visible);
   goog.dom.removeChildren(ppz.helper.msg_);
   goog.style.showElement(ppz.helper.msg_, !visible);
-  ppz.helper.query_.focus();
+  if (visible) {
+    ppz.helper.query_.focus();
+  }
 };
 
 /**
@@ -138,8 +141,11 @@ ppz.helper.error_ = function(msg) {
  */
 ppz.helper.onData_ = function() {
   ppz.helper.loading_ = false;
+  var jsonText = null;
   if (ppz.helper.request_.isSuccess() &&
-      (ppz.helper.data_ = ppz.helper.request_.getResponseJson())) {
+      (jsonText = ppz.helper.request_.getResponseText()) &&
+      (ppz.helper.data_ = goog.json.parse(jsonText))) {
+    ppz.util.setLocalStorageValue(ppz.helper.DATA_URL_, jsonText);
     ppz.helper.showCanvas_(true);
   } else {
     ppz.helper.error_('Failed to load the data.');
@@ -154,16 +160,19 @@ ppz.helper.init = function() {
   ppz.helper.canvas_ = document.getElementById('canvas');
   ppz.helper.result_ = document.getElementById('result');
   ppz.helper.query_ = document.getElementById('q');
-  ppz.helper.showCanvas_(false);
 
-  ppz.helper.request_ = new goog.net.XhrIo();
-  goog.events.listen(ppz.helper.request_, 'complete', ppz.helper.onData_);
-
-  ppz.helper.request_.send(ppz.helper.DATA_URL_);
-
-  ppz.helper.frameCount_ = 0;
-  ppz.helper.loading_ = true;
-  ppz.helper.loadingLoop_();
+  var localData = ppz.util.getLocalStorageString(ppz.helper.DATA_URL_);
+  if (localData && (ppz.helper.data_ = goog.json.parse(localData))) {
+    ppz.helper.showCanvas_(true);
+  } else {
+    ppz.helper.showCanvas_(false);
+    ppz.helper.request_ = new goog.net.XhrIo();
+    goog.events.listen(ppz.helper.request_, 'complete', ppz.helper.onData_);
+    ppz.helper.request_.send(ppz.helper.DATA_URL_);
+    ppz.helper.frameCount_ = 0;
+    ppz.helper.loading_ = true;
+    ppz.helper.loadingLoop_();
+  }
 };
 
 /**
@@ -211,7 +220,6 @@ ppz.helper.query = function(q) {
   }
   if (!validChars.isEmpty()) {
     ppz.helper.result_.innerHTML = result;
-    ppz.helper.query_.focus();
   }
 };
 
@@ -228,7 +236,6 @@ ppz.helper.showAllRhymes = function() {
     result += ppz.helper.getRhymeHtml_(ids[0], ids[1]);
   }
   ppz.helper.result_.innerHTML = result;
-  ppz.helper.query_.focus();
 };
 
 /**
@@ -238,7 +245,6 @@ ppz.helper.showAllRhymes = function() {
  */
 ppz.helper.showRhyme = function(category, rhyme) {
   ppz.helper.result_.innerHTML = ppz.helper.getRhymeHtml_(category, rhyme);
-  ppz.helper.query_.focus();
 };
 
 /**
