@@ -192,34 +192,34 @@ ppz.helper.query = function(q) {
   var charTable = ppz.helper.data_['POETRY_INDEX'];
   var rhymeMapping = ppz.helper.data_['RHYMES_NAME_MAPPING'];
   var validChars = new goog.structs.Set();
-  var result = '';
+  var result = [];
   for (var i = 0; i < len; i++) {
     var c = q[i];
     if (charTable[c] && charTable[c][0] && !validChars.contains(c)) {
       validChars.add(c);
       var rhymes = charTable[c][0].split(',');
       var phrases = charTable[c][1];
-      result += '<h3>' + c + '</h3>';
-      result += '<p>韵部：';
+      result.push('<h3>' + c + '</h3>');
+      result.push('<p>韵部：');
       for (var j = 0; j < rhymes.length; j++) {
         var rhyme = rhymes[j];
         if (j > 0) {
-          result += '，';
+          result.push('，');
         }
         ids = rhymeMapping[rhyme];
-        result += '<a href="#" onclick="ppz.helper.showRhyme(' + ids[0] + ',' +
-            ids[1] + ');return false;">';
-        result += rhyme;
-        result += '</a>';
+        result.push('<a href="#" onclick="ppz.helper.showRhyme(' + ids[0] +
+            ',' + ids[1] + ');return false;">');
+        result.push(rhyme);
+        result.push('</a>');
       }
-      result += '</p>';
+      result.push('</p>');
       if (phrases) {
-        result += '<p>' + phrases.replace(/,/g, ', ') + '</p>';
+        result.push('<p>' + phrases.replace(/,/g, ', ') + '</p>');
       }
     }
   }
   if (!validChars.isEmpty()) {
-    ppz.helper.result_.innerHTML = result;
+    ppz.helper.result_.innerHTML = result.join('');
   }
 };
 
@@ -229,13 +229,13 @@ ppz.helper.query = function(q) {
 ppz.helper.showAllRhymes = function() {
   var rhymeList = ppz.helper.data_['RHYMES_LIST'];
   var rhymeMapping = ppz.helper.data_['RHYMES_NAME_MAPPING'];
-  var result = '';
+  var result = [];
   var len = rhymeList.length;
   for (var i = 0; i < len; i++) {
     ids = rhymeMapping[rhymeList[i]];
-    result += ppz.helper.getRhymeHtml_(ids[0], ids[1]);
+    result.push(ppz.helper.getRhymeHtml_(ids[0], ids[1]));
   }
-  ppz.helper.result_.innerHTML = result;
+  ppz.helper.result_.innerHTML = result.join('');
 };
 
 /**
