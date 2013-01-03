@@ -132,7 +132,7 @@ class SiteDeployer(object):
                  self._closure_third_party_dir,
                  self._compiler_path]:
       if not os.path.exists(path):
-        print 'Required %s does not exist.' % dir
+        print 'Required %s does not exist.' % path
         sys.exit(1)
 
   def copy_static_contents(self):
