@@ -17,8 +17,8 @@ import time
 
 
 # Constant names of dirs, files, paths, commands, etc.
-_CLOSURE_DIR = os.path.join('closure-library-read-only', 'closure')
-_CLOSURE_THIRD_PARTY_DIR = os.path.join('closure-library-read-only',
+_CLOSURE_DIR = os.path.join('closure-library', 'closure')
+_CLOSURE_THIRD_PARTY_DIR = os.path.join('closure-library',
                                         'third_party', 'closure')
 _JS_COMPILER_JAR = os.path.join('closure-compiler-latest', 'compiler.jar')
 _JS_LINTER_COMMAND = 'gjslint'
