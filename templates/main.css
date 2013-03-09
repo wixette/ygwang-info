@@ -15,6 +15,18 @@ font-size:24px;
 line-height:5em;
 }
 
+h2{
+font-size:20px;
+line-height:2em;
+border-bottom:#ccc solid 1px;
+margin:2em 0 1em 0;
+}
+
+h3{
+font-size:18px;
+line-height:3em;
+}
+
 p{
 line-height:2em;
 }
@@ -169,6 +181,10 @@ margin-left:2em;
 }
 
 #page li{
+line-height:2em;
+}
+
+#page li.nodot{
 line-height:3em;
 list-style:none;
 }
@@ -238,4 +254,9 @@ line-height:2em;
 font-size:80%;
 width:700px;
 margin:125px auto 250px 280px;
+}
+
+img.bookcover{
+float:right;
+width:300px;
 }
