@@ -329,7 +329,7 @@ ppz.photos.init = function() {
     elem.style.fontSize = '30px';
     elem.style.fontWeight = 'bold';
     elem.style.color = 'white';
-    elem.innerText = ch;
+    elem.innerHTML = ch;
     goog.style.showElement(elem, false);
     ppz.photos.canvasElem_.appendChild(elem);
     ppz.photos.loadingElems_[i] = elem;
