@@ -20,7 +20,7 @@ import time
 _CLOSURE_DIR = os.path.join('closure-library', 'closure')
 _CLOSURE_THIRD_PARTY_DIR = os.path.join('closure-library',
                                         'third_party', 'closure')
-_JS_COMPILER_JAR = os.path.join('closure-compiler-latest', 'compiler.jar')
+_JS_COMPILER_JAR = os.path.join('closure-compiler', 'compiler.jar')
 _JS_LINTER_COMMAND = 'gjslint'
 _DEPSWRITER_COMMAND = 'python %s --root_with_prefix=\"%s ../js\" > %s'
 _DEPS_FILE = 'deps.js'
