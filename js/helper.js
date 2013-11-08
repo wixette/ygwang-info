@@ -220,9 +220,10 @@ ppz.helper.doQuery_ = function(query) {
       sb.push('<h3>' + c + '</h3>');
       sb.push('<p>');
       goog.array.forEach(glyphIndex[c], function(rhymeId) {
+        sb.push('<span class="common">');
         sb.push('<a href="#r=' + rhymeId + '">');
         sb.push(rhymeIndex[rhymeId]);
-        sb.push('</a>&nbsp;&nbsp;');
+        sb.push('</a></span> ');
       });
       sb.push('</p>');
     }
@@ -238,7 +239,33 @@ ppz.helper.doQuery_ = function(query) {
  * @private
  */
 ppz.helper.showRhyme_ = function(rhymeId) {
-  ppz.helper.result_.innerHTML = 'show rhyme for ' + rhymeId;
+  var rhymeList = ppz.helper.psyRhymes_.id_list;
+  var rhymeIndex = ppz.helper.psyRhymes_.id_to_name;
+  var rhymeGlyphs = ppz.helper.psyRhymes_.id_to_glyphs;
+
+  var sb = [];
+  if (rhymeIndex[rhymeId]) {
+    rhymeList = [rhymeId];
+  }
+
+  goog.array.forEach(rhymeList, function(rhymeId) {
+    var rhymeName = rhymeIndex[rhymeId];
+    sb.push('<h3>' + rhymeName + '</h3>');
+    var glyphList = rhymeGlyphs[rhymeId];
+    sb.push('<p>');
+    goog.array.forEach(glyphList, function(item) {
+      var glyph = item[0];
+      var isCommon = (item[1] != 0);
+      var className = isCommon ? 'common' : 'uncommon';
+      sb.push('<span class="' + className + '">');
+      sb.push('<a href="#q=' + glyph + '">');
+      sb.push(glyph);
+      sb.push('</a></span> ');
+    });
+    sb.push('</p>');
+  });
+  var result = sb.join('');
+  ppz.helper.result_.innerHTML = result;
 };
 
 

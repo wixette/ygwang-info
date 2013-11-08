@@ -9,7 +9,7 @@ body{
 margin:2em;
 font-size:95%;
 font-family:verdana,helvetica,arial,sans-serif;
-color:#666;
+color:#333;
 }
 #footer{
 font-size:small;
@@ -19,10 +19,16 @@ h3{
 margin-top:2em;
 }
 #result{width:100%;}
-a:link{color:#666;}
-a:visited{color:#666;}
+a:link{color:#333;}
+a:visited{color:#333;}
 a:hover{color:#C00;}
-a:active{color:#666;}
+a:active{color:#333;}
+.common{display:inline-block;padding-right:.5em;}
+.uncommon{display:inline-block;padding-right:.5em;}
+.uncommon a:link{color:#999;}
+.uncommon a:visited{color:#999;}
+.uncommon a:hover{color:#C00;}
+.uncommon a:active{color:#999;}
 </style>
 {% if compile %}
 <script src="ppz_compiled.js"></script>
