@@ -32,6 +32,7 @@ _POEMS_LINK_TEMPLATE = 'poem_%04d.html'
 _PHOTO_DIR = 'photos'
 _LUCKY_DIR = 'pacman'
 _IMAGE_DIR = 'images'
+_PSY_DIR = 'psy_index_json'
 _STATIC_DIR = 'static'
 _PUBS_DIR = 'pubs'
 _COMPILE_COMMAND = 'python %s/bin/build/closurebuilder.py \
@@ -70,8 +71,8 @@ _STATIC_CONTENTS = [
     [_IMAGE_DIR, _IMAGE_DIR, None],
     [_PHOTO_DIR, _PHOTO_DIR, None],
     [_LUCKY_DIR, _LUCKY_DIR, None],
+    [_PSY_DIR, _PSY_DIR, None],
     [_STATIC_DIR, None, 'robots.txt'],
-    [_STATIC_DIR, None, 'rhymes.json']
     ]
 
 # JS source code.
