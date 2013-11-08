@@ -102,10 +102,17 @@ ppz.helper.psyGlyphs_ = null;
 
 
 /**
- * The loaded ref objects (per rhyme).
+ * The cached ref objects (per rhyme).
  * @private {Object}
  */
-ppz.helper.psyRefs_ = {};
+ppz.helper.psyRefCache_ = {};
+
+
+/**
+ * All rhymes list innerHTML cache.
+ * @private {string}
+ */
+ppz.helper.psyRhymeListCache_ = null;
 
 
 /**
@@ -152,6 +159,11 @@ ppz.helper.navCallback_ = function() {
     ppz.helper.showRhyme_(rhymeId);
   } else if (glyph) {
     ppz.helper.showGlyphRef_(glyph);
+  }
+
+  if (query || rhymeId || glyph) {
+    window.scroll(0, 0);
+    ppz.helper.query_.focus();
   }
 };
 
@@ -244,28 +256,37 @@ ppz.helper.showRhyme_ = function(rhymeId) {
   var rhymeGlyphs = ppz.helper.psyRhymes_.id_to_glyphs;
 
   var sb = [];
+  var showAllRhymes = true;
   if (rhymeIndex[rhymeId]) {
+    showAllRhymes = false;
     rhymeList = [rhymeId];
   }
 
-  goog.array.forEach(rhymeList, function(rhymeId) {
-    var rhymeName = rhymeIndex[rhymeId];
-    sb.push('<h3>' + rhymeName + '</h3>');
-    var glyphList = rhymeGlyphs[rhymeId];
-    sb.push('<p>');
-    goog.array.forEach(glyphList, function(item) {
-      var glyph = item[0];
-      var isCommon = (item[1] != 0);
-      var className = isCommon ? 'common' : 'uncommon';
-      sb.push('<span class="' + className + '">');
-      sb.push('<a href="#q=' + glyph + '">');
-      sb.push(glyph);
-      sb.push('</a></span> ');
+  if (ppz.helper.psyRhymeListCache_ && showAllRhymes) {
+    ppz.helper.result_.innerHTML = ppz.helper.psyRhymeListCache_;
+  } else {
+    goog.array.forEach(rhymeList, function(rhymeId) {
+      var rhymeName = rhymeIndex[rhymeId];
+      sb.push('<h3>' + rhymeName + '</h3>');
+      var glyphList = rhymeGlyphs[rhymeId];
+      sb.push('<p>');
+      goog.array.forEach(glyphList, function(item) {
+        var glyph = item[0];
+        var isCommon = (item[1] != 0);
+        var className = isCommon ? 'common' : 'uncommon';
+        sb.push('<span class="' + className + '">');
+        sb.push('<a href="#g=' + glyph + '">');
+        sb.push(glyph);
+        sb.push('</a></span> ');
+      });
+      sb.push('</p>');
     });
-    sb.push('</p>');
-  });
-  var result = sb.join('');
-  ppz.helper.result_.innerHTML = result;
+    var result = sb.join('');
+    ppz.helper.result_.innerHTML = result;
+    if (showAllRhymes) {
+      ppz.helper.psyRhymeListCache_ = result;
+    }
+  }
 };
 
 
@@ -275,172 +296,60 @@ ppz.helper.showRhyme_ = function(rhymeId) {
  * @private
  */
 ppz.helper.showGlyphRef_ = function(glyph) {
-  ppz.helper.result_.innerHTML = 'show glyph for ' + glyph;
+  var glyphIndex = ppz.helper.psyGlyphs_;
+  if (!glyphIndex[glyph] || !glyphIndex[glyph][0]) {
+    return;
+  }
+  // For showing ref info, only glyph matters. Any rhymeId results in the same
+  // ref list.
+  var rhymeId = glyphIndex[glyph][0];
+  if (!ppz.helper.psyRefCache_[rhymeId]) {
+    var uri = ppz.helper.JSON_REF_PREFIX_ + rhymeId +
+        ppz.helper.JSON_REF_SUFFIX_;
+    var resultRefs = goog.labs.net.xhr.getJson(uri);
+    goog.result.waitOnSuccess(resultRefs, function() {
+      ppz.helper.psyRefCache_[rhymeId] = resultRefs.getValue();
+      ppz.helper.showGlyphRefInternal_(glyph);
+    });
+  } else {
+    ppz.helper.showGlyphRefInternal_(glyph);
+  }
 };
 
 
-// /**
-//  * The main loop to show loading effect.
-//  * @private
-//  */
-// ppz.helper.loadingLoop_ = function() {
-//   if (!ppz.helper.loading_) {
-//     return;
-//   }
-//   if (ppz.helper.frameCount_ % 5 == 0) {
-//     var msg = ppz.helper.LOADING_;
-//     msg = msg.substring(0, ppz.helper.loadingStep_ + 1);
-//     ppz.helper.msg_.innerText = msg;
-//     ppz.helper.loadingStep_++;
-//     ppz.helper.loadingStep_ %= ppz.helper.LOADING_.length;
-//   }
-//   ppz.helper.frameCount_++;
-//   ppz.util.requestAnimationFrame(ppz.helper.loadingLoop_);
-// };
+/**
+ * Shows ref info for a glyph after corresponding ref data is loaded.
+ * @param {string} glyph
+ * @private
+ */
+ppz.helper.showGlyphRefInternal_ = function(glyph) {
+  var rhymeIndex = ppz.helper.psyRhymes_.id_to_name;
+  var glyphIndex = ppz.helper.psyGlyphs_;
+  var rhymeId = glyphIndex[glyph][0];
+  var sb = [];
+  sb.push('<h3>' + glyph + '</h3>');
+  sb.push('<p>');
+  goog.array.forEach(glyphIndex[glyph], function(rhymeId) {
+    sb.push('<span class="common">');
+    sb.push('<a href="#r=' + rhymeId + '">');
+    sb.push(rhymeIndex[rhymeId]);
+    sb.push('</a></span> ');
+  });
+  sb.push('</p>');
+  var refs = ppz.helper.psyRefCache_[rhymeId][glyph];
+  if (!refs) {
+    sb.push('<p>N/A</p>');
+  } else {
+    sb.push('<p>');
+    goog.array.forEach(refs, function(ref) {
+      sb.push('<span class="common">' + ref + '</span>');
+    });
+    sb.push('</p>');
+  }
+  var result = sb.join('');
+  ppz.helper.result_.innerHTML = result;
+};
 
-// /**
-//  * Shows canvas or not.
-//  * @param {boolean} visible Shows canvas or not.
-//  * @private
-//  */
-// ppz.helper.showCanvas_ = function(visible) {
-//   goog.style.showElement(ppz.helper.canvas_, visible);
-//   goog.dom.removeChildren(ppz.helper.msg_);
-//   goog.style.showElement(ppz.helper.msg_, !visible);
-//   if (visible) {
-//     ppz.helper.query_.focus();
-//   }
-// };
-
-// /**
-//  * Reports error to users.
-//  * @param {string} msg The error message.
-//  * @private
-//  */
-// ppz.helper.error_ = function(msg) {
-//   ppz.helper.showCanvas_(false);
-//   ppz.helper.loading_ = false;
-//   ppz.helper.msg_.innerText = msg;
-// };
-
-// /**
-//  * Callback when JSON data arrives.
-//  * @private
-//  */
-// ppz.helper.onData_ = function() {
-//   ppz.helper.loading_ = false;
-//   var jsonText = null;
-//   if (ppz.helper.request_.isSuccess() &&
-//       (jsonText = ppz.helper.request_.getResponseText()) &&
-//       (ppz.helper.data_ = goog.json.parse(jsonText))) {
-//     ppz.util.setLocalStorageValue(ppz.helper.DATA_URL_, jsonText);
-//     ppz.helper.showCanvas_(true);
-//   } else {
-//     ppz.helper.error_('Failed to load the data.');
-//   }
-// };
-
-
-//   // var localData = ppz.util.getLocalStorageString(ppz.helper.DATA_URL_);
-//   // if (localData && (ppz.helper.data_ = goog.json.parse(localData))) {
-//   //   ppz.helper.showCanvas_(true);
-//   // } else {
-//   //   ppz.helper.showCanvas_(false);
-//   //   ppz.helper.request_ = new goog.net.XhrIo();
-//   //   goog.events.listen(ppz.helper.request_, 'complete',
-//          ppz.helper.onData_);
-//   //   ppz.helper.request_.send(ppz.helper.DATA_URL_);
-//   //   ppz.helper.frameCount_ = 0;
-//   //   ppz.helper.loading_ = true;
-//   //   ppz.helper.loadingLoop_();
-//   // }
-
-
-// /**
-//  * Searches on the input.
-//  * @param {string} q The query.
-//  */
-// ppz.helper.query = function(q) {
-//   var len = q.length;
-//   var charTable = ppz.helper.data_['POETRY_INDEX'];
-//   var rhymeMapping = ppz.helper.data_['RHYMES_NAME_MAPPING'];
-//   var validChars = new goog.structs.Set();
-//   var result = [];
-//   for (var i = 0; i < len; i++) {
-//     var c = q[i];
-//     if (charTable[c] && charTable[c][0] && !validChars.contains(c)) {
-//       validChars.add(c);
-//       var rhymes = charTable[c][0].split(',');
-//       var phrases = charTable[c][1];
-//       result.push('<h3>' + c + '</h3>');
-//       result.push('<p>韵部：');
-//       for (var j = 0; j < rhymes.length; j++) {
-//         var rhyme = rhymes[j];
-//         if (j > 0) {
-//           result.push('，');
-//         }
-//         ids = rhymeMapping[rhyme];
-//         result.push('<a href="#" onclick="ppz.helper.showRhyme(' + ids[0] +
-//             ',' + ids[1] + ');return false;">');
-//         result.push(rhyme);
-//         result.push('</a>');
-//       }
-//       result.push('</p>');
-//       if (phrases) {
-//         result.push('<p>' + phrases.replace(/,/g, ', ') + '</p>');
-//       }
-//     }
-//   }
-//   if (!validChars.isEmpty()) {
-//     ppz.helper.result_.innerHTML = result.join('');
-//   }
-// };
-
-// /**
-//  * Lists all rhymes.
-//  */
-// ppz.helper.showAllRhymes = function() {
-//   var rhymeList = ppz.helper.data_['RHYMES_LIST'];
-//   var rhymeMapping = ppz.helper.data_['RHYMES_NAME_MAPPING'];
-//   var result = [];
-//   var len = rhymeList.length;
-//   for (var i = 0; i < len; i++) {
-//     ids = rhymeMapping[rhymeList[i]];
-//     result.push(ppz.helper.getRhymeHtml_(ids[0], ids[1]));
-//   }
-//   ppz.helper.result_.innerHTML = result.join('');
-// };
-
-// /**
-//  * Shows a specified rhyme.
-//  * @param {number} category Category id.
-//  * @param {number} rhyme Rhyme id.
-//  */
-// ppz.helper.showRhyme = function(category, rhyme) {
-//   ppz.helper.result_.innerHTML = ppz.helper.getRhymeHtml_(category, rhyme);
-// };
-
-// /**
-//  * Gets HTML content for a specified rhyme.
-//  * @param {number} category Category id.
-//  * @param {number} rhyme Rhyme id.
-//  * @return {string} The HTML string.
-//  * @private
-//  */
-// ppz.helper.getRhymeHtml_ = function(category, rhyme) {
-//   var rhymeIdMapping = ppz.helper.data_['RHYMES_ID_MAPPING'];
-//   var rhymeTable = ppz.helper.data_['RHYMES_TABLE'];
-//   var key = category + '_' + rhyme;
-//   var rhyme = rhymeIdMapping[key];
-//   var content = rhymeTable[rhyme];
-//   content = content.replace(/#(.)=/g,
-//       '<a href="#" onclick="ppz.helper.query(\'$1\');return false;">$1</a>');
-//   content = content.replace(/,/g, ', ');
-//   return '<h3>' + rhyme + '</h3><p>' + content + '</p>';
-// };
 
 goog.exportSymbol('ppz.helper.init', ppz.helper.init);
-goog.exportSymbol('ppz.helper.query', ppz.helper.query);
-goog.exportSymbol('ppz.helper.showRhyme', ppz.helper.showRhyme);
-goog.exportSymbol('ppz.helper.showAllRhymes', ppz.helper.showAllRhymes);
 goog.exportSymbol('ppz.helper.onSubmit', ppz.helper.onSubmit);

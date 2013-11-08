@@ -7,17 +7,13 @@
 <style>
 body{
 margin:2em;
-font-size:95%;
+font-size:16px;
 font-family:verdana,helvetica,arial,sans-serif;
 color:#333;
 }
-#footer{
-font-size:small;
-margin-top:2em;
-}
-h3{
-margin-top:2em;
-}
+#header{margin-bottom:2em;}
+#footer{margin-top:2em;}
+h3{font-size:20px;}
 #result{width:100%;}
 a:link{color:#333;}
 a:visited{color:#333;}
@@ -43,12 +39,14 @@ goog.require('ppz.helper');
 <body onload="ppz.helper.init();">
 
 <div id=canvas>
+<header>
 <form onsubmit="ppz.helper.onSubmit();return false;">
-<p>輸入漢字，數量不限，簡繁均可：<input type=text id=q name=q size=10 value=""><input type=submit></p>
+<p>輸入漢字：<input type=text id=q name=q size=20 value=""
+placeholder="字數不限，簡繁均可">
+<input type=submit></p>
 </form>
-<p>&nbsp;</p>
+</header>
 <div id=result></div>
-<p>&nbsp;</p>
 <div id=footer>
 <p><a href="#r=all">平水韻總表</a></p>
 <p><a href="index.html">回到首頁</a></p>
