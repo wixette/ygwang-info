@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="zh-CN" id="zh-CN">
+<html lang="zh">
 <head>
 <meta charset="utf-8">
-<title>平水韵速查</title>
+<title>平水韻速查</title>
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 <style>
 body{
@@ -36,17 +36,16 @@ goog.require('ppz.helper');
 </head>
 <body onload="ppz.helper.init();">
 
-<div id=msg></div>
 <div id=canvas>
 <form onsubmit="ppz.helper.onSubmit();return false;">
-<p>输入要查询的一个或多个汉字：<input type=text id=q name=q size=10 value=""><input type=submit></p>
+<p>輸入任意數量漢字，簡繁均可：<input type=text id=q name=q size=10 value=""><input type=submit></p>
 </form>
 <p>&nbsp;</p>
 <div id=result></div>
 <p>&nbsp;</p>
 <div id=footer>
-<p><a href="#" onclick="ppz.helper.showAllRhymes();return false;">平水韵总表</a></p>
-<p><a href="index.html">平平仄/王咏刚的个人主页</a></p>
+<p><a href="#r=all">平水韻總表</a></p>
+<p><a href="index.html">回到首頁</a></p>
 </div>
 </div> <!-- canvas -->
 
