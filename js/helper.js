@@ -11,7 +11,9 @@ goog.require('goog.dom');
 goog.require('goog.events');
 goog.require('goog.history.EventType');
 goog.require('goog.json');
+goog.require('goog.labs.net.xhr');
 goog.require('goog.net.XhrIo');
+goog.require('goog.result');
 goog.require('goog.structs.Set');
 goog.require('goog.style');
 goog.require('ppz.util');
@@ -32,13 +34,6 @@ ppz.helper.query_ = null;
 
 
 /**
- * AJAX request to fetch back JSON data.
- * @private {goog.net.XhrIo}
- */
-ppz.helper.request_ = null;
-
-
-/**
  * The history instance.
  * @private {goog.History}
  */
@@ -54,10 +49,63 @@ ppz.helper.urlParameters_ = {};
 
 /**
  * The valid URL parameter names.
- * @private
+ * @private {Array.<string>}
  * @const
  */
 ppz.helper.URL_PARAMETER_NAMES_ = ['q', 'r', 'g'];
+
+
+/**
+ * The JSON path of the rhyme index.
+ * @private {string}
+ * @const
+ */
+ppz.helper.JSON_RHYMES_ = 'psy_index_json/rhymes.json';
+
+
+/**
+ * The JSON path of the glyph index.
+ * @private {string}
+ * @const
+ */
+ppz.helper.JSON_GLYPHS_ = 'psy_index_json/glyphs.json';
+
+
+/**
+ * The JSON path prefix of the glyph to ref index (per rhyme).
+ * @private {string}
+ * @const
+ */
+ppz.helper.JSON_REF_PREFIX_ = 'psy_index_json/ref_';
+
+
+/**
+ * The JSON path suffix of the glyph to ref index (per rhyme).
+ * @private {string}
+ * @const
+ */
+ppz.helper.JSON_REF_SUFFIX_ = '.json';
+
+
+/**
+ * The loaded rhymes object.
+ * @private {Object}
+ */
+ppz.helper.psyRhymes_ = null;
+
+
+/**
+ * The loaded glyphs object.
+ * @private {Object}
+ */
+ppz.helper.psyGlyphs_ = null;
+
+
+/**
+ * The loaded ref objects (per rhyme).
+ * @private {Object}
+ */
+ppz.helper.psyRefs_ = {};
 
 
 /**
@@ -66,13 +114,24 @@ ppz.helper.URL_PARAMETER_NAMES_ = ['q', 'r', 'g'];
 ppz.helper.init = function() {
   ppz.helper.result_ = document.getElementById('result');
   ppz.helper.query_ = document.getElementById('q');
-  ppz.helper.query_.focus();
 
-  goog.events.listen(ppz.helper.history_, goog.history.EventType.NAVIGATE,
-                     ppz.helper.navCallback_);
-  // Do this at the end of init(), otherwise, navCallback will be called before
-  // the rest code linese are executed.
-  ppz.helper.history_.setEnabled(true);
+  // Loads rhymes.json and glyphs.json.
+  ppz.helper.query_.disabled = true;
+  var resultRhymes = goog.labs.net.xhr.getJson(ppz.helper.JSON_RHYMES_);
+  var resultGlyphs = goog.labs.net.xhr.getJson(ppz.helper.JSON_GLYPHS_);
+  var combinedResult = goog.result.combine(resultRhymes, resultGlyphs);
+  goog.result.waitOnSuccess(combinedResult, function() {
+    ppz.helper.psyRhymes_ = resultRhymes.getValue();
+    ppz.helper.psyGlyphs_ = resultGlyphs.getValue();
+    ppz.helper.query_.disabled = false;
+    ppz.helper.query_.focus();
+    // Listens to history events and enables the history instance.
+    goog.events.listen(ppz.helper.history_, goog.history.EventType.NAVIGATE,
+                       ppz.helper.navCallback_);
+    // Do this at the end of init, otherwise, navCallback will be called before
+    // the rest code linese are executed.
+    ppz.helper.history_.setEnabled(true);
+ });
 };
 
 
@@ -151,17 +210,25 @@ ppz.helper.updateUrlParameters_ = function(query, rhymeId, glyph) {
  * @private
  */
 ppz.helper.doQuery_ = function(query) {
-  ppz.helper.result_.innerHTML = 'query on ' + query;
-};
-
-
-/**
- * Does query and shows results.
- * @param {string} query
- * @private
- */
-ppz.helper.doQuery_ = function(query) {
-  ppz.helper.result_.innerHTML = 'query on ' + query;
+  var len = query.length;
+  var rhymeIndex = ppz.helper.psyRhymes_.id_to_name;
+  var glyphIndex = ppz.helper.psyGlyphs_;
+  var sb = [];
+  for (var i = 0; i < len; i++) {
+    var c = query[i];
+    if (glyphIndex[c] && glyphIndex[c][0]) {
+      sb.push('<h3>' + c + '</h3>');
+      sb.push('<p>');
+      goog.array.forEach(glyphIndex[c], function(rhymeId) {
+        sb.push('<a href="#r=' + rhymeId + '">');
+        sb.push(rhymeIndex[rhymeId]);
+        sb.push('</a>&nbsp;&nbsp;');
+      });
+      sb.push('</p>');
+    }
+  }
+  var result = sb.join('');
+  ppz.helper.result_.innerHTML = result;
 };
 
 
