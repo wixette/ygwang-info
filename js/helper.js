@@ -237,7 +237,9 @@ ppz.helper.doQuery_ = function(query) {
         sb.push(rhymeIndex[rhymeId]);
         sb.push('</a></span> ');
       });
-      sb.push('</p>');
+      sb.push('<span class="arrow">');
+      sb.push('<a href="#g=' + c + '">&gt;&gt;&gt;');
+      sb.push('</a></span></p>');
     }
   }
   var result = sb.join('');

@@ -5,12 +5,7 @@
 <title>平水韻速查</title>
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 <style>
-body{
-margin:2em;
-font-size:16px;
-font-family:verdana,helvetica,arial,sans-serif;
-color:#333;
-}
+body{margin:2em;font-size:16px;font-family:verdana,helvetica,arial,sans-serif;color:#333;}
 #header{margin-bottom:2em;}
 #footer{margin-top:2em;}
 h3{font-size:20px;}
@@ -25,6 +20,11 @@ a:active{color:#333;}
 .uncommon a:visited{color:#999;}
 .uncommon a:hover{color:#C00;}
 .uncommon a:active{color:#999;}
+.arrow{font-size:12px;color:#999;}
+.arrow a:link{color:#999;text-decoration:none;}
+.arrow a:visited{color:#999;text-decoration:none;}
+.arrow a:hover{color:#C00;text-decoration:none;}
+.arrow a:active{color:#999;text-decoration:none;}
 </style>
 {% if compile %}
 <script src="ppz_compiled.js"></script>
@@ -39,13 +39,13 @@ goog.require('ppz.helper');
 <body onload="ppz.helper.init();">
 
 <div id=canvas>
-<header>
+<div id=header>
 <form onsubmit="ppz.helper.onSubmit();return false;">
 <p>輸入漢字：<input type=text id=q name=q size=20 value=""
 placeholder="字數不限，簡繁均可">
 <input type=submit></p>
 </form>
-</header>
+</div>
 <div id=result></div>
 <div id=footer>
 <p><a href="#r=all">平水韻總表</a></p>
