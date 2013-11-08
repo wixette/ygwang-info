@@ -8,6 +8,10 @@ To update the site contents, edit the files under the following dirs:
 ./poems
 ./photos
 
+PSY index files are copied from the corpus project's psy_index_json dir to:
+
+./psy_index_json
+
 To deploy the site for debugging:
 
 ./deploy.py ~/www/ppz
