@@ -162,8 +162,6 @@ ppz.helper.navCallback_ = function() {
   }
 
   if (query || rhymeId || glyph) {
-    window.scroll(0, 0);
-    ppz.helper.query_.focus();
   }
 };
 
@@ -223,7 +221,7 @@ ppz.helper.updateUrlParameters_ = function(query, rhymeId, glyph) {
  */
 ppz.helper.doQuery_ = function(query) {
   var len = query.length;
-  var rhymeIndex = ppz.helper.psyRhymes_.id_to_name;
+  var rhymeIndex = ppz.helper.psyRhymes_['id_to_name'];
   var glyphIndex = ppz.helper.psyGlyphs_;
   var sb = [];
   for (var i = 0; i < len; i++) {
@@ -244,6 +242,8 @@ ppz.helper.doQuery_ = function(query) {
   }
   var result = sb.join('');
   ppz.helper.result_.innerHTML = result;
+  window.scroll(0, 0);
+  ppz.helper.query_.focus();
 };
 
 
@@ -253,9 +253,9 @@ ppz.helper.doQuery_ = function(query) {
  * @private
  */
 ppz.helper.showRhyme_ = function(rhymeId) {
-  var rhymeList = ppz.helper.psyRhymes_.id_list;
-  var rhymeIndex = ppz.helper.psyRhymes_.id_to_name;
-  var rhymeGlyphs = ppz.helper.psyRhymes_.id_to_glyphs;
+  var rhymeList = ppz.helper.psyRhymes_['id_list'];
+  var rhymeIndex = ppz.helper.psyRhymes_['id_to_name'];
+  var rhymeGlyphs = ppz.helper.psyRhymes_['id_to_glyphs'];
 
   var sb = [];
   var showAllRhymes = true;
@@ -289,6 +289,8 @@ ppz.helper.showRhyme_ = function(rhymeId) {
       ppz.helper.psyRhymeListCache_ = result;
     }
   }
+  window.scroll(0, 0);
+  ppz.helper.query_.focus();
 };
 
 
@@ -325,7 +327,7 @@ ppz.helper.showGlyphRef_ = function(glyph) {
  * @private
  */
 ppz.helper.showGlyphRefInternal_ = function(glyph) {
-  var rhymeIndex = ppz.helper.psyRhymes_.id_to_name;
+  var rhymeIndex = ppz.helper.psyRhymes_['id_to_name'];
   var glyphIndex = ppz.helper.psyGlyphs_;
   var rhymeId = glyphIndex[glyph][0];
   var sb = [];
@@ -350,6 +352,8 @@ ppz.helper.showGlyphRefInternal_ = function(glyph) {
   }
   var result = sb.join('');
   ppz.helper.result_.innerHTML = result;
+  window.scroll(0, 0);
+  ppz.helper.query_.focus();
 };
 
 
