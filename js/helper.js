@@ -136,7 +136,9 @@ ppz.helper.updateUrlParameters_ = function(query, rhymeId, glyph) {
   ppz.helper.urlParameters_['g'] = glyph;
   var uri = new goog.Uri();
   goog.array.forEach(ppz.helper.URL_PARAMETER_NAMES_, function(name) {
-    uri.setParameterValue(name, ppz.helper.urlParameters_[name]);
+    if (ppz.helper.urlParameters_[name]) {
+      uri.setParameterValue(name, ppz.helper.urlParameters_[name]);
+    }
   });
   var token = uri.getQuery();
   ppz.helper.history_.setToken(token);
