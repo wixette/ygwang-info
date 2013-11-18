@@ -15,7 +15,7 @@ goog.require('ppz.util');
  * @const
  * @private
  */
-ppz.photos.NUM_ = 38;
+ppz.photos.NUM_ = 42;
 
 /**
  * The loading text.

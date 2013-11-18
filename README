@@ -8,6 +8,8 @@ To update the site contents, edit the files under the following dirs:
 ./poems
 ./photos
 
+Edit the # in js/photo.js
+
 PSY index files are copied from the corpus project's psy_index_json dir to:
 
 ./psy_index_json
