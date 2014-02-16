@@ -5,6 +5,7 @@
 goog.provide('ppz.helper');
 
 goog.require('goog.History');
+goog.require('goog.Promise');
 goog.require('goog.Uri');
 goog.require('goog.array');
 goog.require('goog.dom');
@@ -13,7 +14,6 @@ goog.require('goog.history.EventType');
 goog.require('goog.json');
 goog.require('goog.labs.net.xhr');
 goog.require('goog.net.XhrIo');
-goog.require('goog.result');
 goog.require('goog.structs.Set');
 goog.require('goog.style');
 goog.require('ppz.util');
@@ -124,20 +124,21 @@ ppz.helper.init = function() {
 
   // Loads rhymes.json and glyphs.json.
   ppz.helper.query_.disabled = true;
-  var resultRhymes = goog.labs.net.xhr.getJson(ppz.helper.JSON_RHYMES_);
-  var resultGlyphs = goog.labs.net.xhr.getJson(ppz.helper.JSON_GLYPHS_);
-  var combinedResult = goog.result.combine(resultRhymes, resultGlyphs);
-  goog.result.waitOnSuccess(combinedResult, function() {
-    ppz.helper.psyRhymes_ = resultRhymes.getValue();
-    ppz.helper.psyGlyphs_ = resultGlyphs.getValue();
-    ppz.helper.query_.disabled = false;
-    ppz.helper.query_.focus();
-    // Listens to history events and enables the history instance.
-    goog.events.listen(ppz.helper.history_, goog.history.EventType.NAVIGATE,
-                       ppz.helper.navCallback_);
-    // Do this at the end of init, otherwise, navCallback will be called before
-    // the rest code linese are executed.
-    ppz.helper.history_.setEnabled(true);
+  var promiseRhymes = goog.labs.net.xhr.getJson(ppz.helper.JSON_RHYMES_);
+  var promiseGlyphs = goog.labs.net.xhr.getJson(ppz.helper.JSON_GLYPHS_);
+  var allPromises = goog.Promise.all([promiseRhymes, promiseGlyphs])
+      .then(function(results) {
+        ppz.helper.psyRhymes_ = results[0];
+        ppz.helper.psyGlyphs_ = results[1];
+        ppz.helper.query_.disabled = false;
+        ppz.helper.query_.focus();
+        // Listens to history events and enables the history instance.
+        goog.events.listen(ppz.helper.history_,
+                           goog.history.EventType.NAVIGATE,
+                           ppz.helper.navCallback_);
+        // Do this at the end of init, otherwise, navCallback will be called
+        // before the rest code linese are executed.
+        ppz.helper.history_.setEnabled(true);
  });
 };
 
@@ -307,9 +308,8 @@ ppz.helper.showGlyphRef_ = function(glyph) {
   if (!ppz.helper.psyRefCache_[rhymeId]) {
     var uri = ppz.helper.JSON_REF_PREFIX_ + rhymeId +
         ppz.helper.JSON_REF_SUFFIX_;
-    var resultRefs = goog.labs.net.xhr.getJson(uri);
-    goog.result.waitOnSuccess(resultRefs, function() {
-      ppz.helper.psyRefCache_[rhymeId] = resultRefs.getValue();
+    goog.labs.net.xhr.getJson(uri).then(function(result) {
+      ppz.helper.psyRefCache_[rhymeId] = result;
       ppz.helper.showGlyphRefInternal_(glyph);
     });
   } else {
