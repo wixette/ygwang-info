@@ -160,9 +160,6 @@ ppz.helper.navCallback_ = function() {
   } else if (glyph) {
     ppz.helper.showGlyphRef_(glyph);
   }
-
-  if (query || rhymeId || glyph) {
-  }
 };
 
 
