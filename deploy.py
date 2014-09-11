@@ -35,17 +35,16 @@ _IMAGE_DIR = 'images'
 _PSY_DIR = 'psy_index_json'
 _STATIC_DIR = 'static'
 _PUBS_DIR = 'pubs'
-_COMPILE_COMMAND = 'python %s/bin/build/closurebuilder.py \
---root=%s \
---root=%s \
---root=%s \
---namespace="ppz.lucky" \
---namespace="ppz.photos" \
---namespace="ppz.helper" \
---output_mode=compiled \
---compiler_jar=%s \
---compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" \
---output_file=%s/ppz_compiled.js'
+_COMPILE_COMMAND = ('java -jar %s '
+                    '--manage_closure_dependencies '
+                    '--only_closure_dependencies '
+                    '--closure_entry_point=ppz.lucky '
+                    '--closure_entry_point=ppz.photos '
+                    '--closure_entry_point=ppz.helper '
+                    '--compilation_level=ADVANCED_OPTIMIZATIONS '
+                    '--js=%s/**.js '
+                    '--js=%s/**.js '
+                    '> %s/ppz_compiled.js')
 
 # Django templates for separate pages. A list of [template_file_name,
 # target_dir_name, target_file_name, sub_title]. template_file_name must not be
@@ -264,11 +263,9 @@ class SiteDeployer(object):
         print '  Delete uncompiled JS code path %s' % path
         shutil.rmtree(path)
     # Compiles the code
-    cmd = _COMPILE_COMMAND % (self._closure_dir,
+    cmd = _COMPILE_COMMAND % (self._compiler_path,
                               self._closure_dir,
-                              self._closure_third_party_dir,
                               os.path.join(self._src_dir, _JS_DIR),
-                              self._compiler_path,
                               self._target_dir)
     print '  %s' % cmd
     if os.system(cmd):
