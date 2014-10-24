@@ -6,6 +6,7 @@
 """
 
 
+import django
 from django.conf import settings
 from django.template.loader import render_to_string
 import codecs
@@ -118,6 +119,7 @@ class SiteDeployer(object):
     settings.configure(DEBUG=True, TEMPLATE_DEBUG=True,
                        TEMPLATE_DIRS=[os.path.join(self._src_dir,
                                                    _TEMPLATE_DIR)])
+    django.setup()
 
   def check_prerequisites(self):
     """Checks if required dirs, files, etc. exist.
