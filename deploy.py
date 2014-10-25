@@ -200,6 +200,7 @@ class SiteDeployer(object):
     """Renders individual poem pages.
     """
     for index, p in enumerate(self._context['poems']):
+      self._context['template_name'] = _POEM_TEMPLATE
       self._context['sub_title'] = p['title']
       self._context['poem_title'] = p['title']
       date = '.'.join(p['date'].split('-')[0:2])

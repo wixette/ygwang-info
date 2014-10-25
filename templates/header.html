@@ -12,7 +12,6 @@
 <script src="closure/base.js"></script>
 <script src="js/deps.js"></script>
 <script>
-goog.require('ppz.lucky');
 goog.require('ppz.photos');
 </script>
 {% endif %}
@@ -23,17 +22,28 @@ goog.require('ppz.photos');
 <body>
 {% endif %}
 <div id=root>
-<div id=box1></div>
-<div id=box2></div>
-<div id=box3></div>
-<div id=box4></div>
-<div id=logo>
-  <img src="images/logo.png" alt=""></img>
-</div>
 <div id=nav>
-  <div id=nav0><a href="index.html">关于</a></div>
-  <div id=nav1><a href="poems.html">诗歌</a></div>
-  <div id=nav2><a href="photos.html">照片</a></div>
-  <div id=nav3><a href="pubs.html">著述</a></div>
-  <div id=nav4><a href="" onclick="ppz.lucky.start();return false;">发呆……</a></div>
+<p>
+<span class="nav-item"><img src="images/logo.png" alt=""></img></span>
+{% if template_name == "index.html" %}
+<span class="nav-item-selected">关于</span>
+{% else %}
+<span class="nav-item"><a href="index.html">关于</a></span>
+{% endif %}
+{% if template_name == "poems.html" or template_name == "poem.html" %}
+<span class="nav-item-selected">诗歌</span>
+{% else %}
+<span class="nav-item"><a href="poems.html">诗歌</a></span>
+{% endif %}
+{% if template_name == "photos.html" %}
+<span class="nav-item-selected">照片</span>
+{% else %}
+<span class="nav-item"><a href="photos.html">照片</a></span>
+{% endif %}
+{% if template_name == "pubs.html" %}
+<span class="nav-item-selected">著述</span>
+{% else %}
+<span class="nav-item"><a href="pubs.html">著述</a></span>
+{% endif %}
+</p>
 </div>
