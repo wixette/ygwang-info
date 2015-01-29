@@ -18,7 +18,7 @@ line-height:5em;
 h2{
 font-size:24px;
 line-height:2em;
-border-bottom:#ddd solid 1px;
+border-bottom:#eee solid 1px;
 padding-top:2em;
 margin-bottom:1em;
 }
@@ -39,7 +39,7 @@ a:hover{color:#C00;}
 a:active{color:#666;}
 
 #nav{
-border-bottom:#ddd solid 1px;
+border-bottom:#eee solid 1px;
 height:100px;
 margin:0 auto 0 auto;
 text-align:center;
@@ -71,14 +71,14 @@ margin:0 30px 0 30px;
 #nav a:active {text-decoration:none;}
 
 #page{
-border-left:#ddd 35px solid;
+border-left:#eee 35px solid;
 padding:0 50px 125px 50px;
 margin:0 auto 0 auto;
 width:700px;
 }
 
 #poem-page{
-border-left:#ddd 35px solid;
+border-left:#eee 35px solid;
 padding:0 150px 125px 150px;
 margin:0 auto 0 auto;
 width:500px;
@@ -159,7 +159,7 @@ line-height:2em;
 }
 
 #footer{
-border-top:#ddd solid 1px;
+border-top:#eee solid 1px;
 font-size:80%;
 margin:0 auto 250px auto;
 text-align:center;
