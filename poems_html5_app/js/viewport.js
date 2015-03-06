@@ -1,5 +1,6 @@
 /**
- * @fileoverview The class to manipulate the main viewport of the app.
+ * @fileoverview The class to manipulate the main viewport of the app. All
+ *     interactive events are handled by this class as well.
  */
 
 goog.provide('poems.Viewport');
