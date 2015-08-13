@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN" id="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <style>
+     body{
+     }
+     #poem{
+       font-family:"Lucida Console","Courier New","Microsoft Yahei","微软雅黑",STXihei,"华文细黑",SimHei,monospace;
+       font-size:16px;
+       margin:50px;
+       padding:0px;
+       background-color:#eee;
+       box-shadow:3px 3px 3px #999;
+     }
+     #poem p{
+       margin:0;
+       padding:0;
+       line-height:30px;
+       letter-spacing: 6px;
+     }
+    </style>
+    <script src="jquery-1.11.3.min.js"></script>
+    <script src="poem_formatter.js"></script>
+    <script>
+     var init = function() {
+       var width = $('#input-width').val();
+       $('#poem').width(width);
+     };
+
+     var onWidthChange = function() {
+       var width = $('#input-width').val();
+       window.console.log('width: ' + width);
+       $('#poem').width(width);
+     };
+
+     var onTextChange = function() {
+       var text = $('#input-text').val();
+       window.console.log('text: ' + text);
+
+       var html = poemFormatter.format(text,
+                                       $('#poem').width(),
+                                       16,
+                                       30,
+                                       6);
+       $('#poem').html(html);
+     };
+    </script>
+  </head>
+  <body onload="init();">
+    <div id="input">
+      <form onsubmit="onTextChange(); return false;">
+        <p>Width in pixel:
+          <input id="input-width" type="number"
+              value="480" min="300" max="2048" size="10"
+              onchange="onWidthChange();">
+        </p>
+        <p>Input the plain-text content:</p>
+        <p>
+          <textarea id="input-text" cols="80" rows="20" autofocus
+              onchange="onTextChange();"></textarea>
+        </p>
+        <p>
+          <input type="submit" value="Update">
+        </p>
+      </form>
+    </div>
+    <div id="poem"></div>
+  </body>
+</html>
