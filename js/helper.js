@@ -16,7 +16,6 @@ goog.require('goog.labs.net.xhr');
 goog.require('goog.net.XhrIo');
 goog.require('goog.structs.Set');
 goog.require('goog.style');
-goog.require('ppz.util');
 
 
 /**
