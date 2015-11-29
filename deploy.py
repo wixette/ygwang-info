@@ -30,8 +30,6 @@ _JS_DIR = 'js'
 _POEM_DIR = 'poems'
 _POEM_TEMPLATE = 'poem.html'
 _POEMS_LINK_TEMPLATE = 'poem_%04d.html'
-_PHOTO_DIR = 'photos'
-_LUCKY_DIR = 'pacman'
 _IMAGE_DIR = 'images'
 _PSY_DIR = 'psy_index_json'
 _STATIC_DIR = 'static'
@@ -39,8 +37,6 @@ _PUBS_DIR = 'pubs'
 _COMPILE_COMMAND = ('java -jar %s '
                     '--manage_closure_dependencies '
                     '--only_closure_dependencies '
-                    '--closure_entry_point=ppz.lucky '
-                    '--closure_entry_point=ppz.photos '
                     '--closure_entry_point=ppz.helper '
                     '--compilation_level=ADVANCED_OPTIMIZATIONS '
                     '--js=%s/**.js '
@@ -55,7 +51,6 @@ _COMPILE_COMMAND = ('java -jar %s '
 _PAGE_TEMPLATES = [
     [ 'index.html', None, None, None],
     [ 'poems.html', None, None, '咏刚的诗'],
-    [ 'photos.html', None, None, '咏刚的照片' ],
     [ 'pubs.html', None, None, '著译文字' ],
     [ 'helper.html', None, None, None ],
     [ 'main.css', None, None, None ],
@@ -69,17 +64,16 @@ _PAGE_TEMPLATES = [
 # file_name is not provided, all files under src_dir_name will be copied.
 _STATIC_CONTENTS = [
     [_IMAGE_DIR, _IMAGE_DIR, None],
-    [_PHOTO_DIR, _PHOTO_DIR, None],
-    [_LUCKY_DIR, _LUCKY_DIR, None],
     [_PSY_DIR, _PSY_DIR, None],
     [_STATIC_DIR, None, 'robots.txt'],
+    [_STATIC_DIR, None, 'bootstrap.custom.css'],
+    [_STATIC_DIR, None, 'bootstrap.min.css'],
+    [_STATIC_DIR, None, 'bootstrap.min.js'],
+    [_STATIC_DIR, None, 'jquery.min.js'],
     ]
 
 # JS source code.
 _JS_CODE = [
-    'lucky.js',
-    'photos.js',
-    'util.js',
     'helper.js'
     ]
 
