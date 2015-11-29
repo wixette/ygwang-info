@@ -1,0 +1,45 @@
+body {
+    padding-top: 80px;
+}
+p {
+    font-size: 16px;
+}
+h1 {
+    font-size: 36px;
+}
+h2 {
+    font-size: 32px;
+}
+h3 {
+    font-size: 28px;
+}
+#navbar-brand-image {
+    padding: 8px;
+}
+.navbar-collapse a {
+    font-size: 18px;
+}
+.poem-summary>div>p {
+    line-height: 1.5em;
+    margin: 0 0 0.5em 0;
+    padding: 0 0 0 2em;
+    text-indent: -2em;
+}
+.poem {
+    margin: 40px 0 40px 0;
+}
+.poem .panel-body {
+    padding: 3em;
+}
+.poem>div>p {
+    line-height: 1.5em;
+    margin: 0 0 0.5em 0;
+    padding: 0 0 0 2em;
+    text-indent: -2em;
+}
+.footer{
+    margin-top:40px;
+}
+.footer p{
+    font-size: 14px;
+}
