@@ -10,7 +10,8 @@
           <p>王咏刚&nbsp;{{ poem_date }}</p>
         </div>
         <div class="panel-body">
-          <p>{{ poem_content|escape }}</p>
+{% if poem_notes %}<p class="poem-notes">{{ poem_notes }}</p>{% endif %}
+{% autoescape off %}{{ poem_html_content }}{% endautoescape %}
         </div>
         <div class="panel-footer"><a href="poems.html">更多咏刚的诗</a></div>
       </div>

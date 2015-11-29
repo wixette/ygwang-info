@@ -16,7 +16,7 @@
     <summary type="html">
 <![CDATA[
 <pre>
-{{ poem.poem|escape }}
+{{ poem.poem_raw_content|escape }}
 </pre>
 ]]>
     </summary>

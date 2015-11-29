@@ -77,6 +77,18 @@ _JS_CODE = [
     'helper.js'
     ]
 
+_FULL_WIDTH_SPACE = u'\u3000'
+_NBSP = u'\u00A0'
+
+def _NormalizeSpaces(line):
+  """Normalizes spaces in a plain-text line..
+     1) Replaces ASCII space pair '\u0020\u0020' with CJK space '\u3000'.
+     2) Replaces single ASCII space '\u0020' with one NBSP '\u00A0'.
+  """
+  if not line:
+    return _NBSP
+  return line.replace(u'  ', _FULL_WIDTH_SPACE).replace(u' ', _NBSP)
+
 
 class SiteDeployer(object):
   """Util class to compile and deploy the site.
@@ -106,7 +118,9 @@ class SiteDeployer(object):
         'poems': [],
         'poem_title': '',
         'poem_date': '',
-        'poem_content': ''
+        'poem_notes': '',
+        'poem_content': '',
+        'poem_html_content': ''
         }
 
     # Inits Django environment settings.
@@ -151,6 +165,26 @@ class SiteDeployer(object):
         print '  %s to %s' % (from_file, to_file)
         shutil.copy2(from_file, to_file)
 
+  def generate_html_poem_summary(self, poem_lines):
+    """Generates a short summary for the poem, in HTML format."""
+    _SUFFIX = '&nbsp;......'
+    _THRESHOLD = 14
+    _MAX_LINES = 2
+    summary_lines = []
+    for line in poem_lines:
+      if len(summary_lines) >= _MAX_LINES:
+        break
+      line = line.strip()
+      if line:
+        line = _NormalizeSpaces(line)
+        if len(line) >= _THRESHOLD:
+          summary_lines.append(line[:_THRESHOLD] + _SUFFIX)
+        elif len(summary_lines) < _MAX_LINES - 1:
+          summary_lines.append(line)
+        else:
+          summary_lines.append(line + _SUFFIX)
+    return ''.join(['<p>' + x + '</p>\n' for x in summary_lines])
+
   def prepare_poems(self):
     """Generates poems and stores them into the template context.
     """
@@ -160,11 +194,21 @@ class SiteDeployer(object):
       lines = codecs.open(os.path.join(poem_dir, f), 'r', 'utf_8').readlines()
       title = lines[0].strip()
       date = lines[1].strip()
-      poem = u''.join(lines[2:])
+      poem_raw_content = ''.join(lines[2:])
+      if lines[2].startswith('['):
+        notes = lines[2].strip()[1:-1]
+        poem = lines[3:]
+      else:
+        notes = ''
+        poem = lines[2:]
+      html_summary = self.generate_html_poem_summary(poem)
       self._context['poems'].append( {
           'title': title,
           'date': date,
+          'notes': notes,
           'poem': poem,
+          'poem_raw_content': poem_raw_content,
+          'html_summary': html_summary,
           'link': ''
           })
     self._context['poems'].sort(lambda x, y: cmp(x['date'], y['date']))
@@ -199,7 +243,11 @@ class SiteDeployer(object):
       self._context['poem_title'] = p['title']
       date = '.'.join(p['date'].split('-')[0:2])
       self._context['poem_date'] = date
-      self._context['poem_content'] = p['poem']
+      self._context['poem_notes'] = p['notes']
+      self._context['poem_content'] = ''.join(p['poem'])
+      self._context['poem_html_content'] = ''.join([
+          '<p>' + _NormalizeSpaces(x.strip()) + '</p>\n' for
+          x in p['poem']])
       to_file = os.path.join(self._target_dir,
                              _POEMS_LINK_TEMPLATE % index)
       print '  %s' % to_file

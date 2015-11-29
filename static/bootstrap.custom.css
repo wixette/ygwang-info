@@ -2,10 +2,10 @@ body {
     padding-top: 80px;
 }
 p {
-    font-size: 16px;
+    font-size: 14px;
 }
 li {
-    font-size: 16px;
+    font-size: 14px;
 }
 h1 {
     font-size: 36px;
@@ -15,6 +15,9 @@ h2 {
 }
 h3 {
     font-size: 24px;
+}
+h3.panel-title {
+    font-size: 16px;
 }
 #navbar-brand-image {
     padding: 11px;
@@ -40,9 +43,14 @@ h3 {
     padding: 0 0 0 2em;
     text-indent: -2em;
 }
+.poem>div>p.poem-notes {
+    font-size: 12px;
+    padding: 0;
+    text-indent: 0;
+}
 .footer{
     margin-top:40px;
 }
 .footer p{
-    font-size: 14px;
+    font-size: 12px;
 }
