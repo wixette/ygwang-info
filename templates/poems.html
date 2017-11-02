@@ -2,25 +2,21 @@
 
 <div class="container">
 
-  <div class="page-header">
-    <h1>咏刚的诗</h1>
-  </div>
+  <h3>咏刚的诗</h3>
 
-  <div class="row">
+  <div class="row justify-content-around">
 
     {% for poem in poems reversed %}
     
-    <td><a href=""></a></td>
-
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-      <div class="panel panel-default poem-summary">
-        <div class="panel-heading">
-          <h3 class="panel-title"><a href="{{ poem.link }}">{{ poem.title|escape }}</a></h3>
-        </div>
-        <div class="panel-body">
+    <div class="col-6 col-md-4">
+      <div class="card my-3">
+        <div class="card-body"><h4 class="card-title"><a href="{{ poem.link }}">{{ poem.title|escape }}</a></h4></div>
+        <div class="card-body">
           {% autoescape off %}{{ poem.html_summary }}{% endautoescape %}
         </div>
-        <div class="panel-footer"><a href="{{ poem.link }}">阅读全文</a></div>
+        <div class="card-body">
+          <a href="{{ poem.link }}">阅读全文</a>
+        </div>
       </div>
     </div>
 
@@ -28,4 +24,5 @@
 
   </div>
 </div>
+
 {% include 'footer.html' %}

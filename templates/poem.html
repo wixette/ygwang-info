@@ -1,19 +1,19 @@
 {% include 'header.html' %}
 
 <div class="container">
-  <div class="row">
+  <div class="row justify-content-around">
 
-    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-      <div class="panel panel-default poem">
-        <div class="panel-heading">
-          <h2>{{ poem_title|escape }}</h2>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body"><h4 class="card-title">{{ poem_title|escape }}</h4></div>
+        <div class="card-body">
           <p>王咏刚&nbsp;{{ poem_date }}</p>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
 {% if poem_notes %}<p class="poem-notes">{{ poem_notes }}</p>{% endif %}
 {% autoescape off %}{{ poem_html_content }}{% endautoescape %}
         </div>
-        <div class="panel-footer"><a href="poems.html">更多咏刚的诗</a></div>
+        <div class="card-body"><a href="poems.html">更多咏刚的诗</a></div>
       </div>
     </div>
 

@@ -55,7 +55,6 @@ _PAGE_TEMPLATES = [
     [ 'poems.html', None, None, '咏刚的诗'],
     [ 'pubs.html', None, None, '著译文字' ],
     [ 'helper.html', None, None, None ],
-    [ 'main.css', None, None, None ],
     [ 'sitemap.xml', None, None, None ],
     [ 'atomfeed.xml', None, None, None ],
     ]
@@ -68,10 +67,11 @@ _STATIC_CONTENTS = [
     [_IMAGE_DIR, _IMAGE_DIR, None],
     [_PSY_DIR, _PSY_DIR, None],
     [_STATIC_DIR, None, 'robots.txt'],
-    [_STATIC_DIR, None, 'bootstrap.custom.css'],
-    [_STATIC_DIR, None, 'bootstrap.min.css'],
+    [_STATIC_DIR, None, 'style.css'],
+    [_STATIC_DIR, None, 'bootstrap.b2.customized.min.css'],
     [_STATIC_DIR, None, 'bootstrap.min.js'],
-    [_STATIC_DIR, None, 'jquery.min.js'],
+    [_STATIC_DIR, None, 'jquery-3.2.1.slim.min.js'],
+    [_STATIC_DIR, None, 'popper.min.js'],
     ]
 
 # JS source code.
