@@ -109,7 +109,7 @@ ppz.helper.psyRefCache_ = {};
 
 /**
  * All rhymes list innerHTML cache.
- * @private {string}
+ * @private {?string}
  */
 ppz.helper.psyRhymeListCache_ = null;
 
@@ -192,8 +192,8 @@ ppz.helper.loadUrlParameters_ = function() {
 /**
  * Updates Url parameters as well as the browser history.
  * @param {string} query
- * @param {string} rhymeId
- * @param {string} glyph
+ * @param {?string} rhymeId
+ * @param {?string} glyph
  * @private
  */
 ppz.helper.updateUrlParameters_ = function(query, rhymeId, glyph) {

@@ -40,6 +40,8 @@ _COMPILE_COMMAND = ('java -jar %s '
                     '--closure_entry_point=ppz.helper '
                     '--compilation_level=ADVANCED_OPTIMIZATIONS '
                     '--js=%s/**.js '
+                    '--js=\'!%s/**_test.js\' '
+                    '--js=\'!%s/**_tests.js\' '
                     '--js=%s/**.js '
                     '> %s/ppz_compiled.js')
 
@@ -309,6 +311,8 @@ class SiteDeployer(object):
         shutil.rmtree(path)
     # Compiles the code
     cmd = _COMPILE_COMMAND % (self._compiler_path,
+                              self._closure_dir,
+                              self._closure_dir,
                               self._closure_dir,
                               os.path.join(self._src_dir, _JS_DIR),
                               self._target_dir)
