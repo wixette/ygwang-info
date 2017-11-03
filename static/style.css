@@ -7,6 +7,20 @@ body {
     margin-bottom: 60px;
 }
 
+a, a:visited {
+    color:#999;
+    text-decoration:none;
+}
+
+a:focus, a:hover {
+    color:#c33;
+    text-decoration:none;
+}
+
+.navbar-toggler-icon {
+    font-size: 14px;
+}
+
 footer {
     position: absolute;
     bottom: 0;

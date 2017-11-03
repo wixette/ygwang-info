@@ -69,7 +69,7 @@ _STATIC_CONTENTS = [
     [_STATIC_DIR, None, 'robots.txt'],
     [_STATIC_DIR, None, 'style.css'],
     [_STATIC_DIR, None, 'bootstrap.b2.customized.min.css'],
-    [_STATIC_DIR, None, 'bootstrap.min.js'],
+    [_STATIC_DIR, None, 'bootstrap.b2.min.js'],
     [_STATIC_DIR, None, 'jquery-3.2.1.slim.min.js'],
     [_STATIC_DIR, None, 'popper.min.js'],
     ]
@@ -229,7 +229,7 @@ class SiteDeployer(object):
       if not to_file_name:
         to_file_name = file_name
       to_file = os.path.join(self._target_dir, to_dir_name, to_file_name)
-      print '  %s' % to_file
+      print ' rendering %s -> %s' % (file_name, to_file)
       self._context['template_name'] = file_name
       if sub_title:
         self._context['sub_title'] = sub_title
