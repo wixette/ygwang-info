@@ -1,20 +1,15 @@
 html {
-    position: relative;
     min-height: 100%;
 }
 
-body {
-    margin-bottom: 60px;
-}
-
 a, a:visited {
-    color:#999;
-    text-decoration:none;
+    color: #69f;
+    text-decoration: none;
 }
 
 a:focus, a:hover {
-    color:#c33;
-    text-decoration:none;
+    color: #c33;
+    text-decoration: none;
 }
 
 .navbar-toggler-icon {
@@ -22,17 +17,35 @@ a:focus, a:hover {
 }
 
 footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
     height: 60px;
     line-height: 60px;
 }
 
 footer p {
-    font-size:14px;
+    font-size: 14px;
 }
 
 .nav-item {
-    font-size:18px;
+    font-size: 18px;
+}
+
+h3 {
+    font-size: 22px;
+    line-height: 30px;
+}
+
+h4 {
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.card-header p, .card-body p {
+    font-size: 16px;
+    line-height: 32px;
+    margin: 0;
+    padding: 0;
+}
+
+p.small {
+    font-size: 14px;
 }

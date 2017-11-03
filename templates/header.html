@@ -12,9 +12,22 @@
   </head>
   <body>
 
-    <header class="container-fluid bg-light border-secondary">
+    <header>
       <nav class="navbar navbar-light bg-light navbar-expand-lg">
-        <a class="navbar-brand" href="index.html"><img src="images/logo.png" widht="32" height="32" class="d-inline-block align-top pr-3" alt="">咏刚的家</a>
+        <a class="navbar-brand" href="index.html"><img src="images/logo.png" widht="32" height="32" class="d-inline-block align-top bg-white" alt="">
+          {% if template_name == "index.html" %}
+          <span class="px-3">咏刚的家</span>
+          {% endif %}
+          {% if template_name == "poems.html" %}
+          <span class="px-3">咏刚的诗</span>
+          {% endif %}
+          {% if template_name == "poem.html" %}
+          <span class="px-3">咏刚的诗</span>
+          {% endif %}
+          {% if template_name == "pubs.html" %}
+          <span class="px-3">咏刚的书</span>
+          {% endif %}
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -26,17 +39,16 @@
             <a class="nav-item nav-link pr-lg-3" href="index.html">关于</a>
              {% endif %}
             {% if template_name == "poems.html" %}
-            <a class="nav-item nav-link active pr-lg-3" href="poems.html">诗歌</a>
+            <a class="nav-item nav-link active pr-lg-3" href="poems.html">咏刚的诗</a>
             {% else %}
-            <a class="nav-item nav-link pr-lg-3" href="poems.html">诗歌</a>
+            <a class="nav-item nav-link pr-lg-3" href="poems.html">咏刚的诗</a>
             {% endif %}
             {% if template_name == "pubs.html" %}
-            <a class="nav-item nav-link active pr-lg-3" href="pubs.html">著述</a>
+            <a class="nav-item nav-link active pr-lg-3" href="pubs.html">咏刚的书</a>
             {% else %}
-            <a class="nav-item nav-link pr-lg-3" href="pubs.html">著述</a>
+            <a class="nav-item nav-link pr-lg-3" href="pubs.html">咏刚的书</a>
             {% endif %}
           </div>
         </div>
       </nav>
     </header>
-

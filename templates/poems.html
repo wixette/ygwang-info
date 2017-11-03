@@ -1,21 +1,23 @@
 {% include 'header.html' %}
 
-<div class="container">
+<div class="container my-3">
 
-  <h3>咏刚的诗</h3>
-
-  <div class="row justify-content-around">
+  <div class="row p-1">
 
     {% for poem in poems reversed %}
     
-    <div class="col-6 col-md-4">
-      <div class="card my-3">
-        <div class="card-body"><h4 class="card-title"><a href="{{ poem.link }}">{{ poem.title|escape }}</a></h4></div>
+    <div class="col-6 col-md-4 m-0 p-1 p-md-2">
+      <div class="card my-2">
+        <div class="card-header">
+          <h4 class="card-title m-0">
+            <a href="{{ poem.link }}">{{ poem.title|escape }}</a>
+          </h4>
+        </div>
         <div class="card-body">
           {% autoescape off %}{{ poem.html_summary }}{% endautoescape %}
         </div>
         <div class="card-body">
-          <a href="{{ poem.link }}">阅读全文</a>
+          <p><a href="{{ poem.link }}">阅读全文</a></p>
         </div>
       </div>
     </div>
