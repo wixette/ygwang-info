@@ -6,7 +6,6 @@ which can be served by light weight http servers, such as lighttpd.
 To update the site contents, edit the files under the following dirs:
 
 ./poems
-./photos
 
 Edit the # in js/photo.js
 
