@@ -1,23 +1,23 @@
 {% include 'header.html' %}
 
-<div class="container my-3">
+<div class="container">
 
-  <div class="row p-1">
+  <div class="row py-5 px-1">
 
     {% for poem in poems reversed %}
     
-    <div class="col-6 col-md-4 m-0 p-1 p-md-2">
-      <div class="card my-2">
+    <div class="col-6 col-md-4 m-0 p-0">
+      <div class="card rounded-0 m-1 m-md-2 m-lg-3">
         <div class="card-header">
           <h4 class="card-title m-0">
             <a href="{{ poem.link }}">{{ poem.title|escape }}</a>
           </h4>
         </div>
-        <div class="card-body">
+        <div class="card-body py-2">
           {% autoescape off %}{{ poem.html_summary }}{% endautoescape %}
         </div>
-        <div class="card-body">
-          <p><a href="{{ poem.link }}">阅读全文</a></p>
+        <div class="card-body py-1">
+          <p class="small-notes"><a href="{{ poem.link }}">阅读全文</a></p>
         </div>
       </div>
     </div>

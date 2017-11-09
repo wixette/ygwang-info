@@ -12,6 +12,16 @@ a:focus, a:hover {
     text-decoration: none;
 }
 
+.card-title a, .card-title a:visited {
+    color: #333;
+    text-decoration: none;
+}
+
+.card-title a:focus, .card-title a:hover {
+    color: #c33;
+    text-decoration: none;
+}
+
 .navbar-toggler-icon {
     font-size: 14px;
 }
@@ -46,6 +56,6 @@ h4 {
     padding: 0;
 }
 
-p.small {
+p.small-notes {
     font-size: 14px;
 }
