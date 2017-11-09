@@ -2,6 +2,11 @@ html {
     min-height: 100%;
 }
 
+#logo {
+    width: 32px;
+    height: 32px;
+}
+
 a, a:visited {
     color: #69f;
     text-decoration: none;
