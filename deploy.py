@@ -169,8 +169,8 @@ class SiteDeployer(object):
 
   def generate_html_poem_summary(self, poem_lines):
     """Generates a short summary for the poem, in HTML format."""
-    _SUFFIX = '&nbsp;......'
-    _THRESHOLD = 14
+    _SUFFIX = ' ...'
+    _THRESHOLD = 15
     _MAX_LINES = 2
     summary_lines = []
     for line in poem_lines:
@@ -179,7 +179,7 @@ class SiteDeployer(object):
       line = line.strip()
       if line:
         line = _NormalizeSpaces(line)
-        if len(line) >= _THRESHOLD:
+        if len(line) > _THRESHOLD:
           summary_lines.append(line[:_THRESHOLD] + _SUFFIX)
         elif len(summary_lines) < _MAX_LINES - 1:
           summary_lines.append(line)
