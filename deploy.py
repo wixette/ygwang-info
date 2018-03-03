@@ -126,9 +126,15 @@ class SiteDeployer(object):
         }
 
     # Inits Django environment settings.
-    settings.configure(DEBUG=True, TEMPLATE_DEBUG=True,
-                       TEMPLATE_DIRS=[os.path.join(self._src_dir,
-                                                   _TEMPLATE_DIR)])
+    settings.configure(
+      DEBUG=True,
+      TEMPLATE_DEBUG=True,
+      TEMPLATES=[{
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+        'DIRS': [os.path.join(self._src_dir, _TEMPLATE_DIR)],
+      }])
+
     django.setup()
 
   def check_prerequisites(self):
