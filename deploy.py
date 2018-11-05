@@ -67,7 +67,7 @@ _STATIC_CONTENTS = [
     [_PSY_DIR, _PSY_DIR, None],
     [_STATIC_DIR, None, 'robots.txt'],
     [_STATIC_DIR, None, 'style.css'],
-    [_STATIC_DIR, None, 'bootstrap.min.css'],
+    [_STATIC_DIR, None, 'bootstrap.4.1.3.customized.min.css'],
     [_STATIC_DIR, None, 'bootstrap.min.js'],
     [_STATIC_DIR, None, 'jquery-3.3.1.slim.min.js'],
     [_STATIC_DIR, None, 'popper.min.js'],
@@ -111,18 +111,22 @@ class SiteDeployer(object):
     # The context dict used to render Django templates. The defaults values are
     # assigned here.
     self._context  = {
-        'template_name': '',
-        'compile': self._compile,
-        'sub_title': '',
-        'cur_year': datetime.datetime.now().year,
-        'last_update_time': '',
-        'poems': [],
-        'poem_title': '',
-        'poem_date': '',
-        'poem_notes': '',
-        'poem_content': '',
-        'poem_html_content': ''
-        }
+      'template_name': '',
+      'compile': self._compile,
+      'sub_title': '',
+      'cur_year': datetime.datetime.now().year,
+      'last_update_time': '',
+      'poems': [],
+      'poem_title': '',
+      'poem_date': '',
+      'poem_notes': '',
+      'poem_content': '',
+      'poem_html_content': '',
+      'prev_poem_title': '',
+      'prev_poem_link': '',
+      'next_poem_title': '',
+      'next_poem_link': ''
+    }
 
     # Inits Django environment settings.
     settings.configure(
@@ -255,6 +259,21 @@ class SiteDeployer(object):
       self._context['poem_html_content'] = ''.join([
           '<p>' + _NormalizeSpaces(x.strip()) + '</p>\n' for
           x in p['poem']])
+
+      if index > 0:
+        self._context['next_poem_title'] = self._context['poems'][index - 1]['title']
+        self._context['next_poem_link'] = self._context['poems'][index - 1]['link']
+      else:
+        self._context['next_poem_title'] = None
+        self._context['next_poem_link'] = None
+
+      if index < len(self._context['poems']) - 1:
+        self._context['prev_poem_title'] = self._context['poems'][index + 1]['title']
+        self._context['prev_poem_link'] = self._context['poems'][index + 1]['link']
+      else:
+        self._context['prev_poem_title'] = None
+        self._context['prev_poem_link'] = None
+
       to_file = os.path.join(self._target_dir,
                              _POEMS_LINK_TEMPLATE % index)
       print('  %s' % to_file)

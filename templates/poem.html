@@ -1,9 +1,9 @@
 {% include 'header.html' %}
 
 <div class="container">
-  
+
   <div class="row justify-content-center py-5 px-1">
-    
+
     <div class="col-12 col-md-8 m-0 p-0">
       <div class="card rounded-0 m-1 m-md-2 m-lg-3">
         <div class="card-header">
@@ -16,7 +16,13 @@
 {% if poem_notes %}<p class="poem-notes">{{ poem_notes }}</p>{% endif %}
 {% autoescape off %}{{ poem_html_content }}{% endautoescape %}
         </div>
-        <div class="card-body">
+        <div class="card-body bg-light border-top">
+          {% if prev_poem_title %}
+          <p><a href="{{ prev_poem_link }}">前一首：{{ prev_poem_title|escape }}</a></p>
+          {% endif %}
+          {% if next_poem_title %}
+          <p><a href="{{ next_poem_link }}">后一首：{{ next_poem_title|escape }}</a></p>
+          {% endif %}
           <p><a href="poems.html">更多咏刚的诗</a></p>
         </div>
       </div>
