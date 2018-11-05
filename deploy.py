@@ -56,7 +56,6 @@ _PAGE_TEMPLATES = [
     [ 'pubs.html', None, None, '咏刚的著述' ],
     [ 'helper.html', None, None, None ],
     [ 'sitemap.xml', None, None, None ],
-    [ 'atomfeed.xml', None, None, None ],
     ]
 
 # Static dirs/files. A list of [src_dir_name, target_dir_name,
