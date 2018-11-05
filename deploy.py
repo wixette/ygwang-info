@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 
@@ -53,7 +53,7 @@ _COMPILE_COMMAND = ('java -jar %s '
 _PAGE_TEMPLATES = [
     [ 'index.html', None, None, None],
     [ 'poems.html', None, None, '咏刚的诗'],
-    [ 'pubs.html', None, None, '著译文字' ],
+    [ 'pubs.html', None, None, '咏刚的著述' ],
     [ 'helper.html', None, None, None ],
     [ 'sitemap.xml', None, None, None ],
     [ 'atomfeed.xml', None, None, None ],
@@ -150,7 +150,7 @@ class SiteDeployer(object):
                  self._closure_third_party_dir,
                  self._compiler_path]:
       if not os.path.exists(path):
-        print 'Required %s does not exist.' % path
+        print('Required %s does not exist.' % path)
         sys.exit(1)
 
   def copy_static_contents(self):
@@ -170,7 +170,7 @@ class SiteDeployer(object):
                 if (not file_name) or file_name == x]:
         from_file = os.path.join(from_dir, f)
         to_file = os.path.join(to_dir, f)
-        print '  %s to %s' % (from_file, to_file)
+        print('  %s to %s' % (from_file, to_file))
         shutil.copy2(from_file, to_file)
 
   def generate_html_poem_summary(self, poem_lines):
@@ -219,12 +219,12 @@ class SiteDeployer(object):
           'html_summary': html_summary,
           'link': ''
           })
-    self._context['poems'].sort(lambda x, y: cmp(x['date'], y['date']))
+    self._context['poems'].sort(key=lambda x: x['date'])
     self._context['last_update_time'] = self._context['poems'][-1]['date']
     for index, p in enumerate(self._context['poems']):
       link = _POEMS_LINK_TEMPLATE % index
       self._context['poems'][index]['link'] = link
-      print '  %s, %s, %s' % (p['date'], p['link'], p['title'])
+      print('  %s, %s, %s' % (p['date'], p['link'], p['title']))
 
   def render_pages(self):
     """Renders Django page templates and copies the results to the target dir.
@@ -235,7 +235,7 @@ class SiteDeployer(object):
       if not to_file_name:
         to_file_name = file_name
       to_file = os.path.join(self._target_dir, to_dir_name, to_file_name)
-      print ' rendering %s -> %s' % (file_name, to_file)
+      print(' rendering %s -> %s' % (file_name, to_file))
       self._context['template_name'] = file_name
       if sub_title:
         self._context['sub_title'] = sub_title
@@ -258,7 +258,7 @@ class SiteDeployer(object):
           x in p['poem']])
       to_file = os.path.join(self._target_dir,
                              _POEMS_LINK_TEMPLATE % index)
-      print '  %s' % to_file
+      print('  %s' % to_file)
       result = render_to_string(_POEM_TEMPLATE, self._context)
       codecs.open(to_file, 'w', 'utf_8').write(result)
 
@@ -268,9 +268,9 @@ class SiteDeployer(object):
     from_dir = os.path.join(self._closure_dir, 'goog')
     to_dir = os.path.join(self._target_dir, 'closure')
     if os.path.exists(to_dir):
-      print '  Closure dir %s already exists.' % to_dir
+      print('  Closure dir %s already exists.' % to_dir)
     else:
-      print '  %s to %s' % (from_dir, to_dir)
+      print('  %s to %s' % (from_dir, to_dir))
       shutil.copytree(from_dir, to_dir)
 
   def lint_js_code(self):
@@ -279,7 +279,7 @@ class SiteDeployer(object):
     for file_name in _JS_CODE:
       js_file = os.path.join(self._src_dir, _JS_DIR, file_name)
       cmd = '%s \"%s\"' % (_JS_LINTER_COMMAND, js_file)
-      print '  %s' % cmd
+      print('  %s' % cmd)
       if os.system(cmd):
         sys.exit(1)
 
@@ -292,7 +292,7 @@ class SiteDeployer(object):
       if not os.path.exists(js_dir):
         os.makedirs(js_dir)
       to_file = os.path.join(js_dir, file_name)
-      print '  %s to %s' % (from_file, to_file)
+      print('  %s to %s' % (from_file, to_file))
       shutil.copy2(from_file, to_file)
 
   def gen_js_deps(self):
@@ -301,7 +301,7 @@ class SiteDeployer(object):
     depswriter_path = os.path.join(self._closure_dir,
                                    'bin', 'build', 'depswriter.py')
     cmd = _DEPSWRITER_COMMAND % (depswriter_path, js_dir, deps_file)
-    print '  %s' % cmd
+    print('  %s' % cmd)
     if os.system(cmd):
       sys.exit(1)
 
@@ -313,7 +313,7 @@ class SiteDeployer(object):
     # Deletes uncompiled JS code if exists.
     for path in [target_js_dir, target_closure_dir]:
       if os.path.exists(path):
-        print '  Delete uncompiled JS code path %s' % path
+        print('  Delete uncompiled JS code path %s' % path)
         shutil.rmtree(path)
     # Compiles the code
     cmd = _COMPILE_COMMAND % (self._compiler_path,
@@ -322,7 +322,7 @@ class SiteDeployer(object):
                               self._closure_dir,
                               os.path.join(self._src_dir, _JS_DIR),
                               self._target_dir)
-    print '  %s' % cmd
+    print('  %s' % cmd)
     if os.system(cmd):
       sys.exit(1)
 
@@ -330,7 +330,7 @@ class SiteDeployer(object):
   def deploy(self):
     """Deploys the site.
     """
-    print 'Deploying...'
+    print('Deploying...')
     # For which compile mode a deploy step is executed.
     class _CompileMode(object):
       DEB = 0x1
@@ -357,26 +357,26 @@ class SiteDeployer(object):
 
     for step_function, step_name, compile_mode in DEPLOY_STEPS:
       if compile_mode & current_mode:
-        print '\n%s:' % step_name
+        print('\n%s:' % step_name)
         start_time = time.time()
         step_function()
         end_time = time.time()
-        print '  %.4f secs' % (end_time - start_time)
+        print('  %.4f secs' % (end_time - start_time))
 
-    print
-    print 'Done.'
+    print()
+    print('Done.')
 
 
 def main():
   if len(sys.argv) <= 1:
-    print 'Usage: %s <target_dir> [deb|opt]' % sys.argv[0]
-    print 'Example: %s ~/www/ppz' % sys.argv[0]
-    print 'Example: %s ~/www/ppz opt' % sys.argv[0]
+    print('Usage: %s <target_dir> [deb|opt]' % sys.argv[0])
+    print('Example: %s ~/www/ppz' % sys.argv[0])
+    print('Example: %s ~/www/ppz opt' % sys.argv[0])
     sys.exit(1)
   src_dir = os.path.split(os.path.realpath(sys.modules['__main__'].__file__))[0]
   target_dir = os.path.realpath(sys.argv[1])
   if not os.path.isdir(target_dir):
-    print 'Target dir %s does not exist.' % target_dir
+    print('Target dir %s does not exist.' % target_dir)
     sys.exit(1)
   compile_js_code = len(sys.argv) > 2 and sys.argv[2].lower() == 'opt'
   deployer = SiteDeployer(src_dir, target_dir, compile_js_code)
