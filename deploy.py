@@ -67,9 +67,9 @@ _STATIC_CONTENTS = [
     [_PSY_DIR, _PSY_DIR, None],
     [_STATIC_DIR, None, 'robots.txt'],
     [_STATIC_DIR, None, 'style.css'],
-    [_STATIC_DIR, None, 'bootstrap.b2.customized.min.css'],
-    [_STATIC_DIR, None, 'bootstrap.b2.min.js'],
-    [_STATIC_DIR, None, 'jquery-3.2.1.slim.min.js'],
+    [_STATIC_DIR, None, 'bootstrap.min.css'],
+    [_STATIC_DIR, None, 'bootstrap.min.js'],
+    [_STATIC_DIR, None, 'jquery-3.3.1.slim.min.js'],
     [_STATIC_DIR, None, 'popper.min.js'],
     ]
 
