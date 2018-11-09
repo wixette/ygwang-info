@@ -17,11 +17,11 @@
 {% autoescape off %}{{ poem_html_content }}{% endautoescape %}
         </div>
         <div class="card-body bg-light border-top">
-          {% if prev_poem_title %}
-          <p><a href="{{ prev_poem_link }}">前一首：{{ prev_poem_title|escape }}</a></p>
-          {% endif %}
           {% if next_poem_title %}
-          <p><a href="{{ next_poem_link }}">后一首：{{ next_poem_title|escape }}</a></p>
+          <p><a href="{{ next_poem_link }}">下一首：{{ next_poem_title|escape }}</a></p>
+          {% endif %}
+          {% if prev_poem_title %}
+          <p><a href="{{ prev_poem_link }}">上一首：{{ prev_poem_title|escape }}</a></p>
           {% endif %}
           <p><a href="poems.html">更多咏刚的诗</a></p>
         </div>
