@@ -33,7 +33,11 @@ _POEMS_LINK_TEMPLATE = 'poem_%04d.html'
 _IMAGE_DIR = 'images'
 _PSY_DIR = 'psy_index_json'
 _STATIC_DIR = 'static'
-_PUBS_DIR = 'pubs'
+
+# Utils dir (static contents)
+_JSMAN_DIR = 'jsmanuscript'
+_8800_DIR = '8800-simulator'
+
 _COMPILE_COMMAND = ('java -jar %s '
                     '--only_closure_dependencies '
                     '--closure_entry_point=ppz.helper '
@@ -53,6 +57,7 @@ _PAGE_TEMPLATES = [
     [ 'index.html', None, None, None],
     [ 'poems.html', None, None, '咏刚的诗'],
     [ 'pubs.html', None, None, '咏刚的著述' ],
+    [ 'utils.html', None, None, '有趣的小工具' ],
     [ 'helper.html', None, None, None ],
     [ 'sitemap.xml', None, None, None ],
     ]
@@ -64,6 +69,8 @@ _PAGE_TEMPLATES = [
 _STATIC_CONTENTS = [
     [_IMAGE_DIR, _IMAGE_DIR, None],
     [_PSY_DIR, _PSY_DIR, None],
+    [_JSMAN_DIR, _JSMAN_DIR, None],
+    [_8800_DIR, _8800_DIR, None],
     [_STATIC_DIR, None, 'robots.txt'],
     [_STATIC_DIR, None, 'style.css'],
     [_STATIC_DIR, None, 'bootstrap.4.1.3.customized.min.css'],
@@ -173,7 +180,12 @@ class SiteDeployer(object):
         from_file = os.path.join(from_dir, f)
         to_file = os.path.join(to_dir, f)
         print('  %s to %s' % (from_file, to_file))
-        shutil.copy2(from_file, to_file)
+        if os.path.isdir(from_file):
+          if os.path.exists(to_file):
+            shutil.rmtree(to_file)
+          shutil.copytree(from_file, to_file)
+        else:
+          shutil.copy2(from_file, to_file)
 
   def generate_html_poem_summary(self, poem_lines):
     """Generates a short summary for the poem, in HTML format."""

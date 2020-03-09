@@ -21,11 +21,11 @@
           {% if template_name == "poems.html" %}
           <span class="px-3">咏刚的诗</span>
           {% endif %}
-          {% if template_name == "poem.html" %}
-          <span class="px-3">咏刚的诗</span>
-          {% endif %}
           {% if template_name == "pubs.html" %}
           <span class="px-3">咏刚的著述</span>
+          {% endif %}
+          {% if template_name == "utils.html" %}
+          <span class="px-3">有趣的小工具</span>
           {% endif %}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
             <a class="nav-item nav-link active" href="index.html">关于</a>
             {% else %}
             <a class="nav-item nav-link" href="index.html">关于</a>
-             {% endif %}
+            {% endif %}
             {% if template_name == "poems.html" %}
             <a class="nav-item nav-link active" href="poems.html">诗歌</a>
             {% else %}
@@ -47,6 +47,11 @@
             <a class="nav-item nav-link active" href="pubs.html">著述</a>
             {% else %}
             <a class="nav-item nav-link" href="pubs.html">著述</a>
+            {% endif %}
+            {% if template_name == "utils.html" %}
+            <a class="nav-item nav-link active" href="utils.html">工具</a>
+            {% else %}
+            <a class="nav-item nav-link" href="utils.html">工具</a>
             {% endif %}
           </div>
         </div>
