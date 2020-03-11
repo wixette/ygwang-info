@@ -2,3 +2,6 @@
 .nfs*
 .DS_Store
 node_modules/*
+.tern-port
+dist/*
+build/*
