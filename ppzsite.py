@@ -85,7 +85,8 @@ def main():
         'makes its tarbar at dist/site.tar.gz. ' +
         'test: builds the site at dist/site and ' +
         'starts a simple server to test it.')
-    parser.add_argument('--port', '-p', type=int, default=1234)
+    parser.add_argument('--port', '-p', type=int, default=1234,
+                        help='server port to start the test http server.')
     args = parser.parse_args()
     config = parse_config()
     if args.cmd == 'dist':
