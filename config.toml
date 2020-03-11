@@ -22,15 +22,15 @@ dir = 'poems'
 #
 # So far, valid types are:
 #
-# 'collection': A collection of general articles generated from markdown
+# 'article': A collection of general articles generated from markdown
 #    texts. A table of contents page will also be generated.
 #
-# 'single': A single page generated from markdown text. The single
-#    page will be put on the homepage as a single tab.
+# 'poem': A collection of poems generated from markdown texts.  A
+#    table of contents page will also be generated.
 #
 # 'app': A web application that will be directly installed onto the
-#    site.
-type = 'collection'
+#    site. A table of contents page will also be generated.
+type = 'poem'
 
  # If true, all the post pages are generated directly under web
 # server's root dir. Otherwise, all the post pages are put under a
