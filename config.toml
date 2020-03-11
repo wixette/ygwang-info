@@ -1,4 +1,48 @@
 #The config info for the ppz site.
 
-title = '平平仄 / 咏刚的自留地'
+# The title of the site.
+title = '平平仄 | 咏刚的自留地'
 
+# The dir that holds all template sources.
+template_dir = 'templates'
+
+# Defines the collection tabs on the homepage.
+[[tabs]]
+
+# The tab name.
+name = '咏刚的诗'
+
+# The abbreviation of the tab name.
+abbr = '诗歌'
+
+# Subdir that holds the posts. All tab subdir must be put in 'posts/'.
+dir = 'poems'
+
+# The type of the tab contents.
+#
+# So far, valid types are:
+#
+# 'collection': A collection of general articles generated from markdown
+#    texts. A table of contents page will also be generated.
+#
+# 'single': A single page generated from markdown text. The single
+#    page will be put on the homepage as a single tab.
+#
+# 'app': A web application that will be directly installed onto the
+#    site.
+type = 'collection'
+
+ # If true, all the post pages are generated directly under web
+# server's '/' dir. Otherwise, all the post pages are put under a
+# subdir that is specified by 'dir'.
+#
+# This option has no impact on the 'app' type.
+flat = true
+
+[[tabs]]
+
+name = '咏刚的著作'
+abbr = '著作'
+dir = 'pubs'
+type = 'article'
+flat = false
