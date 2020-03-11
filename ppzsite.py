@@ -19,16 +19,24 @@ def parse_config():
     return toml.load(_CONFIG_FILE)
 
 
-def build(config):
-    print('building site %s' % config['title'])
+def render(env, template_name, config, target_path):
+    template = env.get_template(template_name)
+    html = template.render(config)
+    with open(target_path, mode='w', encoding='utf-8') as f:
+        f.write(html)
 
-    # Makes the dir structure of under dist/ and clears it.
+
+def build(config):
+    print('building %s' % config['title'])
+
+    print('making the dir structure of under dist/.')
     shutil.rmtree(_ROOT_DIR, ignore_errors=True)
     os.makedirs(_ROOT_DIR, exist_ok=True)
 
-    # Copies the static contents to dist/site/
+    print('copying static contents to %s' % _ROOT_DIR)
     for file in os.listdir(_STATIC_DIR):
         path = os.path.join(_STATIC_DIR, file)
+        print('copying %s to %s' % (file, _ROOT_DIR))
         if os.path.isdir(path):
             shutil.copytree(path, os.path.join(_ROOT_DIR, file))
         else:
@@ -39,10 +47,13 @@ def build(config):
         autoescape=jinja2.select_autoescape(['html', 'xml'])
     )
 
+    # Additional propertis that are passed in as template context.
     config['cur_year'] = datetime.datetime.now().year
     config['target'] = 'index'
-    template = env.get_template('index.html')
-    print(template.render(config))
+
+    path = os.path.join(_ROOT_DIR, 'index.html')
+    print('rendering %s' % path)
+    render(env, 'index.html', config, path)
     print('done')
 
 
@@ -65,7 +76,6 @@ def main():
         'starts a simple server to test it.')
     args = parser.parse_args()
     config = parse_config()
-    print(config)
     if args.cmd == 'dist':
         build(config)
         tar(config)
