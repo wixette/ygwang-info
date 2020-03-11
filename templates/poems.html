@@ -10,11 +10,11 @@
       <div class="card rounded-0 m-1 m-md-2 m-lg-3">
         <div class="card-header">
           <h4 class="card-title m-0">
-            <a href="{{ poem.link }}">{{ poem.title|escape }}</a>
+            <a href="{{ poem.link }}">{{ poem.title }}</a>
           </h4>
         </div>
         <div class="card-body py-2">
-          {% autoescape off %}{{ poem.html_summary }}{% endautoescape %}
+          {{ poem.html_summary }}
         </div>
         <div class="card-body py-1">
           <p><a href="{{ poem.link }}">阅读全文</a></p>

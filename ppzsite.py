@@ -4,6 +4,8 @@
 
 import argparse
 import datetime
+import http.server
+import socketserver
 import jinja2
 import os
 import shutil
@@ -49,20 +51,29 @@ def build(config):
 
     # Additional propertis that are passed in as template context.
     config['cur_year'] = datetime.datetime.now().year
-    config['target'] = 'index'
+    config['cur_tab'] = { 'dir': 'index' }
 
     path = os.path.join(_ROOT_DIR, 'index.html')
     print('rendering %s' % path)
     render(env, 'index.html', config, path)
     print('done')
 
+    for tab in config['tabs']:
+        pass
+
 
 def tar(config):
     pass
 
 
-def test(config):
-    pass
+def test(config, port):
+    print('running a simple HTTP server to test the site at:')
+    print('http://127.0.0.1:%d/' % port)
+    class MyHttpHandler(http.server.SimpleHTTPRequestHandler):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, directory=_ROOT_DIR, **kwargs)
+    server = http.server.HTTPServer(('', port), MyHttpHandler)
+    server.serve_forever()
 
 
 def main():
@@ -74,6 +85,7 @@ def main():
         'makes its tarbar at dist/site.tar.gz. ' +
         'test: builds the site at dist/site and ' +
         'starts a simple server to test it.')
+    parser.add_argument('--port', '-p', type=int, default=1234)
     args = parser.parse_args()
     config = parse_config()
     if args.cmd == 'dist':
@@ -81,7 +93,7 @@ def main():
         tar(config)
     elif args.cmd == 'test':
         build(config)
-        test(config)
+        test(config, args.port)
 
 
 if __name__ == '__main__':

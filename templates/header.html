@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>{{ title }}</title>
+    <title>{% if cur_tab.dir == "index" %}{{ title }}{% else %}{{ tab.name }} {% endif %}</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="css/bootstrap.customized.min.css">
@@ -15,21 +15,21 @@
     <header class="container p-0">
       <nav class="navbar navbar-light navbar-expand-md">
         <a class="navbar-brand" href="index.html"><img src="images/logo_2x.png" class="d-inline-block align-top bg-white" alt="" id="logo">
-          {% if target == "index" %}
+          {% if cur_tab.dir == "index" %}
           <span class="px-3">关于</span>
           {% else %}
           <span class="px-3">{{ tab.name }}</span>
           {% endif %}
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-cur_tab.dir="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <div class="navbar-nav float-right float-lg-none text-right text-lg-left">
-            <a class="nav-item nav-link {% if target == "index" %}active{% endif %}"
+            <a class="nav-item nav-link {% if cur_tab.dir == "index" %}active{% endif %}"
                 href="index.html">关于</a>
             {% for tab in tabs %}
-            <a class="nav-item nav-link {% if target == tab.dir %}active{% endif %}"
+            <a class="nav-item nav-link {% if cur_tab.dir == tab.dir %}active{% endif %}"
                 href="{{tab.dir}}.html">{{ tab.abbr }}</a>
             {% endfor %}
           </div>
