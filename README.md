@@ -1,6 +1,8 @@
 # Personal CMS for the site pingpingze.com
 
-See config.py for details.
+## Configuration
+
+See config.toml for details.
 
 ## Usage
 
