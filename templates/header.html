@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>平平仄 | {% if sub_title %}{{sub_title|escape }}{% else %}王咏刚的个人主页{% endif %}</title>
+    <title>{{ title }}</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="stylesheet" href="bootstrap.customized.min.css">
@@ -15,17 +15,10 @@
     <header class="container p-0">
       <nav class="navbar navbar-light navbar-expand-md">
         <a class="navbar-brand" href="index.html"><img src="images/logo_2x.png" class="d-inline-block align-top bg-white" alt="" id="logo">
-          {% if template_name == "index.html" %}
-          <span class="px-3">咏刚的家</span>
-          {% endif %}
-          {% if template_name == "poems.html" %}
-          <span class="px-3">咏刚的诗</span>
-          {% endif %}
-          {% if template_name == "pubs.html" %}
-          <span class="px-3">咏刚的著述</span>
-          {% endif %}
-          {% if template_name == "utils.html" %}
-          <span class="px-3">有趣的小工具</span>
+          {% if target == "index" %}
+          <span class="px-3">{{ title }}</span>
+          {% else %}
+          <span class="px-3">{{ tab.name }}</span>
           {% endif %}
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,26 +26,12 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <div class="navbar-nav float-right float-lg-none text-right text-lg-left">
-            {% if template_name == "index.html" %}
-            <a class="nav-item nav-link active" href="index.html">关于</a>
-            {% else %}
-            <a class="nav-item nav-link" href="index.html">关于</a>
-            {% endif %}
-            {% if template_name == "poems.html" %}
-            <a class="nav-item nav-link active" href="poems.html">诗歌</a>
-            {% else %}
-            <a class="nav-item nav-link" href="poems.html">诗歌</a>
-            {% endif %}
-            {% if template_name == "pubs.html" %}
-            <a class="nav-item nav-link active" href="pubs.html">著述</a>
-            {% else %}
-            <a class="nav-item nav-link" href="pubs.html">著述</a>
-            {% endif %}
-            {% if template_name == "utils.html" %}
-            <a class="nav-item nav-link active" href="utils.html">工具</a>
-            {% else %}
-            <a class="nav-item nav-link" href="utils.html">工具</a>
-            {% endif %}
+            <a class="nav-item nav-link {% if target == "index" %}active{% endif %}"
+                href="index.html">首页</a>
+            {% for tab in tabs %}
+            <a class="nav-item nav-link {% if target == tab.dir %}active{% endif %}"
+                href="{{tab.dir}}.html">{{ tab.abbr }}</a>
+            {% endfor %}
           </div>
         </div>
       </nav>

@@ -3,6 +3,7 @@
 '''
 
 import argparse
+import datetime
 import jinja2
 import os
 import shutil
@@ -10,6 +11,8 @@ import toml
 
 
 _CONFIG_FILE = 'config.toml'
+_ROOT_DIR = os.path.join('dist', 'site')
+_STATIC_DIR = 'static'
 
 
 def parse_config():
@@ -20,17 +23,26 @@ def build(config):
     print('building site %s' % config['title'])
 
     # Makes the dir structure of under dist/ and clears it.
-    shutil.rmtree('dist/site/', ignore_errors=True)
-    os.makedirs('dist/site/', exist_ok=True)
+    shutil.rmtree(_ROOT_DIR, ignore_errors=True)
+    os.makedirs(_ROOT_DIR, exist_ok=True)
 
     # Copies the static contents to dist/site/
-    for file in os.listdir('static/'):
-        path = os.path.join('static/', file)
+    for file in os.listdir(_STATIC_DIR):
+        path = os.path.join(_STATIC_DIR, file)
         if os.path.isdir(path):
-            shutil.copytree(path, os.path.join('dist/site/', file))
+            shutil.copytree(path, os.path.join(_ROOT_DIR, file))
         else:
-            shutil.copy2(path, os.path.join('dist/site/', file))
+            shutil.copy2(path, os.path.join(_ROOT_DIR, file))
 
+    env = jinja2.Environment(
+        loader=jinja2.PackageLoader('ppzsite', config['template_dir']),
+        autoescape=jinja2.select_autoescape(['html', 'xml'])
+    )
+
+    config['cur_year'] = datetime.datetime.now().year
+    config['target'] = 'index'
+    template = env.get_template('index.html')
+    print(template.render(config))
     print('done')
 
 
