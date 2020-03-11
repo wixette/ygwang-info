@@ -33,7 +33,7 @@ dir = 'poems'
 type = 'collection'
 
  # If true, all the post pages are generated directly under web
-# server's '/' dir. Otherwise, all the post pages are put under a
+# server's root dir. Otherwise, all the post pages are put under a
 # subdir that is specified by 'dir'.
 #
 # This option has no impact on the 'app' type.

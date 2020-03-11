@@ -4,6 +4,8 @@
 
 import argparse
 import jinja2
+import os
+import shutil
 import toml
 
 
@@ -15,7 +17,21 @@ def parse_config():
 
 
 def build(config):
-    pass
+    print('building site %s' % config['title'])
+
+    # Makes the dir structure of under dist/ and clears it.
+    shutil.rmtree('dist/site/', ignore_errors=True)
+    os.makedirs('dist/site/', exist_ok=True)
+
+    # Copies the static contents to dist/site/
+    for file in os.listdir('static/'):
+        path = os.path.join('static/', file)
+        if os.path.isdir(path):
+            shutil.copytree(path, os.path.join('dist/site/', file))
+        else:
+            shutil.copy2(path, os.path.join('dist/site/', file))
+
+    print('done')
 
 
 def tar(config):
