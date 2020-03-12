@@ -281,13 +281,8 @@ def test(config, port):
 
 def main():
     parser = argparse.ArgumentParser(description='ppz site generator.')
-    parser.add_argument(
-        'cmd', choices=['dist', 'test'],
-        help='command to execute. ' +
-        'dist: builds the site at dist/site and ' +
-        'makes its tarbar at dist/site.tar.gz. ' +
-        'test: builds the site at dist/site and ' +
-        'starts a simple server to test it.')
+    parser.add_argument('cmd', choices=['build', 'test', 'dist'],
+                        help='command to execute. ')
     parser.add_argument('--port', '-p', type=int, default=1234,
                         help='server port to start the test http server.')
     args = parser.parse_args()
@@ -295,8 +290,9 @@ def main():
     if args.cmd == 'dist':
         build(config)
         tar(config)
-    elif args.cmd == 'test':
+    elif args.cmd == 'build':
         build(config)
+    elif args.cmd == 'test':
         test(config, args.port)
 
 

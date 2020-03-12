@@ -44,6 +44,11 @@ footer p {
     font-size: 18px;
 }
 
+h2 {
+    font-size: 22px;
+    line-height: 30px;
+}
+
 h3 {
     font-size: 22px;
     line-height: 30px;
@@ -61,13 +66,18 @@ h4 {
     padding: 0;
 }
 
+.card-body li {
+    font-size: 16px;
+    line-height: 32px;
+}
+
 p.small-notes {
     font-size: 14px;
 }
 
-.card-body blackquote {
-    border-left: #eee 3px solid;
-    padding-left: 8px;
+.card-body blockquote {
+    border-left: #ddd 3px solid;
+    padding: 4px 8px 4px 8px;
 }
 
 .card-body blockquote p {
