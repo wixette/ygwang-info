@@ -3,6 +3,9 @@
 # The title of the site.
 title = '平平仄 | 咏刚的自留地'
 
+# The author name.
+author = '王咏刚'
+
 # The dir that holds all template sources.
 template_dir = 'templates'
 

@@ -13,7 +13,7 @@
           <p class="small-notes">{{ post.author }}&nbsp;{{ post.year }}</p>
         </div>
         <div class="card-body">
-          {% raw %}{{ post.html }}{% endraw %}
+          {{ post.html|safe }}
         </div>
         <div class="card-body bg-light border-top">
           {% if post.next %}
@@ -22,7 +22,7 @@
           {% if post.prev %}
           <p><a href="{{ post.prev.link }}">下一首：{{ post.prev.name }}</a></p>
           {% endif %}
-          <p><a href="poems.html">更多咏刚的诗</a></p>
+          <p><a href="{{ post.toc_link }}">更多咏刚的诗</a></p>
         </div>
       </div>
 

@@ -3,6 +3,7 @@
 '''
 
 import argparse
+import copy
 import datetime
 import http.server
 import jinja2
@@ -39,13 +40,6 @@ class ParseError(Exception):
 
 def parse_config():
     return toml.load(_CONFIG_FILE)
-
-
-def render(env, config, template_name, target_path):
-    template = env.get_template(template_name)
-    html = template.render(config)
-    with open(target_path, mode='w', encoding='utf-8') as f:
-        f.write(html)
 
 
 def format_snippet(lines, max_per_line):
@@ -91,9 +85,6 @@ def get_post_info(post_type, post_path, temporary_dir):
         post_html = f.read()
     post_info = {}
 
-    # Stores genearted HTML.
-    post_info['html'] = post_html
-
     # Parses post name form <h1> header.
     ret = re.search(r'<h1.*?>(.*?)</h1>',
                     post_html, re.MULTILINE | re.IGNORECASE | re.DOTALL)
@@ -101,6 +92,8 @@ def get_post_info(post_type, post_path, temporary_dir):
         post_info['name'] = ret.group(1).strip().replace('\n', '')
     else:
         raise ParseError('no # header found in markdown post: %s' % post_path)
+    # Removes the header inside html.
+    post_html = re.sub(r'<h1.*?>.*?</h1>', '', post_html, count=1)
 
     # Parses post date from <p><strong> tag.
     ret = re.search(r'<p><strong>([0-9]+)-([0-9]+)-([0-9]+)</strong></p>',
@@ -116,6 +109,12 @@ def get_post_info(post_type, post_path, temporary_dir):
     else:
         raise ParseError('no __YYYY-MM-DD__ found in markdown post: %s'
                          % post_path)
+    # Removes the date inside html.
+    post_html = re.sub(r'<p><strong>[0-9]+-[0-9]+-[0-9]+</strong></p>', '',
+                       post_html, count=1)
+
+    # Stores genearted HTML.
+    post_info['html'] = post_html
 
     # Generates post snippet.
     if post_type == 'poem':
@@ -128,17 +127,49 @@ def get_post_info(post_type, post_path, temporary_dir):
     return post_info
 
 
-def render_post(prev_post_info, cur_post_info, next_post_info):
+def render(env, context, template_name, target_path):
+    template = env.get_template(template_name)
+    html = template.render(context)
+    with open(target_path, mode='w', encoding='utf-8') as f:
+        f.write(html)
+
+
+def render_post(env, context, toc_file,
+                prev_post_info, cur_post_info, next_post_info):
     print('rendering %s from %s' % (cur_post_info['target_path'],
                                     cur_post_info['post_path']))
+    post = {}
+    post['name'] = cur_post_info['name']
+    # For now assumes all posts are published by the same author.
+    post['author'] = context['author']
+    post['year'] = cur_post_info['year']
+    post['html'] = cur_post_info['html']
+    if prev_post_info:
+        post['prev'] = {
+            'name': prev_post_info['name'],
+            'link': prev_post_info['link'],
+        }
+    else:
+        post['prev'] = None
+    if next_post_info:
+        post['next'] = {
+            'name': next_post_info['name'],
+            'link': next_post_info['link'],
+        }
+    else:
+        post['next'] = None
+    post['toc_link'] = toc_file
+    context['post'] = post
+    render(env, context, _POST_TEMP, cur_post_info['target_path'])
 
 
-def render_toc(env, config, post_metadata_list, toc_target_path):
+def render_toc(env, context, post_metadata_list, toc_target_path):
     pass
 
 
 def build(config):
     print('building %s' % config['title'])
+
 
     print('preparing %s' % _ROOT_DIR)
     shutil.rmtree(_ROOT_DIR, ignore_errors=True)
@@ -160,13 +191,15 @@ def build(config):
         autoescape=jinja2.select_autoescape(['html', 'xml'])
     )
 
-    # Additional propertis that are passed in as template context.
-    config['cur_year'] = datetime.datetime.now().year
-    config['cur_tab'] = { 'dir': 'index' }
+    # All config info will be passed to the template renderer as a
+    # context object, plus a couple of additional key value pairs.
+    context = copy.deepcopy(config)
+    context['cur_year'] = datetime.datetime.now().year
+    context['cur_tab'] = { 'dir': 'index' }
 
     target_path = os.path.join(_ROOT_DIR, _INDEX_TEMP)
     print('rendering homepage %s' % target_path)
-    render(env, config, _INDEX_TEMP, target_path)
+    render(env, context, _INDEX_TEMP, target_path)
 
     temporary_dir = tempfile.TemporaryDirectory()
 
@@ -203,6 +236,7 @@ def build(config):
         # renders them.
         post_info_list.sort(key=lambda x:x['date'], reverse=True)
 
+        toc_file = os.path.join(tab['dir'] + _TARGET_EXT)
         for index in range(len(post_info_list)):
             cur_post_info = post_info_list[index]
             if index - 1 > 0:
@@ -214,11 +248,15 @@ def build(config):
             else:
                 next_post_info = None
             # Actually renders the post.
-            render_post(prev_post_info, cur_post_info, next_post_info)
+            render_post(env, context,
+                        toc_file,
+                        prev_post_info,
+                        cur_post_info,
+                        next_post_info)
 
-        toc_target_path = os.path.join(_ROOT_DIR, tab['dir'] + _TARGET_EXT)
+        toc_target_path = os.path.join(_ROOT_DIR, toc_file)
         print('rendering TOC page %s' % toc_target_path)
-        render_toc(env, config, post_info_list, toc_target_path)
+        render_toc(env, context, post_info_list, toc_target_path)
 
     temporary_dir.cleanup()
 
