@@ -15,13 +15,14 @@ pip3 install --user -r requirements.txt
 Installs `pandoc` to render Markdown files. See
 https://pandoc.org/installing.html for detais.
 
-Generates the dist dir and runs a simple httpserver for debug:
+Generates the dist dir and runs a simple httpserver to debug:
 
 ```
 ./ppzsite.py test
 ```
 
-Generates the dist dir and make a tarball for that. The contents under the dist dir can be copied to the root dir of the web server.
+Generates the dist dir and make a tarball out of that. The contents
+under the dist dir can be copied to the root dir of the web server.
 
 ```
 ./ppzsite.py dist
