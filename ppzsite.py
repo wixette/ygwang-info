@@ -166,6 +166,8 @@ def render_post(env, context, toc_file,
 
 def render_toc(env, context, post_info_list, toc_target_path):
     print('rendering TOC page %s' % toc_target_path)
+    context['posts'] = post_info_list
+    render(env, context, _TOC_TEMP, toc_target_path)
 
 
 def build(config):
@@ -196,7 +198,11 @@ def build(config):
     # context object, plus a couple of additional key value pairs.
     context = copy.deepcopy(config)
     context['cur_year'] = datetime.datetime.now().year
-    context['cur_tab'] = { 'dir': 'index' }
+    context['cur_tab'] = {
+        'dir': 'index',
+        'name': '',
+        'type': '',
+    }
 
     target_path = os.path.join(_ROOT_DIR, _INDEX_TEMP)
     print('rendering homepage %s' % target_path)
@@ -205,6 +211,11 @@ def build(config):
     temporary_dir = tempfile.TemporaryDirectory()
 
     for tab in config['tabs']:
+        context['cur_tab'] = {
+            'dir': tab['dir'],
+            'name': tab['name'],
+            'type': tab['type'],
+        }
         target_dir = _ROOT_DIR
         post_dir = os.path.join(_POSTS_DIR, tab['dir'])
         post_files = [f for f in os.listdir(post_dir)
