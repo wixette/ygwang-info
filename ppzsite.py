@@ -14,35 +14,52 @@ import toml
 
 _CONFIG_FILE = 'config.toml'
 _ROOT_DIR = os.path.join('dist', 'site')
+_POSTS_DIR = 'posts'
+_POST_EXT = '.md'
+_TARGET_EXT = '.html'
 _STATIC_DIR = 'static'
+_INDEX_TEMP = 'index.html'
+_POST_TEMP = 'post.html'
+_TOC_TEMP = 'toc.html'
 
 
 def parse_config():
     return toml.load(_CONFIG_FILE)
 
 
-def render(env, template_name, config, target_path):
+def render(env, config, template_name, target_path):
     template = env.get_template(template_name)
     html = template.render(config)
     with open(target_path, mode='w', encoding='utf-8') as f:
         f.write(html)
 
 
+def render_post(env, config, post_path, traget_path):
+    post_metadata = {}
+    return post_metadata
+
+
+def render_toc(env, config, post_metadata_list, toc_target_path):
+    pass
+
+
 def build(config):
     print('building %s' % config['title'])
 
-    print('making the dir structure of under dist/.')
+    print('preparing %s' % _ROOT_DIR)
     shutil.rmtree(_ROOT_DIR, ignore_errors=True)
     os.makedirs(_ROOT_DIR, exist_ok=True)
 
     print('copying static contents to %s' % _ROOT_DIR)
-    for file in os.listdir(_STATIC_DIR):
-        path = os.path.join(_STATIC_DIR, file)
-        print('copying %s to %s' % (file, _ROOT_DIR))
-        if os.path.isdir(path):
-            shutil.copytree(path, os.path.join(_ROOT_DIR, file))
+    for static_file in os.listdir(_STATIC_DIR):
+        static_path = os.path.join(_STATIC_DIR, static_file)
+        print('copying %s to %s' % (static_path, _ROOT_DIR))
+        if os.path.isdir(static_path):
+            shutil.copytree(static_path,
+                            os.path.join(_ROOT_DIR, static_file))
         else:
-            shutil.copy2(path, os.path.join(_ROOT_DIR, file))
+            shutil.copy2(static_path,
+                         os.path.join(_ROOT_DIR, static_file))
 
     env = jinja2.Environment(
         loader=jinja2.PackageLoader('ppzsite', config['template_dir']),
@@ -53,13 +70,31 @@ def build(config):
     config['cur_year'] = datetime.datetime.now().year
     config['cur_tab'] = { 'dir': 'index' }
 
-    path = os.path.join(_ROOT_DIR, 'index.html')
-    print('rendering %s' % path)
-    render(env, 'index.html', config, path)
-    print('done')
+    target_path = os.path.join(_ROOT_DIR, _INDEX_TEMP)
+    print('rendering homepage %s' % target_path)
+    render(env, config, _INDEX_TEMP, target_path)
 
     for tab in config['tabs']:
-        pass
+        if not tab['flat']:
+            target_dir = os.path.join(_ROOT_DIR, tab['dir'])
+            os.makedirs(target_dir)
+        else:
+            target_dir = _ROOT_DIR
+        post_dir = os.path.join(_POSTS_DIR, tab['dir'])
+        post_files = [f for f in os.listdir(post_dir)
+                      if f.endswith(_POST_EXT)]
+        post_metadata_list = []
+        for post_file in post_files:
+            target_file = post_file[:-len(_POST_EXT)] + _TARGET_EXT
+            target_path = os.path.join(target_dir, target_file)
+            post_path = os.path.join(post_dir, post_file)
+            print('rendering %s from %s' % (target_path, post_path))
+            post_metadata = render_post(env, config, post_path, target_path)
+            post_metadata_list.append(post_metadata)
+
+        toc_target_path = os.path.join(_ROOT_DIR, tab['dir'] + _TARGET_EXT)
+        print('rendering TOC page %s' % toc_target_path)
+        render_toc(env, config, post_metadata_list, toc_target_path)
 
 
 def tar(config):
