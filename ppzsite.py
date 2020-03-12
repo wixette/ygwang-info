@@ -204,11 +204,7 @@ def build(config):
     temporary_dir = tempfile.TemporaryDirectory()
 
     for tab in config['tabs']:
-        if not tab['flat']:
-            target_dir = os.path.join(_ROOT_DIR, tab['dir'])
-            os.makedirs(target_dir)
-        else:
-            target_dir = _ROOT_DIR
+        target_dir = _ROOT_DIR
         post_dir = os.path.join(_POSTS_DIR, tab['dir'])
         post_files = [f for f in os.listdir(post_dir)
                       if f.endswith(_POST_EXT)]
@@ -223,10 +219,7 @@ def build(config):
                                       temporary_dir.name)
             # Generates post link and stores the link in the metadata.
             target_file = post_file[:-len(_POST_EXT)] + _TARGET_EXT
-            if not tab['flat']:
-                post_info['link'] = '%s/%s' % (tab['dir'], target_file)
-            else:
-                post_info['link'] = target_file
+            post_info['link'] = target_file
             # Additional metadata.
             post_info['post_path'] = post_path
             post_info['target_path'] = os.path.join(target_dir, target_file)

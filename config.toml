@@ -35,17 +35,9 @@ dir = 'poems'
 #    site. A table of contents page will also be generated.
 type = 'poem'
 
- # If true, all the post pages are generated directly under web
-# server's root dir. Otherwise, all the post pages are put under a
-# subdir that is specified by 'dir'.
-#
-# This option has no impact on the 'app' type.
-flat = true
-
 [[tabs]]
 
 name = '咏刚的著作'
 abbr = '著作'
 dir = 'pubs'
 type = 'article'
-flat = false
