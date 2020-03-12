@@ -142,7 +142,8 @@ def render_post(env, context, toc_file,
     post['name'] = cur_post_info['name']
     # For now assumes all posts are published by the same author.
     post['author'] = context['author']
-    post['year'] = cur_post_info['year']
+    post['year'] = '%04d' % cur_post_info['year']
+    post['month'] = '%02d' % cur_post_info['month']
     post['html'] = cur_post_info['html']
     if prev_post_info:
         post['prev'] = {
@@ -163,8 +164,8 @@ def render_post(env, context, toc_file,
     render(env, context, _POST_TEMP, cur_post_info['target_path'])
 
 
-def render_toc(env, context, post_metadata_list, toc_target_path):
-    pass
+def render_toc(env, context, post_info_list, toc_target_path):
+    print('rendering TOC page %s' % toc_target_path)
 
 
 def build(config):
@@ -248,7 +249,6 @@ def build(config):
                         next_post_info)
 
         toc_target_path = os.path.join(_ROOT_DIR, toc_file)
-        print('rendering TOC page %s' % toc_target_path)
         render_toc(env, context, post_info_list, toc_target_path)
 
     temporary_dir.cleanup()
