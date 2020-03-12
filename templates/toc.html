@@ -1,18 +1,20 @@
 {% include 'header.html' %}
 
 <div class="container">
-  {% for post in posts %}
   {% if cur_tab.type == 'poem' -%}
-
-    <div class="row py-5 px-1">
-      <div class="col-6 col-md-4 m-0 p-0">
-
+  <div class="row py-5 px-1">
   {%- else -%}
-
-    <div class="row justify-content-center py-5 px-1">
-      <div class="col-12 col-md-8 m-0 p-0">
-
+  <div class="row justify-content-center py-5 px-1">
   {%- endif %}
+
+  {% for post in posts %}
+
+    {% if cur_tab.type == 'poem' -%}
+    <div class="col-6 col-md-4 m-0 p-0">
+    {%- else -%}
+    <div class="col-12 col-md-8 m-0 p-0">
+    {%- endif %}
+
       <div class="card rounded-0 m-1 m-md-2 m-lg-3">
         <div class="card-header">
           <h4 class="card-title m-0">

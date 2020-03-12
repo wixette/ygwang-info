@@ -243,7 +243,7 @@ def build(config):
         toc_file = os.path.join(tab['dir'] + _TARGET_EXT)
         for index in range(len(post_info_list)):
             cur_post_info = post_info_list[index]
-            if index - 1 > 0:
+            if index >= 1:
                 prev_post_info = post_info_list[index - 1]
             else:
                 prev_post_info = None
