@@ -5,10 +5,12 @@
 import argparse
 import datetime
 import http.server
-import socketserver
 import jinja2
 import os
+import re
 import shutil
+import socketserver
+import tempfile
 import toml
 
 
@@ -21,6 +23,13 @@ _STATIC_DIR = 'static'
 _INDEX_TEMP = 'index.html'
 _POST_TEMP = 'post.html'
 _TOC_TEMP = 'toc.html'
+# Here pandoc is used to render Markdown files. The reason why other
+# utils/libs such as python-markdown cannot be used: most markdown
+# renderers have an issue when dealing with CJK line breaks. pandoc
+# fixed this issue via the -f markdown_strict+east_asian_line_breaks
+# flag. See pandoc's doc for details.
+_PANDOC_CMD = 'pandoc -f markdown+east_asian_line_breaks %s -o %s'
+_PANDOC_OUT = 'pandoc.out.html'
 
 
 def parse_config():
@@ -34,7 +43,14 @@ def render(env, config, template_name, target_path):
         f.write(html)
 
 
-def render_post(env, config, post_path, traget_path):
+def render_post(env, config, post_path, traget_path, temporary_dir):
+    pandoc_out_path = os.path.join(temporary_dir, _PANDOC_OUT)
+    cmd = _PANDOC_CMD % (post_path, pandoc_out_path)
+    print(cmd)
+    os.system(cmd)
+    with open(pandoc_out_path, 'r', encoding='utf-8') as f:
+        post_html = f.read()
+    print(post_html)
     post_metadata = {}
     return post_metadata
 
@@ -74,6 +90,8 @@ def build(config):
     print('rendering homepage %s' % target_path)
     render(env, config, _INDEX_TEMP, target_path)
 
+    temporary_dir = tempfile.TemporaryDirectory()
+
     for tab in config['tabs']:
         if not tab['flat']:
             target_dir = os.path.join(_ROOT_DIR, tab['dir'])
@@ -89,12 +107,16 @@ def build(config):
             target_path = os.path.join(target_dir, target_file)
             post_path = os.path.join(post_dir, post_file)
             print('rendering %s from %s' % (target_path, post_path))
-            post_metadata = render_post(env, config, post_path, target_path)
+            post_metadata = render_post(env, config,
+                                        post_path, target_path,
+                                        temporary_dir.name)
             post_metadata_list.append(post_metadata)
 
         toc_target_path = os.path.join(_ROOT_DIR, tab['dir'] + _TARGET_EXT)
         print('rendering TOC page %s' % toc_target_path)
         render_toc(env, config, post_metadata_list, toc_target_path)
+
+    temporary_dir.cleanup()
 
 
 def tar(config):
