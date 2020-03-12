@@ -1,0 +1,33 @@
+{% include 'header.html' %}
+
+<div class="container">
+
+  <div class="row justify-content-center py-5 px-1">
+
+    <div class="col-12 col-md-8 m-0 p-0">
+      <div class="card rounded-0 m-1 m-md-2 m-lg-3">
+        <div class="card-header">
+          <h4 class="card-title m-0">
+            {{ post.name }}
+          </h4>
+          <p class="small-notes">{{ post.author }}&nbsp;{{ post.year }}</p>
+        </div>
+        <div class="card-body">
+          {% raw %}{{ post.html }}{% endraw %}
+        </div>
+        <div class="card-body bg-light border-top">
+          {% if post.next %}
+          <p><a href="{{ post.next.link }}">下一首：{{ post.next.name }}</a></p>
+          {% endif %}
+          {% if post.prev %}
+          <p><a href="{{ post.prev.link }}">下一首：{{ post.prev.name }}</a></p>
+          {% endif %}
+          <p><a href="poems.html">更多咏刚的诗</a></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% include 'footer.html' %}
