@@ -106,9 +106,13 @@ def get_post_info(post_type, post_path, temporary_dir):
     ret = re.search(r'<p><strong>([0-9]+)-([0-9]+)-([0-9]+)</strong></p>',
                     post_html, re.MULTILINE | re.IGNORECASE | re.DOTALL)
     if ret:
-        post_info['year'] = ret.group(1)
-        post_info['month'] = ret.group(2)
-        post_info['day'] = ret.group(3)
+        year = int(ret.group(1))
+        month = int(ret.group(2))
+        day = int(ret.group(3))
+        post_info['year'] = year
+        post_info['month'] = month
+        post_info['day'] = day
+        post_info['date'] = datetime.date(year, month, day)
     else:
         raise ParseError('no __YYYY-MM-DD__ found in markdown post: %s'
                          % post_path)
@@ -124,8 +128,9 @@ def get_post_info(post_type, post_path, temporary_dir):
     return post_info
 
 
-def render_post():
-    pass
+def render_post(prev_post_info, cur_post_info, next_post_info):
+    print('rendering %s from %s' % (cur_post_info['target_path'],
+                                    cur_post_info['post_path']))
 
 
 def render_toc(env, config, post_metadata_list, toc_target_path):
@@ -175,27 +180,41 @@ def build(config):
         post_files = [f for f in os.listdir(post_dir)
                       if f.endswith(_POST_EXT)]
         post_info_list = []
-        for post_file in post_files:
-            target_file = post_file[:-len(_POST_EXT)] + _TARGET_EXT
-            target_path = os.path.join(target_dir, target_file)
+        for index, post_file in enumerate(post_files):
             post_path = os.path.join(post_dir, post_file)
-
-            # Renders from markdown to html, then extracts metadata.
-            print('pre-rendering %s from %s' % (target_path, post_path))
+            # Renders from markdown to html, then extracts its metadata.
+            print('pre-rendering %s' % post_path)
+            # Collects metadata from markdown text.
             post_info = get_post_info(tab['type'],
                                       post_path,
                                       temporary_dir.name)
+            # Generates post link and stores the link in the metadata.
+            target_file = post_file[:-len(_POST_EXT)] + _TARGET_EXT
             if not tab['flat']:
                 post_info['link'] = '%s/%s' % (tab['dir'], target_file)
             else:
                 post_info['link'] = target_file
-
-            print(post_info)
+            # Additional metadata.
+            post_info['post_path'] = post_path
+            post_info['target_path'] = os.path.join(target_dir, target_file)
             post_info_list.append(post_info)
 
-            # Actually renders the post that has all info collected.
-            # print('rendering %s from %s' % (target_path, post_path))
+        # Sorts post info list by reversed date order, then actually
+        # renders them.
+        post_info_list.sort(key=lambda x:x['date'], reverse=True)
 
+        for index in range(len(post_info_list)):
+            cur_post_info = post_info_list[index]
+            if index - 1 > 0:
+                prev_post_info = post_info_list[index - 1]
+            else:
+                prev_post_info = None
+            if index + 1 < len(post_info_list):
+                next_post_info = post_info_list[index + 1]
+            else:
+                next_post_info = None
+            # Actually renders the post.
+            render_post(prev_post_info, cur_post_info, next_post_info)
 
         toc_target_path = os.path.join(_ROOT_DIR, tab['dir'] + _TARGET_EXT)
         print('rendering TOC page %s' % toc_target_path)
