@@ -45,7 +45,8 @@ def parse_config():
 def format_snippet(lines, max_per_line):
     if not lines:
         return None
-    # Only uses the first two lines or two paragraphs as the snippet.
+    # Only uses the first two non-empty lines as the snippet.
+    lines = [x for x in lines if x]
     lines = [line[:max_per_line] for line in lines[:2]]
     lines[-1] += ' ...'
     return '<p>' + '</p><p>'.join(lines) + '</p>'
