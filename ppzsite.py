@@ -45,13 +45,10 @@ def parse_config():
 def format_snippet(lines, max_per_line):
     if not lines:
         return None
-    snippet = ''
     # Only uses the first two lines or two paragraphs as the snippet.
-    for line in lines[:2]:
-        if len(line) > max_per_line:
-            line = line[:max_per_line] + ' ...'
-        snippet += '<p>' + line + '</p>'
-    return snippet
+    lines = [line[:max_per_line] for line in lines[:2]]
+    lines[-1] += ' ...'
+    return '<p>' + '</p><p>'.join(lines) + '</p>'
 
 
 def generate_poem_snippet(post_html):
@@ -173,7 +170,6 @@ def render_toc(env, context, post_info_list, toc_target_path):
 def build(config):
     print('building %s' % config['title'])
 
-
     print('preparing %s' % _ROOT_DIR)
     shutil.rmtree(_ROOT_DIR, ignore_errors=True)
     os.makedirs(_ROOT_DIR, exist_ok=True)
@@ -220,6 +216,9 @@ def build(config):
         post_dir = os.path.join(_POSTS_DIR, tab['dir'])
         post_files = [f for f in os.listdir(post_dir)
                       if f.endswith(_POST_EXT)]
+        if not post_files:
+            raise ParseError('there is no post in %s' % tab['dir'])
+
         post_info_list = []
         for index, post_file in enumerate(post_files):
             post_path = os.path.join(post_dir, post_file)

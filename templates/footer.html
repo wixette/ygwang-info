@@ -1,20 +1,12 @@
 <footer class="container-fluid mt-5">
-  <p class="text-center m-0">&copy;&nbsp;2002-{{cur_year}}&nbsp;王咏刚 / <a href="http://www.beian.miit.gov.cn">京ICP备18047392号</a></p>
+  <p class="text-center m-0">&copy;&nbsp;2002-{{ cur_year }}&nbsp;王咏刚 / <a href="http://www.beian.miit.gov.cn">京ICP备18047392号</a></p>
 </footer>
 
 <script src="js/jquery.min.js"></script>
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
-<script>
- var _hmt = _hmt || [];
- (function() {
-   var hm = document.createElement("script");
-   hm.src = "https://hm.baidu.com/hm.js?1ef85d1af3f89601b47e22ae5e0a58f7";
-   var s = document.getElementsByTagName("script")[0];
-   s.parentNode.insertBefore(hm, s);
- })();
-</script>
+{{ analytics|safe }}
 
   </body>
 </html>
