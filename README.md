@@ -1,4 +1,4 @@
-# Personal CMS for the site pingpingze.com
+# Lightweight CMS to render the site pingpingze.com
 
 ## Configuration
 
