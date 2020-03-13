@@ -1,0 +1,6 @@
+[submodule "apps/jsmanuscript"]
+	path = apps/jsmanuscript
+	url = git@github.com:wixette/jsmanuscript.git
+[submodule "apps/8800-simulator"]
+	path = apps/8800-simulator
+	url = git@github.com:wixette/8800-simulator.git
