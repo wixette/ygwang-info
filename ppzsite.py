@@ -94,7 +94,10 @@ def get_post_info(post_type, post_path, temporary_dir):
     else:
         raise ParseError('no # header found in markdown post: %s' % post_path)
     # Removes the header inside html.
-    post_html = re.sub(r'<h1.*?>.*?</h1>', '', post_html, count=1)
+    post_html = re.sub(r'<h1.*?>.*?</h1>', '',
+                       post_html,
+                       count=1,
+                       flags=re.MULTILINE | re.IGNORECASE | re.DOTALL)
 
     # Parses post date from <p><strong> tag.
     ret = re.search(r'<p><strong>([0-9]+)-([0-9]+)-([0-9]+)</strong></p>',
@@ -112,7 +115,9 @@ def get_post_info(post_type, post_path, temporary_dir):
                          % post_path)
     # Removes the date inside html.
     post_html = re.sub(r'<p><strong>[0-9]+-[0-9]+-[0-9]+</strong></p>', '',
-                       post_html, count=1)
+                       post_html,
+                       count=1,
+                       flags=re.MULTILINE | re.IGNORECASE | re.DOTALL)
 
     # Stores genearted HTML.
     post_info['html'] = post_html
@@ -183,6 +188,25 @@ def copy_static_dir(src_dir, target_dir, ignore=None):
                 shutil.copy2(src_path, target_path)
 
 
+def install_analytics_code(target_file_path, analytics_code):
+    with open(target_file_path, 'r', encoding='utf-8') as f:
+        html = f.read()
+
+    ret = re.search(r'</body>\s*?</html>',
+                    html, re.MULTILINE | re.IGNORECASE | re.DOTALL)
+    if not ret:
+        raise ParseError('no </body></html> found in %s' % target_file_path)
+
+    html = re.sub(r'</body>\s*?</html>',
+                  '\n' + analytics_code + '\n  </body>\n</html>',
+                  html,
+                  count=1,
+                  flags=re.MULTILINE | re.IGNORECASE | re.DOTALL)
+    print(html)
+    with open(target_file_path, 'w', encoding='utf-8') as f:
+        f.write(html)
+
+
 def build(config):
     print('building %s' % config['title'])
 
@@ -236,6 +260,11 @@ def build(config):
                 os.makedirs(app_target_dir, exist_ok=True)
                 copy_static_dir(app_src_dir, app_target_dir,
                                 _DEFAULT_APP_DIR_IGNORES + app['ignore'])
+
+                # We assume that all apps have no analytics code
+                # pre-installed.
+                app_index_path = os.path.join(app_target_dir, _INDEX_TEMP)
+                install_analytics_code(app_index_path, config['analytics'])
 
                 app_info = copy.deepcopy(app)
                 app_info['link'] = app['dir'] + '/'

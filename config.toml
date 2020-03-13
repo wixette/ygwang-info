@@ -68,6 +68,7 @@ type = 'app'
 
 name = 'Altair 8800 模拟器'
 desc = '一个可以在线运行，支持中英文界面，支持桌面和手机浏览器（除了IE），支持实时调试的 Altair 8800 模拟器。主要模拟了 Altair 8800 个人电脑的前面板操作。所有源代码都以 APL 协议开源。'
+# An app should have an entry page index.html in its dir.
 dir = '8800-simulator'
 # A list to specify the files and dirs under app's dir that won't be copied.
 ignore = [ 'design', 'doc', 'asm' ]
