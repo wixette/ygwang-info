@@ -21,9 +21,11 @@ _POSTS_DIR = 'posts'
 _POST_EXT = '.md'
 _TARGET_EXT = '.html'
 _STATIC_DIR = 'static'
+_APPS_DIR = 'apps'
 _INDEX_TEMP = 'index.html'
 _POST_TEMP = 'post.html'
 _TOC_TEMP = 'toc.html'
+_TOC_APP_TEMP = 'toc_apps.html'
 # Here pandoc is used to render Markdown files. The reason why other
 # utils/libs such as python-markdown cannot be used: most markdown
 # renderers have an issue when dealing with CJK line breaks. pandoc
@@ -214,53 +216,87 @@ def build(config):
             'type': tab['type'],
         }
         target_dir = _ROOT_DIR
-        post_dir = os.path.join(_POSTS_DIR, tab['dir'])
-        post_files = [f for f in os.listdir(post_dir)
-                      if f.endswith(_POST_EXT)]
-        if not post_files:
-            raise ParseError('there is no post in %s' % tab['dir'])
-
-        post_info_list = []
-        for index, post_file in enumerate(post_files):
-            post_path = os.path.join(post_dir, post_file)
-            # Renders from markdown to html, then extracts its metadata.
-            print('pre-rendering %s' % post_path)
-            # Collects metadata from markdown text.
-            post_info = get_post_info(tab['type'],
-                                      post_path,
-                                      temporary_dir.name)
-            # Generates post link and stores the link in the metadata.
-            target_file = post_file[:-len(_POST_EXT)] + _TARGET_EXT
-            post_info['link'] = target_file
-            # Additional metadata.
-            post_info['post_path'] = post_path
-            post_info['target_path'] = os.path.join(target_dir, target_file)
-            post_info_list.append(post_info)
-
-        # Sorts post info list by reversed date order, then actually
-        # renders them.
-        post_info_list.sort(key=lambda x:x['date'], reverse=True)
-
         toc_file = os.path.join(tab['dir'] + _TARGET_EXT)
-        for index in range(len(post_info_list)):
-            cur_post_info = post_info_list[index]
-            if index >= 1:
-                prev_post_info = post_info_list[index - 1]
-            else:
-                prev_post_info = None
-            if index + 1 < len(post_info_list):
-                next_post_info = post_info_list[index + 1]
-            else:
-                next_post_info = None
-            # Actually renders the post.
-            render_post(env, context,
-                        toc_file,
-                        prev_post_info,
-                        cur_post_info,
-                        next_post_info)
-
         toc_target_path = os.path.join(_ROOT_DIR, toc_file)
-        render_toc(env, context, post_info_list, toc_target_path)
+
+        if tab['type'] == 'app':
+            #
+            # Renders apps.
+            #
+            app_info_list = []
+            for app in config['apps']:
+                app_src_dir = os.path.join(_APPS_DIR, app['dir'])
+                app_target_dir = os.path.join(target_dir, app['dir'])
+                print('copying app %s to %s' % (app['dir'], app_target_dir))
+                os.makedirs(app_target_dir, exist_ok=True)
+                for app_file in os.listdir(app_src_dir):
+                    app_file_path = os.path.join(app_src_dir, app_file)
+                    print('copying %s to %s' % (app_file_path, app_target_dir))
+                    if not app_file in app['ignore']:
+                        if os.path.isdir(app_file_path):
+                            shutil.copytree(app_file_path,
+                                            os.path.join(app_target_dir,
+                                                         app_file))
+                        else:
+                            shutil.copy2(app_file_path,
+                                         os.path.join(app_target_dir,
+                                                      app_file))
+                app_info = copy.deepcopy(app)
+                app_info['link'] = app['dir'] + '/'
+                app_info_list.append(app_info)
+
+            context['apps'] = app_info_list
+            print('rendering TOC page %s' % toc_target_path)
+            render(env, context, _TOC_APP_TEMP, toc_target_path)
+        else:
+            #
+            # Renders non-app posts, including poems and articles.
+            #
+            post_dir = os.path.join(_POSTS_DIR, tab['dir'])
+            post_files = [f for f in os.listdir(post_dir)
+                          if f.endswith(_POST_EXT)]
+            if not post_files:
+                raise ParseError('there is no post in %s' % tab['dir'])
+
+            post_info_list = []
+            for index, post_file in enumerate(post_files):
+                post_path = os.path.join(post_dir, post_file)
+                # Renders from markdown to html, then extracts its metadata.
+                print('pre-rendering %s' % post_path)
+                # Collects metadata from markdown text.
+                post_info = get_post_info(tab['type'],
+                                          post_path,
+                                          temporary_dir.name)
+                # Generates post link and stores the link in the metadata.
+                target_file = post_file[:-len(_POST_EXT)] + _TARGET_EXT
+                post_info['link'] = target_file
+                # Additional metadata.
+                post_info['post_path'] = post_path
+                post_info['target_path'] = os.path.join(target_dir, target_file)
+                post_info_list.append(post_info)
+
+            # Sorts post info list by reversed date order, then actually
+            # renders them.
+            post_info_list.sort(key=lambda x:x['date'], reverse=True)
+
+            for index in range(len(post_info_list)):
+                cur_post_info = post_info_list[index]
+                if index >= 1:
+                    prev_post_info = post_info_list[index - 1]
+                else:
+                    prev_post_info = None
+                if index + 1 < len(post_info_list):
+                    next_post_info = post_info_list[index + 1]
+                else:
+                    next_post_info = None
+                # Actually renders the post.
+                render_post(env, context,
+                            toc_file,
+                            prev_post_info,
+                            cur_post_info,
+                            next_post_info)
+
+            render_toc(env, context, post_info_list, toc_target_path)
 
     temporary_dir.cleanup()
 

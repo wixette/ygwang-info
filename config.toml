@@ -44,7 +44,10 @@ dir = 'poems'
 #    table of contents page will also be generated.
 #
 # 'app': A web application that will be directly installed onto the
-#    site. A table of contents page will also be generated.
+#    site. A table of contents page will also be generated. For the
+#    app tab, the TOC page is generated, and the static contents of
+#    the apps are copied. The metadata of the apps are defined by the
+#    [[apps]] entries.
 type = 'poem'
 
 [[tabs]]
@@ -53,3 +56,36 @@ name = '咏刚的著作'
 abbr = '著作'
 dir = 'pubs'
 type = 'article'
+
+[[tabs]]
+
+name = '有趣的小工具'
+abbr = '工具'
+dir = 'apps'
+type = 'app'
+
+[[apps]]
+
+name = 'Altair 8800 模拟器'
+desc = '一个可以在线运行，支持中英文界面，支持桌面和手机浏览器（除了IE），支持实时调试的 Altair 8800 模拟器。主要模拟了 Altair 8800 个人电脑的前面板操作。所有源代码都以 APL 协议开源。'
+dir = '8800-simulator'
+# A list to specify the files and dirs under app's dir that won't be copied.
+ignore = [ 'design', 'doc', 'asm' ]
+# Link to app's source code.
+src = 'https://github.com/wixette/8800-simulator'
+
+[[apps]]
+
+name = '中文一键转稿纸格式'
+desc = '将输入的中文转换成 20x20 的稿纸格式，可以按照稿纸的分页打印输出，或打印成 PDF 文件（Chrome 等浏览器在稿纸上打开右键菜单还可以转存 PNG 文件），可以改变字体，文字颜色，纸张颜色，格线颜色。所有源代码都以 APL 协议开源。'
+dir = 'jsmanuscript'
+ignore = [ 'samples' ]
+src = 'https://github.com/wixette/jsmanuscript'
+
+[[apps]]
+
+name = '平水韵速查小工具'
+desc = '快速检索平水韵的小工具。除了可以查询字词韵部，浏览韵部内容，还可以从字出发，查看唐诗中常见的组词方式。这个小工具里的平水韵内容，大部分来自网上的公开数据，有过比较粗疏的校订，但仍有不少差错。使用时请不要完全以此为准，还是要多查纸质或线上的工具书。'
+dir = 'helper'
+ignore = []
+src = ''
