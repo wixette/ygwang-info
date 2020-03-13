@@ -26,6 +26,7 @@ _INDEX_TEMP = 'index.html'
 _POST_TEMP = 'post.html'
 _TOC_TEMP = 'toc.html'
 _TOC_APP_TEMP = 'toc_apps.html'
+_DEFAULT_APP_DIR_IGNORES = [ '.git', '.gitignore' ]
 # Here pandoc is used to render Markdown files. The reason why other
 # utils/libs such as python-markdown cannot be used: most markdown
 # renderers have an issue when dealing with CJK line breaks. pandoc
@@ -170,6 +171,18 @@ def render_toc(env, context, post_info_list, toc_target_path):
     render(env, context, _TOC_TEMP, toc_target_path)
 
 
+def copy_static_dir(src_dir, target_dir, ignore=None):
+    for src_file in os.listdir(src_dir):
+        if not ignore or not src_file in ignore:
+            src_path = os.path.join(src_dir, src_file)
+            print('copying %s to %s' % (src_path, target_dir))
+            target_path = os.path.join(target_dir, src_file)
+            if os.path.isdir(src_path):
+                shutil.copytree(src_path, target_path)
+            else:
+                shutil.copy2(src_path, target_path)
+
+
 def build(config):
     print('building %s' % config['title'])
 
@@ -178,15 +191,7 @@ def build(config):
     os.makedirs(_ROOT_DIR, exist_ok=True)
 
     print('copying static contents to %s' % _ROOT_DIR)
-    for static_file in os.listdir(_STATIC_DIR):
-        static_path = os.path.join(_STATIC_DIR, static_file)
-        print('copying %s to %s' % (static_path, _ROOT_DIR))
-        if os.path.isdir(static_path):
-            shutil.copytree(static_path,
-                            os.path.join(_ROOT_DIR, static_file))
-        else:
-            shutil.copy2(static_path,
-                         os.path.join(_ROOT_DIR, static_file))
+    copy_static_dir(_STATIC_DIR, _ROOT_DIR)
 
     env = jinja2.Environment(
         loader=jinja2.PackageLoader('ppzsite', config['template_dir']),
@@ -229,18 +234,9 @@ def build(config):
                 app_target_dir = os.path.join(target_dir, app['dir'])
                 print('copying app %s to %s' % (app['dir'], app_target_dir))
                 os.makedirs(app_target_dir, exist_ok=True)
-                for app_file in os.listdir(app_src_dir):
-                    app_file_path = os.path.join(app_src_dir, app_file)
-                    print('copying %s to %s' % (app_file_path, app_target_dir))
-                    if not app_file in app['ignore']:
-                        if os.path.isdir(app_file_path):
-                            shutil.copytree(app_file_path,
-                                            os.path.join(app_target_dir,
-                                                         app_file))
-                        else:
-                            shutil.copy2(app_file_path,
-                                         os.path.join(app_target_dir,
-                                                      app_file))
+                copy_static_dir(app_src_dir, app_target_dir,
+                                _DEFAULT_APP_DIR_IGNORES + app['ignore'])
+
                 app_info = copy.deepcopy(app)
                 app_info['link'] = app['dir'] + '/'
                 app_info_list.append(app_info)
