@@ -202,7 +202,6 @@ def install_analytics_code(target_file_path, analytics_code):
                   html,
                   count=1,
                   flags=re.MULTILINE | re.IGNORECASE | re.DOTALL)
-    print(html)
     with open(target_file_path, 'w', encoding='utf-8') as f:
         f.write(html)
 
