@@ -4,7 +4,7 @@
 
 See config.toml for details.
 
-## Usage
+## Prerequisites
 
 Makes sure all required python libs are installed:
 
@@ -14,6 +14,8 @@ pip3 install --user -r requirements.txt
 
 Installs `pandoc` to render Markdown files. See
 https://pandoc.org/installing.html for detais.
+
+## Usage
 
 Builds the dist dir:
 
