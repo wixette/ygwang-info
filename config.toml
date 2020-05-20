@@ -85,6 +85,14 @@ src = 'https://github.com/wixette/jsmanuscript'
 
 [[apps]]
 
+name = '点点像素 | 开源的中文像素字体'
+desc = '点点中文像素字体是一组基于 GPL 2.0 协议开源发布的中文像素艺术字体，每种字体均支持超过 22000 个 Unicode 字形，覆盖 GBK 编码中的全部简繁体汉字。'
+dir = 'dotted-chinese-fonts'
+ignore = []
+src = 'https://github.com/wixette/dotted-chinese-fonts'
+
+[[apps]]
+
 name = '平水韵速查小工具'
 desc = '快速检索平水韵的小工具。除了可以查询字词韵部，浏览韵部内容，还可以从字出发，查看唐诗中常见的组词方式。这个小工具里的平水韵内容，大部分来自网上的公开数据，有过比较粗疏的校订，但仍有不少差错。使用时请不要完全以此为准，还是要多查纸质或线上的工具书。'
 dir = 'helper'
