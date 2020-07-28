@@ -17,6 +17,7 @@ import toml
 
 _CONFIG_FILE = 'config.toml'
 _ROOT_DIR = os.path.join('dist', 'site')
+_TAR_FILE = os.path.join('dist', 'ppz.tar.gz')
 _POSTS_DIR = 'posts'
 _POST_EXT = '.md'
 _TARGET_EXT = '.html'
@@ -34,6 +35,7 @@ _DEFAULT_APP_DIR_IGNORES = [ '.git', '.gitignore' ]
 # flag. See pandoc's doc for details.
 _PANDOC_CMD = 'pandoc -f markdown+east_asian_line_breaks %s -o %s'
 _PANDOC_OUT = 'pandoc.out.html'
+_TAR_CMD = 'tar zcf %s %s'
 
 
 class ParseError(Exception):
@@ -326,7 +328,9 @@ def build(config):
 
 
 def tar(config):
-    pass
+    cmd = _TAR_CMD % (_TAR_FILE, _ROOT_DIR)
+    print(cmd);
+    os.system(cmd)
 
 
 def test(config, port):
