@@ -66,6 +66,17 @@ type = 'app'
 
 [[apps]]
 
+name = 'Meowlang 猫咪专用编程语言'
+desc = '一个猫咪专用的编程语言，用“喵”“喵”“喵”来编程序。'
+# An app should have an entry page index.html in its dir.
+dir = 'meowlang'
+# A list to specify the files and dirs under app's dir that won't be copied.
+ignore = [ 'examples' ]
+# Link to app's source code.
+src = 'https://github.com/wixette/meowlang'
+
+[[apps]]
+
 name = 'Altair 8800 模拟器'
 desc = '一个可以在线运行，支持中英文界面，支持桌面和手机浏览器（除了IE），支持实时调试的 Altair 8800 模拟器。主要模拟了 Altair 8800 个人电脑的前面板操作。所有源代码都以 APL 协议开源。'
 # An app should have an entry page index.html in its dir.
