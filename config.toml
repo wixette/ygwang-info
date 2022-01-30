@@ -71,7 +71,7 @@ desc = '一个猫咪专用的编程语言，用“喵”“喵”“喵”来编
 # An app should have an entry page index.html in its dir.
 dir = 'meowlang'
 # A list to specify the files and dirs under app's dir that won't be copied.
-ignore = [ 'examples' ]
+ignore = []
 # Link to app's source code.
 src = 'https://github.com/wixette/meowlang'
 
