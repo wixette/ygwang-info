@@ -1,4 +1,5 @@
 baseURL = 'https://ygwang.info/'
-languageCode = 'zh-CN'
+languageCode = 'zh'
 title = '咏刚的诗'
+theme = 'PaperMod'
 
