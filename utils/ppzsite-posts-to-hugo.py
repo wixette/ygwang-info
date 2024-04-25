@@ -12,7 +12,6 @@ title = '{title}'
 date = {date}
 draft = true
 +++
-## {title}
 
 ```text
 {body}
@@ -45,6 +44,10 @@ def convert_poem(index, poem_dir, poem_file):
     print(new_content)
     with open(os.path.join(poem_dir, new_poem_file), 'w') as f:
         f.write(new_content)
+
+    # Overwrites the old file with the new one.
+    os.rename(os.path.join(poem_dir, new_poem_file),
+              os.path.join(poem_dir, poem_file))
 
 
 def convert_poems(poem_dir):
