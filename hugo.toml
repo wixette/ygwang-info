@@ -11,4 +11,5 @@ defaultContentLanguage = "zh-cn"
     weight = 1
 
 [params]
+  disableSpecial1stPost = true
   DateFormat = '2006年1月2日'
