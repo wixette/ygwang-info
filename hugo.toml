@@ -1,5 +1,11 @@
 baseURL = 'https://ygwang.info/'
-languageCode = 'zh'
 title = '咏刚的诗'
 theme = 'PaperMod'
+defaultContentLanguage = "zh-cn"
 
+[languages]
+  [languages.zh-cn]
+    languageCode = 'zh-CN'
+    languageDirection = 'ltr'
+    languageName = 'Simplified Chinese'
+    weight = 1
