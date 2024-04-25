@@ -9,3 +9,6 @@ defaultContentLanguage = "zh-cn"
     languageDirection = 'ltr'
     languageName = 'Simplified Chinese'
     weight = 1
+
+[params]
+  DateFormat = '2006年1月2日'
