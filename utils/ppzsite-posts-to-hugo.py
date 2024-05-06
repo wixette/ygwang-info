@@ -12,12 +12,12 @@ title = '{title}'
 date = {date}
 draft = true
 +++
-
 {quote}
-
-```text
+<div class="poem">
+<pre>
 {body}
-```
+</pre>
+</div>
 '''
 
 
@@ -30,7 +30,7 @@ def parse_poem(content):
     day = int(found.group(3))
     date = datetime.datetime(year, month, day)
     found = re.search(r'((^>.*$\n)+)', content, re.MULTILINE)
-    quote = found.group(1) if found else ''
+    quote = f'\n{found.group(1)}' if found else ''
     body = re.search(r'```.*?\n(.*)\n```', content,
                      re.MULTILINE | re.DOTALL).group(1)
     return title, date, quote, body
