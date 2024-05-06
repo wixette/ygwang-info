@@ -34,3 +34,11 @@ defaultContentLanguage = "zh-cn"
     [params.socialIcons.instagram]
       name = 'instagram'
       url = 'https://www.instagram.com/wixette'
+
+[markup]
+  [markup.goldmark]
+      [markup.goldmark.extensions.cjk]
+        eastAsianLineBreaks = true
+        eastAsianLineBreaksStyle = 'simple'
+        enable = true
+        escapedSpace = false
