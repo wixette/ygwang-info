@@ -16,7 +16,7 @@
 
 .pagination a {
     color: var(--theme);
-    font-size: 13px;
+    font-size: 12px;
     line-height: 36px;
     background: var(--primary);
     border-radius: calc(36px / 2);
