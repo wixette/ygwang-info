@@ -37,8 +37,11 @@ defaultContentLanguage = "zh-cn"
 
 [markup]
   [markup.goldmark]
-      [markup.goldmark.extensions.cjk]
-        eastAsianLineBreaks = true
-        eastAsianLineBreaksStyle = 'simple'
-        enable = true
-        escapedSpace = false
+    [markup.goldmark.extensions.cjk]
+      eastAsianLineBreaks = true
+      eastAsianLineBreaksStyle = 'simple'
+      enable = true
+      escapedSpace = false
+
+  [markup.goldmark.renderer]
+    unsafe= true
