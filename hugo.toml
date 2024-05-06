@@ -28,3 +28,9 @@ defaultContentLanguage = "zh-cn"
     [params.socialIcons.x]
       name = 'X'
       url = 'https://x.com/wixette'
+    [params.socialIcons.zhihu]
+      name = 'zhihu'
+      url = 'https://www.zhihu.com/people/ygwang'
+    [params.socialIcons.instagram]
+      name = 'instagram'
+      url = 'https://www.instagram.com/wixette'
