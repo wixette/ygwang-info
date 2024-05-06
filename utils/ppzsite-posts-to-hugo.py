@@ -14,9 +14,11 @@ draft = true
 +++
 {quote}
 <div class="poem">
-<pre>
+
+```
 {body}
-</pre>
+```
+
 </div>
 '''
 
