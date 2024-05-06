@@ -14,6 +14,8 @@ defaultContentLanguage = "zh-cn"
   disableSpecial1stPost = true
   DateFormat = '2006年1月2日'
 
+  ShowPostNavLinks = true
+
   [params.homeInfoParams]
     title = '我是谁'
     content = '王咏刚，笔名“半轻人”。有诗百余首。有文章、小说、杂书若干。发布或开源过几个有趣的小工具。技术宅，逻辑控。用emacs写小说，用平水韵下酒。'
