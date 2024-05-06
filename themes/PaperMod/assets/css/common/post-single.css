@@ -203,16 +203,17 @@
     margin: auto 0;
     padding: 10px;
     color: rgb(213, 213, 214);
-    background: var(--code-block-bg) !important;
+    background: var(--code-block-bg);
     border-radius: var(--radius);
     overflow-x: auto;
     word-break: break-all;
 }
 
 .post-content blockquote {
+    font-size: 14px;
     margin: 20px 0;
     padding: 0 14px;
-    border-inline-start: 3px solid var(--primary);
+    border-inline-start: 3px solid var(--tertiary);
 }
 
 .post-content hr {
@@ -404,4 +405,29 @@ h1>a>svg {
 img.in-text {
     display: inline;
     margin: auto;
+}
+
+.post-content > .poem {
+    background-color: var(--code-block-bg);
+    border-radius: var(--radius);
+    display: block;
+    margin: 0;
+    padding: 10px;
+}
+
+.post-content > .poem > pre {
+    margin: 0;
+    padding: 0;
+}
+
+.post-content > .poem > pre > code {
+    background-color: var(--code-bg);
+    border-radius: var(--radius);
+    color: var(--content);
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    line-height: 2em;
+    margin: 0;
+    overflow: hidden;
+    padding: 20px;
 }
