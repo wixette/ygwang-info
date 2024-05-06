@@ -13,6 +13,8 @@ date = {date}
 draft = true
 +++
 
+{quote}
+
 ```text
 {body}
 ```
@@ -27,27 +29,26 @@ def parse_poem(content):
     month = int(found.group(2))
     day = int(found.group(3))
     date = datetime.datetime(year, month, day)
+    found = re.search(r'((^>.*$\n)+)', content, re.MULTILINE)
+    quote = found.group(1) if found else ''
     body = re.search(r'```.*?\n(.*)\n```', content,
                      re.MULTILINE | re.DOTALL).group(1)
-    return title, date, body
+    return title, date, quote, body
 
 
 def convert_poem(index, poem_dir, poem_file):
-    new_poem_file = f'{index:04}.md'
-    print(f'Converting #{index}: {poem_file} -> {new_poem_file}')
-    with open(os.path.join(poem_dir, poem_file)) as f:
+    print(f'Converting #{index}: {poem_file}')
+    path = os.path.join(poem_dir, poem_file)
+    with open(path) as f:
         content = f.read()
-    title, date, body = parse_poem(content)
+    title, date, quote, body = parse_poem(content)
     new_content = TEMPLATE.format(title=title,
                                   date=date.isoformat(),
+                                  quote=quote,
                                   body=body)
     print(new_content)
-    with open(os.path.join(poem_dir, new_poem_file), 'w') as f:
-        f.write(new_content)
-
-    # Overwrites the old file with the new one.
-    os.rename(os.path.join(poem_dir, new_poem_file),
-              os.path.join(poem_dir, poem_file))
+    with open(path, 'w') as f:
+         f.write(new_content)
 
 
 def convert_poems(poem_dir):
