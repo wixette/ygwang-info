@@ -329,7 +329,7 @@
 
 .post-tags a:hover,
 .paginav a:hover {
-    background: var(--border);
+    background: var(--tertiary);
 }
 
 .share-buttons {
