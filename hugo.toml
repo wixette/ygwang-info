@@ -2,6 +2,7 @@ baseURL = 'https://ygwang.info/'
 title = '咏刚的诗'
 theme = 'PaperMod'
 defaultContentLanguage = "zh-cn"
+paginate = 20
 
 [languages]
   [languages.zh-cn]
@@ -15,6 +16,7 @@ defaultContentLanguage = "zh-cn"
   DateFormat = '2006年1月2日'
 
   ShowPostNavLinks = true
+  ShowPageNums = true
 
   [params.homeInfoParams]
     title = '我是谁'
