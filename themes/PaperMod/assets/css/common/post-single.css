@@ -203,7 +203,7 @@
     margin: auto 0;
     padding: 10px;
     color: rgb(213, 213, 214);
-    background: var(--code-block-bg);
+    background: var(--code-bg);
     border-radius: var(--radius);
     overflow-x: auto;
     word-break: break-all;
@@ -408,11 +408,9 @@ img.in-text {
 }
 
 .post-content > .poem {
-    background-color: var(--code-block-bg);
-    border-radius: var(--radius);
     display: block;
     margin: 0;
-    padding: 10px;
+    padding: 0;
 }
 
 .post-content > .poem > pre {
@@ -421,7 +419,8 @@ img.in-text {
 }
 
 .post-content > .poem > pre > code {
-    background-color: var(--code-bg);
+    background-color: var(--entry);
+    border: var(--border) 1px solid;
     border-radius: var(--radius);
     color: var(--content);
     font-size: 16px;
@@ -429,5 +428,5 @@ img.in-text {
     line-height: 2em;
     margin: 0;
     overflow: hidden;
-    padding: 20px;
+    padding: 2em;
 }

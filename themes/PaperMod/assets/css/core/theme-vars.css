@@ -6,7 +6,7 @@
     --header-height: 60px;
     --footer-height: 60px;
     --radius: 8px;
-    --theme: rgb(255, 255, 255);
+    --theme: rgb(240, 240, 240);
     --entry: rgb(255, 255, 255);
     --primary: rgb(30, 30, 30);
     --secondary: rgb(108, 108, 108);
@@ -30,7 +30,7 @@
 }
 
 .list {
-    background: var(--code-bg);
+    background: var(--theme);
 }
 
 .dark.list {
