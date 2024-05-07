@@ -1,4 +1,4 @@
-baseURL = 'https://ygwang.info/'
+baseURL = ''
 title = '咏刚的诗'
 theme = 'PaperMod'
 defaultContentLanguage = "zh-cn"
