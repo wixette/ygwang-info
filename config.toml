@@ -19,11 +19,11 @@ paginate = 20
   ShowPageNums = true
 
   [params.assets]
-    favicon = 'images/seal_me.svg'
+    favicon = '/images/seal_me.svg'
 
   [params.homeInfoParams]
     title = '我是谁'
-    logo = 'images/seal_slogan.svg'
+    logo = '/images/seal_slogan.svg'
     content = '王咏刚，笔名“半轻人”。有诗百余首。有文章、小说、杂书若干。发布或开源过几个有趣的小工具。技术宅，逻辑控。用emacs写小说，用平水韵下酒。'
 
   [params.socialIcons]
