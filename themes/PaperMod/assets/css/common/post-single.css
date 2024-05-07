@@ -427,6 +427,6 @@ img.in-text {
     letter-spacing: 0.1em;
     line-height: 2em;
     margin: 0;
-    overflow: hidden;
+    overflow-x: auto;
     padding: 2em;
 }
