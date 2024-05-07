@@ -139,3 +139,9 @@
     });
 </script>
 {{- end }}
+
+{{- if (not site.Params.disablePoemRenderer) }}
+{{ $mainJs := resources.Get "js/poem_renderer.js" | js.Build "main.js" | minify | fingerprint }}
+<script src="{{ $mainJs.Permalink }}">
+</script>
+{{- end }}
