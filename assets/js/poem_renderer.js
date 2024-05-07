@@ -43,9 +43,7 @@ class PoemRenderer {
 
   renderTraditionalPoem(poemElement, poemText) {
     const codeElement = poemElement.children[0].children[0];
-    const lines = poemText.split('\n');
     const buf = [];
-    poemText = `\n${poemText}\n`;
     [...poemText].forEach(c => {
       if (c === '\n') {
         buf.push('<br>');

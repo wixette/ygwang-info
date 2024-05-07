@@ -429,7 +429,7 @@ img.in-text {
     letter-spacing: .1em;
     margin: 0;
     overflow-x: auto;
-    padding: 2em;
+    padding: 2em 1em;
     white-space: pre;
 }
 
