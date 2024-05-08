@@ -12,9 +12,10 @@ paginate = 20
     weight = 1
 
 [params]
-  disableSpecial1stPost = true
   DateFormat = '2006年1月2日'
 
+  disableSpecial1stPost = true
+  disableScrollToTop = true
   ShowPostNavLinks = true
   ShowPageNums = true
 
