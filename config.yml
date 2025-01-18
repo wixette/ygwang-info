@@ -1,0 +1,107 @@
+baseURL: "https://ygwang.info/"
+title: "咏刚的诗"
+theme: "PaperMod"
+defaultContentLanguage: "zh-cn"
+
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+pagination:
+  pagerSize: 10
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+languages:
+  zh-cn:
+    languageCode: "zh-CN"
+    languageDirection: "ltr"
+    languageName: "Simplified Chinese"
+    weight: 1
+
+params:
+  env: production
+  defaultTheme: auto # dark, light
+  disableThemeToggle: false
+
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: false
+  ShowWordCount: true
+  ShowPageNums: true
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  comments: false
+  hidemeta: false
+  hideSummary: false
+  showtoc: false
+  tocopen: false
+
+  assets:
+    favicon: "images/seal_me.svg"
+
+  homeInfoParams:
+    title: "我是谁"
+    logo: "images/seal_slogan.svg"
+    Content: "王咏刚，笔名“半轻人”。有诗百余首。有文章、小说、杂书若干。发布或开源过几个有趣的小工具。技术宅，逻辑控。用emacs写小说，用平水韵下酒。"
+
+  socialIcons:
+    - name: "GitHub"
+      url: "https://github.com/wixette/"
+    - name: "linkedIn"
+      url: "https://www.linkedin.com/in/wixette/"
+    - name: "X"
+      url: "https://x.com/wixette"
+    - name: "zhihu"
+      url: "https://www.zhihu.com/people/ygwang"
+    - name: "instagram"
+      url: "https://www.instagram.com/wixette"
+
+  cover:
+    hidden: true # hide everywhere but not in structured data
+    hiddenInList: true # hide on list pages and home
+    hiddenInSingle: true # hide on single page
+
+menu:
+  main:
+    - identifier: poems
+      name: poems
+      url: /poems/
+      weight: 10
+    - identifier: notes
+      name: notes
+      url: /notes/
+      weight: 20
+    - identifier: fictions
+      name: fictions
+      url: /fictions/
+      weight: 30
+
+  # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
+pygmentsUseClasses: true
+
+markup:
+  highlight:
+    noClasses: false
+    # anchorLineNos: true
+    # codeFences: true
+    # guessSyntax: true
+    # lineNos: true
+    # style: monokai
+  goldmark:
+    extensions:
+      cjk:
+      eastAsianLineBreaks: true
+      eastAsianLineBreaksStyle: simple
+      enable: true
+      escapedSpace: false
+    renderer:
+      unsafe: true
+
