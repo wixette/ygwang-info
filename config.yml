@@ -1,7 +1,6 @@
 baseURL: "https://ygwang.info/"
-title: "咏刚的诗"
 theme: "hugo-PaperMod"
-defaultContentLanguage: "zh-cn"
+defaultContentLanguage: "zh"
 
 enableRobotsTXT: true
 buildDrafts: false
@@ -16,23 +15,21 @@ minify:
   minifyOutput: true
 
 languages:
-  zh-cn:
+  zh:
     languageCode: "zh-CN"
     languageDirection: "ltr"
     languageName: "Simplified Chinese"
+    title: "半轻人小站：王咏刚的诗文、小说、笔记、创意"
     weight: 1
 
 params:
   env: production
   defaultTheme: auto # dark, light
   disableThemeToggle: false
-
-  ShowReadingTime: true
-  ShowShareButtons: true
+  ShowShareButtons: false
   ShowPostNavLinks: true
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: false
-  ShowWordCount: true
   ShowPageNums: true
   ShowRssButtonInSectionTermList: true
   UseHugoToc: true
@@ -43,9 +40,15 @@ params:
   hideSummary: false
   showtoc: false
   tocopen: false
+  DateFormat: "2006年1月2日"
+
+  label:
+    text: "半轻人小站"
+    icon: "images/seal_me_xie.svg"
+    iconHeight: 32
 
   assets:
-    favicon: "images/seal_me.svg"
+    favicon: "images/seal_me_xie.svg"
 
   homeInfoParams:
     title: "我是谁"
@@ -72,16 +75,16 @@ params:
 menu:
   main:
     - identifier: poems
-      name: poems
+      name: 诗歌
       url: /poems/
       weight: 10
-    - identifier: notes
-      name: notes
-      url: /notes/
-      weight: 20
     - identifier: fictions
-      name: fictions
+      name: 小说
       url: /fictions/
+      weight: 20
+    - identifier: notes
+      name: 笔记
+      url: /notes/
       weight: 30
 
   # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
