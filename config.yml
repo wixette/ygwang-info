@@ -1,6 +1,6 @@
 baseURL: "https://ygwang.info/"
 title: "咏刚的诗"
-theme: "PaperMod"
+theme: "hugo-PaperMod"
 defaultContentLanguage: "zh-cn"
 
 enableRobotsTXT: true
