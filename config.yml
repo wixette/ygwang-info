@@ -42,6 +42,22 @@ params:
   tocopen: false
   DateFormat: "2006年1月2日"
 
+  profileMode:
+    enabled: true
+    title: "种竹可侔千户<br>拥书不假百城"
+    subtitle: "王咏刚，笔名“半轻人”。有诗百余首。有文章、小说、杂书若干。发布或开源过几个有趣的小工具。技术宅，逻辑控。用emacs写小说，用平水韵下酒。"
+    imageUrl: "images/seal_slogan.svg"
+    imageTitle: "拥书百城"
+    imageWidth: 160
+    imageHeight: 160
+    buttons:
+      - name: 诗歌
+        url: "/poems"
+      - name: 小说
+        url: "/fictions"
+      - name: 笔记
+        url: "/notes"
+
   label:
     text: "半轻人小站"
     icon: "images/seal_me_xie.svg"
@@ -49,11 +65,6 @@ params:
 
   assets:
     favicon: "images/seal_me_xie.svg"
-
-  homeInfoParams:
-    title: "我是谁"
-    logo: "images/seal_slogan.svg"
-    Content: "王咏刚，笔名“半轻人”。有诗百余首。有文章、小说、杂书若干。发布或开源过几个有趣的小工具。技术宅，逻辑控。用emacs写小说，用平水韵下酒。"
 
   socialIcons:
     - name: "GitHub"
