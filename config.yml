@@ -55,7 +55,7 @@ params:
         url: "/poems"
       - name: 小说
         url: "/fictions"
-      - name: 笔记
+      - name: 笔记杂谈
         url: "/notes"
 
   label:
@@ -94,7 +94,7 @@ menu:
       url: /fictions/
       weight: 20
     - identifier: notes
-      name: 笔记
+      name: 笔记杂谈
       url: /notes/
       weight: 30
 
