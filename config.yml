@@ -34,6 +34,7 @@ params:
   ShowCodeCopyButtons: false
   ShowPageNums: true
   ShowRssButtonInSectionTermList: true
+  ShowFullTextinRSS: true
   ShowWordCount: true
   UseHugoToc: true
   disableSpecial1stPost: false
