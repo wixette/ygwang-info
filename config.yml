@@ -116,10 +116,10 @@ markup:
   goldmark:
     extensions:
       cjk:
-      eastAsianLineBreaks: true
-      eastAsianLineBreaksStyle: simple
-      enable: true
-      escapedSpace: false
+        eastAsianLineBreaks: true
+        eastAsianLineBreaksStyle: simple
+        enable: true
+        escapedSpace: false
     renderer:
       unsafe: true
 
