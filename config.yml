@@ -21,7 +21,7 @@ languages:
     languageCode: "zh-CN"
     languageDirection: "ltr"
     languageName: "Simplified Chinese"
-    title: "半轻人小站：王咏刚的诗文、小说、笔记、创意"
+    title: "半轻小屋：王咏刚的诗文、小说、笔记、创意"
     weight: 1
 
 params:
@@ -63,7 +63,7 @@ params:
         url: "/notes"
 
   label:
-    text: "半轻人小站"
+    text: "半轻小屋"
     icon: "images/seal_me_xie.svg"
     iconHeight: 32
 
