@@ -1,6 +1,8 @@
 baseURL: "https://ygwang.info/"
 theme: "hugo-PaperMod"
 defaultContentLanguage: "zh"
+hasCJKLanguage: true
+summaryLength: 100
 
 enableRobotsTXT: true
 buildDrafts: false
@@ -32,6 +34,7 @@ params:
   ShowCodeCopyButtons: false
   ShowPageNums: true
   ShowRssButtonInSectionTermList: true
+  ShowWordCount: true
   UseHugoToc: true
   disableSpecial1stPost: false
   disableScrollToTop: false
