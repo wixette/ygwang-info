@@ -5,6 +5,8 @@ date = 2024-09-20T00:00:00
 draft = false
 +++
 
+![未名湖的落水狗](../images/dog_in_the_lake.jpg#center)
+
 ## 1
 
 三十年前，我拖着土气、笨重的行李，一个人走进北大报到。
