@@ -1,0 +1,40 @@
+.post-content pre code {
+  background: var(--code-bg);
+}
+
+.post-content > .poem {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.post-content > .poem > pre {
+  margin: 0;
+  padding: 0;
+}
+
+.post-content > .poem > pre > code {
+  background-color: var(--entry);
+  border: var(--border) 1px solid;
+  border-radius: var(--radius);
+  color: var(--content);
+  display: block;
+  font-size: 16px;
+  line-height: 2em;
+  letter-spacing: .1em;
+  margin: 0;
+  overflow-x: auto;
+  padding: 2em 1em;
+  white-space: pre;
+}
+
+.post-content > .poem > pre > code > span {
+  display: inline-block;
+  line-height: 32px;
+  text-align: center;
+  margin: 2px;
+}
+
+.post-content > .poem > pre > code > span.letter {
+  border-bottom: 1px solid var(--underline-red);
+}

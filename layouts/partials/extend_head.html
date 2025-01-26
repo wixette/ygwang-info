@@ -1,0 +1,2 @@
+{{- $poemRenderer := resources.Get "js/poem_renderer.js" | resources.Minify }}
+<script defer src="{{ $poemRenderer.RelPermalink }}"></script>
