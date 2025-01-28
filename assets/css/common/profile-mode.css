@@ -29,6 +29,7 @@
 }
 
 .profile_inner span {
+    font-size: 16px;
     line-height: 1.6em;
     text-align: left;
     max-width: 400px;
@@ -42,8 +43,9 @@
 }
 
 .button {
-    background: var(--tertiary);
+    background: var(--underline-red);
     border-radius: var(--radius);
+    color: #eee;
     margin: 8px;
     padding: 6px 24px;
     transition: transform 0.1s;
