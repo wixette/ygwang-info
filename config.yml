@@ -49,7 +49,7 @@ params:
   profileMode:
     enabled: true
     title: "种竹可侔千户<br>拥书不假百城"
-    subtitle: "王咏刚，笔名“半轻人”。有诗百余首。有文章、小说、杂书若干。发布或开源过几个有趣的小工具。技术宅，逻辑控。用emacs写小说，用平水韵下酒。"
+    subtitle: "王咏刚，技术宅，逻辑控。用emacs写小说，用平水韵下酒。本职工作是软件工程师、投资人和连续创业者。业余时间也喜欢写写画画，笔名“半轻人”。用这个小站收藏一下自己的诗文、小说、创意等作品。"
     imageUrl: "images/seal_slogan.svg"
     imageTitle: "拥书百城"
     imageWidth: 160
