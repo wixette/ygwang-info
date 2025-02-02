@@ -13,8 +13,8 @@ draft = false
 
 ![佛教六字真言拼写认读卡1](../om_mani_padme_hum_01.png#center)
 
-![佛教六字真言拼写认读卡1](../om_mani_padme_hum_02.png#center)
+![佛教六字真言拼写认读卡2](../om_mani_padme_hum_02.png#center)
 
-![佛教六字真言拼写认读卡1](../om_mani_padme_hum_03.png#center)
+![佛教六字真言拼写认读卡3](../om_mani_padme_hum_03.png#center)
 
-![佛教六字真言拼写认读卡1](../om_mani_padme_hum_04.png#center)
+![佛教六字真言拼写认读卡4](../om_mani_padme_hum_04.png#center)
