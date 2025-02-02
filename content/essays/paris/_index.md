@@ -18,7 +18,7 @@ draft = false
 教故事来品评。
 
 {{< figure align=center
-  src="../paris.jpg#center"
+  src="./paris.jpg#center"
   caption="Ernest Hemingway with Lady Duff Twysden, Hadley, and friends, during the July 1925 trip to Spain Not specified, owned by John F. Kennedy Presidential Library and Musum, Boston [Public domain]">}}
 
 后来我知道，自己从没建立过一个属于自己的阅读观。有一次我们约萌萌小姐去看北方昆曲
