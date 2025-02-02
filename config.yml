@@ -61,6 +61,8 @@ params:
         url: "/fictions"
       - name: 杂谈
         url: "/essays"
+      - name: 创意
+        url: "/creations"
 
   label:
     text: "半轻小屋"
@@ -101,6 +103,10 @@ menu:
       name: 杂谈
       url: /essays/
       weight: 30
+    - identifier: creations
+      name: 创意
+      url: /creations/
+      weight: 40
 
   # Read: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
 pygmentsUseClasses: true
