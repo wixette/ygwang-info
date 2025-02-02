@@ -9,6 +9,6 @@ draft = false
 
 从没写过，觉得好玩，就欣然从命。
 
-![麦克斯韦方程组1](./maxwell_equations_1.jpg#center)
+![麦克斯韦方程组1](../maxwell_equations_1.jpg#center)
 
-![麦克斯韦方程组2](./maxwell_equations_2.jpg#center)
+![麦克斯韦方程组2](../maxwell_equations_2.jpg#center)

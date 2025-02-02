@@ -8,7 +8,7 @@ draft = false
 > 写作本文是为了回答知乎上的一个问题[《人类为什么会孜孜不倦地去探索未知？好奇心
 > 的意义是什么？》](https://www.zhihu.com/question/438841951/answer/1684658805)。
 
-![好奇心](./curiosity.jpg#center)
+![好奇心](../curiosity.jpg#center)
 
 好奇心其实是件挺个人的事儿，绝非人类的共同特征。
 

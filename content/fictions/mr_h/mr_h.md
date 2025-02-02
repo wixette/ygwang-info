@@ -5,7 +5,7 @@ date = 2016-04-11T00:00:00
 draft = false
 +++
 
-![H先生的邀请函](./mr_h.jpg#center)
+![H先生的邀请函](../mr_h.jpg#center)
 
 ## 1
 

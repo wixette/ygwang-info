@@ -5,7 +5,7 @@ date = 2016-04-01T00:00:00
 draft = false
 +++
 
-![一条被洗澡水拍死的鱼](./fish.jpg#center)
+![一条被洗澡水拍死的鱼](../fish.jpg#center)
 
 ## 1
 

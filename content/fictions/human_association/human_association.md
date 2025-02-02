@@ -5,7 +5,7 @@ date = 2015-08-01T00:00:00
 draft = false
 +++
 
-![人形公会](./human_association.jpg#center)
+![人形公会](../human_association.jpg#center)
 
 ## 人皮契约
 
