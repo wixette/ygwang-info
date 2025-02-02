@@ -5,7 +5,7 @@ date = 2016-06-02T00:00:00
 draft = false
 +++
 
-![审查、辞职和再生的故事](../resignation.jpg#center)
+![审查、辞职和再生的故事](./resignation.jpg#center)
 
 ## 1
 

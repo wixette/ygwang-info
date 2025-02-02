@@ -5,7 +5,7 @@ date = 2024-09-20T00:00:00
 draft = false
 +++
 
-![未名湖的落水狗](../dog_in_the_lake.jpg#center)
+![未名湖的落水狗](./dog_in_the_lake.jpg#center)
 
 ## 1
 
