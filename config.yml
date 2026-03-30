@@ -25,6 +25,7 @@ languages:
     weight: 1
 
 params:
+  author: "王咏刚"
   env: production
   defaultTheme: auto # dark, light
   disableThemeToggle: false
