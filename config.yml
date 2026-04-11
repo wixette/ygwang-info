@@ -1,4 +1,5 @@
 baseURL: "https://ygwang.info/"
+timeZone: Asia/Shanghai
 theme: "hugo-PaperMod"
 defaultContentLanguage: "zh"
 hasCJKLanguage: true
