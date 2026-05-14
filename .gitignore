@@ -1,11 +1,33 @@
+# Editor
 *~
 .nfs*
 .DS_Store
+.vscode/
+.idea/
+
+# Dependencies
 node_modules/
+
+# Build output
 dist/
 build/
-__pycache__
+out/
 
 # Astro generated
 .astro/
 
+# TypeScript
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
