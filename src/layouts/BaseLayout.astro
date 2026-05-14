@@ -1,0 +1,50 @@
+---
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import '@/styles/themes/classic.css';
+import '@/styles/global.css';
+import '@/styles/poem.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  currentPath?: string;
+}
+
+const {
+  title,
+  description = '半轻小屋：王咏刚的诗文、小说、笔记、创意',
+  currentPath = Astro.url.pathname,
+} = Astro.props;
+
+const siteTitle = '半轻小屋：王咏刚的诗文、小说、笔记、创意';
+const fullTitle = title === siteTitle ? title : `${title} | 半轻小屋`;
+---
+
+<!doctype html>
+<html lang="zh-CN" data-theme="classic">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="author" content="王咏刚" />
+    <title>{fullTitle}</title>
+    <link rel="icon" type="image/svg+xml" href="/images/seal_me_xie.svg" />
+    <link rel="alternate" type="application/rss+xml" title="半轻小屋 RSS" href="/index.xml" />
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0XN65E66G2"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-0XN65E66G2');
+    </script>
+  </head>
+  <body>
+    <Header currentPath={currentPath} />
+    <main class="main" id="top">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

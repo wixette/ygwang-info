@@ -1,0 +1,58 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import PostNav from '@/components/PostNav.astro';
+import PoemRenderer from '@/components/PoemRenderer.astro';
+import { wordCount, formatDate } from '@/utils/collections';
+
+interface NavEntry { title: string; url: string; }
+interface Crumb { label: string; url?: string; }
+
+interface Props {
+  title: string;
+  author?: string;
+  date: Date;
+  body: string;
+  crumbs: Crumb[];
+  prev?: NavEntry | null;
+  next?: NavEntry | null;
+  isPoem?: boolean;
+}
+
+const {
+  title,
+  author = '王咏刚',
+  date,
+  body,
+  crumbs,
+  prev = null,
+  next = null,
+  isPoem = false,
+} = Astro.props;
+
+const wc = wordCount(body);
+const dateStr = formatDate(date);
+---
+
+<BaseLayout title={title}>
+  <article>
+    <header class="post-header">
+      <Breadcrumbs crumbs={crumbs} />
+      <h1 class="post-title">{title}</h1>
+      <div class="post-meta">
+        <span>{author}</span>
+        <span>&nbsp;·&nbsp;</span>
+        <time datetime={date.toISOString()}>{dateStr}</time>
+        <span>&nbsp;·&nbsp;</span>
+        <span>{wc} 字</span>
+      </div>
+    </header>
+    <div class="post-content">
+      <slot />
+    </div>
+    <footer class="post-footer">
+      <PostNav prev={prev} next={next} />
+    </footer>
+  </article>
+  {isPoem && <PoemRenderer />}
+</BaseLayout>

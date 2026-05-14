@@ -1,0 +1,31 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const buttons = [
+  { name: '诗歌', url: '/poems/' },
+  { name: '小说', url: '/fictions/' },
+  { name: '杂谈', url: '/essays/' },
+  { name: '创意', url: '/creations/' },
+];
+
+const title = '半轻小屋：王咏刚的诗文、小说、笔记、创意';
+---
+
+<BaseLayout title={title}>
+  <div class="profile">
+    <div class="profile_inner">
+      <img src="/images/seal_slogan.svg" alt="拥书百城" width="160" height="160" />
+      <h1 set:html="种竹可侔千户<br>拥书不假百城" />
+      <p>
+        王咏刚，技术宅，逻辑控。用emacs写小说，用平水韵下酒。本职工作是软件工程师、投资人和连续创业者。业余时间也喜欢写写画画，笔名"半轻人"。用这个小站收藏一下自己的诗文、小说、创意等作品。
+      </p>
+      <div class="buttons">
+        {buttons.map(btn => (
+          <a class="button" href={btn.url}>
+            <span class="button-inner">{btn.name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>

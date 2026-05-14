@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import PostLayout from '@/layouts/PostLayout.astro';
+import { sortByDate, getSiblings, entrySlug } from '@/utils/collections';
+
+export async function getStaticPaths() {
+  const allFictions = await getCollection('fictions', e => !e.data.draft);
+  return allFictions.map(entry => ({
+    params: { slug: entrySlug(entry) },
+    props: { entry, allFictions },
+  }));
+}
+
+const { entry, allFictions } = Astro.props;
+const { Content } = await entry.render();
+const { prev, next } = getSiblings(allFictions, entry);
+---
+
+<PostLayout
+  title={entry.data.title}
+  author={entry.data.author}
+  date={entry.data.date}
+  body={entry.body}
+  crumbs={[
+    { label: '首页', url: '/' },
+    { label: '小说', url: '/fictions/' },
+    { label: entry.data.title },
+  ]}
+  prev={prev ? { title: prev.data.title, url: `/fictions/${entrySlug(prev)}/` } : null}
+  next={next ? { title: next.data.title, url: `/fictions/${entrySlug(next)}/` } : null}
+>
+  <Content />
+</PostLayout>

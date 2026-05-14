@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import ListLayout from '@/layouts/ListLayout.astro';
+import Pagination from '@/components/Pagination.astro';
+import { sortByDate, formatDate, poemSlug } from '@/utils/collections';
+
+const PAGE_SIZE = 10;
+
+const allPoems = await getCollection('poems', e => !e.data.draft);
+const sorted = sortByDate(allPoems);
+const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
+const currentPage = 1;
+const poems = sorted.slice(0, PAGE_SIZE);
+---
+
+<ListLayout title="诗歌" breadcrumb="诗歌">
+  <div class="section-intro">
+    <img src="/images/sections/poems.jpg" alt="咏刚的诗歌" />
+    <blockquote>
+      咏刚按：这里收集的，说是诗歌，也不完全算诗歌。类型很杂，水平参差不齐。有依平水韵写的古近体诗，其中也有个别用了今韵。有半数左右现代诗，风格相当驳杂。有略带禅意的偈子，打机锋、抖机灵的骈文。还有一批是戏谑为主的顺口溜。
+    </blockquote>
+  </div>
+
+  {poems.map(poem => (
+    <div class="post-entry">
+      <header class="entry-header">
+        <h2>{poem.data.title}</h2>
+      </header>
+      <div class="entry-footer">
+        <time datetime={poem.data.date.toISOString()}>{formatDate(poem.data.date)}</time>
+        {poem.data.form && poem.data.form !== '其他' && (
+          <span>&nbsp;·&nbsp;{poem.data.form}</span>
+        )}
+      </div>
+      <a class="entry-link" href={`/poems/${poemSlug(poem)}/`} aria-label={poem.data.title}></a>
+    </div>
+  ))}
+
+  <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl="/poems" />
+</ListLayout>

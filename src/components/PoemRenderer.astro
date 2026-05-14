@@ -1,0 +1,59 @@
+---
+// This component is intentionally empty in markup;
+// the <script> below runs on every poem page via client:load.
+---
+
+<script>
+const _SPACES_AND_PUNCTUATIONS_PAT = /[\s,.:;'"?!\-<>\[\]\{\}，。：；''""？！—…《》【】（）「」]+/;
+
+class PoemRenderer {
+  render() {
+    const poemElements = document.getElementsByClassName('poem');
+    for (const poemElement of poemElements) {
+      const codeElement = (poemElement as HTMLElement)
+        .children[0]?.children[0] as HTMLElement;
+      if (!codeElement) continue;
+      const poemText = codeElement.innerText;
+      if (this.isTraditionalPoem(poemText)) {
+        this.renderTraditionalPoem(codeElement, poemText);
+      }
+    }
+  }
+
+  parseSentences(poemText: string): string[] {
+    return poemText
+      .split(_SPACES_AND_PUNCTUATIONS_PAT)
+      .map(l => l.trim())
+      .filter(l => l.length > 0);
+  }
+
+  isTraditionalPoem(poemText: string): boolean {
+    const histogram = new Map<number, number>();
+    for (const sentence of this.parseSentences(poemText)) {
+      histogram.set(sentence.length, (histogram.get(sentence.length) ?? 0) + 1);
+    }
+    let topLen = -1, topCount = -1;
+    for (const [len, count] of histogram) {
+      if (count > topCount) { topCount = count; topLen = len; }
+    }
+    const total = this.parseSentences(poemText).length;
+    return [4, 5, 6, 7].includes(topLen) && topCount / total >= 0.8;
+  }
+
+  renderTraditionalPoem(codeElement: HTMLElement, poemText: string) {
+    const buf: string[] = [];
+    for (const c of poemText) {
+      if (c === '\n') {
+        buf.push('<br>');
+      } else if (c.match(_SPACES_AND_PUNCTUATIONS_PAT)) {
+        buf.push(`<span>${c}</span>`);
+      } else {
+        buf.push(`<span class="letter">${c}</span>`);
+      }
+    }
+    codeElement.innerHTML = buf.join('');
+  }
+}
+
+new PoemRenderer().render();
+</script>

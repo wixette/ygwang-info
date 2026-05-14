@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import ListLayout from '@/layouts/ListLayout.astro';
+import { sortByDate, entrySlug, formatDate, wordCount } from '@/utils/collections';
+
+const allFictions = await getCollection('fictions', e => !e.data.draft);
+const fictions = sortByDate(allFictions);
+---
+
+<ListLayout title="小说" breadcrumb="小说">
+  <div class="section-intro">
+    <img src="/images/sections/fictions.jpg" alt="半轻人的小说" />
+    <blockquote>
+      咏刚按：我用"半轻人"的笔名出版过长篇、短篇小说若干。这里收集的小说，有在纸媒上发表过的，也有在博客、公众号之类的网络平台发表过的，还有少数仅发布在我这个小网站上的。网络平台上，凡是我的小说，也都习惯用"半轻人"的笔名。
+    </blockquote>
+  </div>
+
+  {fictions.map(fiction => (
+    <div class="post-entry">
+      <header class="entry-header">
+        <h2>{fiction.data.title}</h2>
+      </header>
+      <div class="entry-footer">
+        <time datetime={fiction.data.date.toISOString()}>{formatDate(fiction.data.date)}</time>
+        <span>&nbsp;·&nbsp;{wordCount(fiction.body)} 字</span>
+      </div>
+      <a class="entry-link" href={`/fictions/${entrySlug(fiction)}/`} aria-label={fiction.data.title}></a>
+    </div>
+  ))}
+</ListLayout>

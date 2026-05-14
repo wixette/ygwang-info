@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import ListLayout from '@/layouts/ListLayout.astro';
+import { sortByDate, entrySlug, formatDate } from '@/utils/collections';
+
+const allCreations = await getCollection('creations', e => !e.data.draft);
+const creations = sortByDate(allCreations);
+---
+
+<ListLayout title="创意" breadcrumb="创意">
+  <div class="section-intro">
+    <img src="/images/sections/creations.jpg" alt="咏刚的创意作品" />
+    <blockquote>
+      咏刚按：文字以外，也常写写画画，搞些拼贴创造之类，大多都平庸、俗套。但敝帚自珍，也挑一些记录在这里，博方家一笑。
+    </blockquote>
+  </div>
+
+  {creations.map(creation => (
+    <div class="post-entry">
+      <header class="entry-header">
+        <h2>{creation.data.title}</h2>
+      </header>
+      <div class="entry-footer">
+        <time datetime={creation.data.date.toISOString()}>{formatDate(creation.data.date)}</time>
+      </div>
+      <a class="entry-link" href={`/creations/${entrySlug(creation)}/`} aria-label={creation.data.title}></a>
+    </div>
+  ))}
+</ListLayout>
