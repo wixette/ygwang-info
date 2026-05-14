@@ -1,18 +1,41 @@
-# Source code of [ygwang.info](http://ygwang.info)
+# Source code of [ygwang.info](https://ygwang.info)
 
-The site is powered and maintained with [hugo](https://gohugo.io/).
+The site is built with [Astro](https://astro.build/) (v5) and deployed as a fully static site.
 
-## Hugo theme
+## Project structure
 
-The current hugo theme code `themes/hugo-PaperMod/` is copied from
-[https://github.com/adityatelange/hugo-PaperMod](https://github.com/adityatelange/hugo-PaperMod)
-directly, without using git submodule.
+```
+src/
+├── content/          # All content (poems, essays, fictions, creations)
+├── components/       # Astro components (Header, Footer, PoemRenderer, …)
+├── layouts/          # Page layouts (BaseLayout, PostLayout, ListLayout)
+├── pages/            # File-based routes
+├── styles/           # CSS (global.css, poem.css, themes/classic.css)
+└── utils/            # Shared TypeScript utilities
+static/               # Static assets served as-is (images, SVGs)
+docs/                 # Design documentation
+utils/                # Python helper scripts
+```
 
-Do NOT make any local change inside `themes/hugo-PaperMod/`. Custom styles and
-templates go into `/assets`, `/layouts`, etc.
-
-## Test locally
+## Local development
 
 ```shell
-hugo server
+npm install
+npm run dev
 ```
+
+## Build
+
+```shell
+npm run build   # outputs to dist/
+npm run preview # preview the build locally
+```
+
+## Content
+
+Content lives in `src/content/` as Markdown files with YAML frontmatter.
+New posts follow the same frontmatter schema defined in `src/content/config.ts`.
+
+Poems use a fenced code block inside `<div class="poem">` — the client-side
+`PoemRenderer` component detects traditional-form poems and applies
+character-level styling automatically.
