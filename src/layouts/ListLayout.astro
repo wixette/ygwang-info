@@ -1,0 +1,23 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+
+interface Props {
+  title: string;
+  breadcrumb?: string;
+}
+
+const { title, breadcrumb } = Astro.props;
+---
+
+<BaseLayout title={title}>
+  <div class="list">
+    <header class="page-header">
+      {breadcrumb && (
+        <Breadcrumbs crumbs={[{ label: '首页', url: '/' }, { label: breadcrumb }]} />
+      )}
+      <h1>{title}</h1>
+    </header>
+    <slot />
+  </div>
+</BaseLayout>

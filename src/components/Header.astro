@@ -1,0 +1,96 @@
+---
+interface Props {
+  currentPath: string;
+}
+const { currentPath } = Astro.props;
+
+const nav = [
+  { name: '诗歌', url: '/poems/' },
+  { name: '小说', url: '/fictions/' },
+  { name: '杂谈', url: '/essays/' },
+  { name: '创意', url: '/creations/' },
+];
+
+function isActive(url: string): boolean {
+  return currentPath.startsWith(url);
+}
+---
+
+<!-- Inline script: must run before paint to avoid flash -->
+<script is:inline>
+  (function () {
+    const pref = localStorage.getItem('pref-theme');
+    if (pref === 'dark') {
+      document.body.classList.add('dark');
+    } else if (pref === 'light') {
+      document.body.classList.remove('dark');
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.classList.add('dark');
+    }
+  })();
+</script>
+
+<header class="header">
+  <nav class="nav">
+    <div class="logo">
+      <a href="/" accesskey="h" title="半轻小屋 (Alt + H)">
+        <img src="/images/seal_me_xie.svg" alt="" aria-label="logo" height="32" />
+        半轻小屋
+      </a>
+      <div class="logo-switches">
+        <button id="theme-toggle" accesskey="t" title="切换主题 (Alt + T)" aria-label="切换主题">
+          <!-- moon: shown in light mode -->
+          <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <!-- sun: shown in dark mode -->
+          <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <ul id="menu">
+      {nav.map(item => (
+        <li>
+          <a href={item.url} title={item.name}>
+            <span class={isActive(item.url) ? 'active' : ''}>{item.name}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<script>
+  // Theme toggle
+  document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    if (document.body.classList.contains('dark')) {
+      document.body.classList.remove('dark');
+      localStorage.setItem('pref-theme', 'light');
+    } else {
+      document.body.classList.add('dark');
+      localStorage.setItem('pref-theme', 'dark');
+    }
+  });
+
+  // Preserve menu scroll position
+  const menu = document.getElementById('menu');
+  if (menu) {
+    const saved = localStorage.getItem('menu-scroll-position');
+    if (saved) menu.scrollLeft = parseInt(saved);
+    menu.addEventListener('scroll', () => {
+      localStorage.setItem('menu-scroll-position', String(menu.scrollLeft));
+    });
+  }
+</script>

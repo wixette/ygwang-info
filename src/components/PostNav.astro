@@ -1,0 +1,34 @@
+---
+interface NavEntry {
+  title: string;
+  url: string;
+}
+interface Props {
+  prev: NavEntry | null;
+  next: NavEntry | null;
+}
+const { prev, next } = Astro.props;
+---
+
+{(prev || next) && (
+  <nav class="paginav">
+    {prev && (
+      <div class="prev">
+        <a href={prev.url}>
+          <span class="title">« 上一篇</span>
+          <br />
+          <span>{prev.title}</span>
+        </a>
+      </div>
+    )}
+    {next && (
+      <div class="next">
+        <a href={next.url}>
+          <span class="title">下一篇 »</span>
+          <br />
+          <span>{next.title}</span>
+        </a>
+      </div>
+    )}
+  </nav>
+)}

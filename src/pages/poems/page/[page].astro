@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import ListLayout from '@/layouts/ListLayout.astro';
+import Pagination from '@/components/Pagination.astro';
+import { sortByDate, formatDate, poemSlug } from '@/utils/collections';
+
+export async function getStaticPaths() {
+  const PAGE_SIZE = 10;
+  const allPoems = await getCollection('poems', e => !e.data.draft);
+  const sorted = sortByDate(allPoems);
+  const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
+
+  return Array.from({ length: totalPages - 1 }, (_, i) => {
+    const page = i + 2; // pages 2..N
+    return {
+      params: { page: String(page) },
+      props: {
+        poems: sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+        currentPage: page,
+        totalPages,
+      },
+    };
+  });
+}
+
+const { poems, currentPage, totalPages } = Astro.props;
+---
+
+<ListLayout title="诗歌" breadcrumb="诗歌">
+  {poems.map(poem => (
+    <div class="post-entry">
+      <header class="entry-header">
+        <h2>{poem.data.title}</h2>
+      </header>
+      <div class="entry-footer">
+        <time datetime={poem.data.date.toISOString()}>{formatDate(poem.data.date)}</time>
+        {poem.data.form && poem.data.form !== '其他' && (
+          <span>&nbsp;·&nbsp;{poem.data.form}</span>
+        )}
+      </div>
+      <a class="entry-link" href={`/poems/${poemSlug(poem)}/`} aria-label={poem.data.title}></a>
+    </div>
+  ))}
+
+  <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl="/poems" />
+</ListLayout>

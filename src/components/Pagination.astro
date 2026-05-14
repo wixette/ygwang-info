@@ -1,0 +1,26 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string; // e.g. "/poems"
+}
+const { currentPage, totalPages, baseUrl } = Astro.props;
+
+function pageUrl(page: number): string {
+  return page === 1 ? `${baseUrl}/` : `${baseUrl}/page/${page}/`;
+}
+---
+
+{totalPages > 1 && (
+  <nav class="pagination">
+    {currentPage > 1 && (
+      <a href={pageUrl(currentPage - 1)}>« 上一页</a>
+    )}
+    <span style="margin: auto; color: var(--secondary); font-size: 13px;">
+      第 {currentPage} / {totalPages} 页
+    </span>
+    {currentPage < totalPages && (
+      <a class="next" href={pageUrl(currentPage + 1)}>下一页 »</a>
+    )}
+  </nav>
+)}
