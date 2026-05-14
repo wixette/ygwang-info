@@ -9,6 +9,3 @@ __pycache__
 # Astro generated
 .astro/
 
-# Old Hugo build artifacts (directory kept for legacy static assets in public/)
-/public/
-/resources/_gen/
