@@ -64,6 +64,19 @@ textarea:-webkit-autofill {
     box-shadow: 0 0 0 50px var(--theme) inset;
 }
 
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: 0 0;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--tertiary);
+    border-radius: var(--radius);
+}
+
 img {
     display: block;
     max-width: 100%;
@@ -137,7 +150,7 @@ body:not(.dark) #sun { display: none; }
 #menu a { font-size: 16px; }
 #menu .active {
     font-weight: 500;
-    border-bottom: 2px solid currentColor;
+    border-bottom: 2px solid;
 }
 
 .logo-switches {
@@ -481,22 +494,40 @@ pre { position: relative; }
     gap: 10px;
 }
 
-.profile img { border-radius: 50%; }
+.profile img { border-radius: 0; }
+
+.profile_inner h1 {
+    font-size: 28px;
+    line-height: 1.5em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.profile_inner p {
+    font-size: 16px;
+    line-height: 1.6em;
+    text-align: left;
+    max-width: 400px;
+}
 
 .buttons {
     flex-wrap: wrap;
     max-width: 400px;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .button {
-    background: var(--tertiary);
+    background: var(--underline-red);
+    color: #eee;
     border-radius: var(--radius);
     margin: 8px;
-    padding: 6px;
+    font-size: 18px;
+    line-height: 40px;
+    padding: 0 10px;
     transition: transform 0.1s;
 }
 
-.button-inner { padding: 0 8px; }
 .button:active { transform: scale(0.96); }
 
 /* ── Section intro ──────────────────────────────────────── */
