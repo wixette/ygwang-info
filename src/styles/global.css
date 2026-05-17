@@ -524,10 +524,10 @@ pre { position: relative; }
     margin: 8px;
     font-size: 18px;
     line-height: 40px;
-    padding: 0 10px;
     transition: transform 0.1s;
 }
 
+.button-inner { padding: 0 8px; }
 .button:active { transform: scale(0.96); }
 
 /* ── Section intro ──────────────────────────────────────── */
