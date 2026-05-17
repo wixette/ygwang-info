@@ -6,7 +6,7 @@ draft: false
 ---
 
 
-![人形公会](/images/fictions/human_association/human_association.jpg#center)
+![人形公会](./human_association.jpg#center)
 
 ## 人皮契约
 

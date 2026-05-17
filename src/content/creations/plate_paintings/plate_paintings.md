@@ -12,64 +12,64 @@ draft: false
 
 ## 《海边的公主》
 
-![餐盘彩绘](/images/creations/plate_paintings/07.jpg)
+![餐盘彩绘](./07.jpg)
 
 ## 《云上的日子》
 
-![餐盘彩绘](/images/creations/plate_paintings/08.jpg)
+![餐盘彩绘](./08.jpg)
 
 ## 《鲸》
 
-![餐盘彩绘](/images/creations/plate_paintings/09.jpg)
+![餐盘彩绘](./09.jpg)
 
 ## 《坐》
 
-![餐盘彩绘](/images/creations/plate_paintings/10.jpg)
+![餐盘彩绘](./10.jpg)
 
 ## 《三只呆猫》
 
-![餐盘彩绘](/images/creations/plate_paintings/11.jpg)
+![餐盘彩绘](./11.jpg)
 
 ## 《夕阳骑士1》
 
-![餐盘彩绘](/images/creations/plate_paintings/12.jpg)
+![餐盘彩绘](./12.jpg)
 
 ## 《夕阳骑士2》
 
-![餐盘彩绘](/images/creations/plate_paintings/13.jpg)
+![餐盘彩绘](./13.jpg)
 
 ## 《自行猫1》
 
-![餐盘彩绘](/images/creations/plate_paintings/14.jpg)
+![餐盘彩绘](./14.jpg)
 
 ## 《自行猫2》
 
-![餐盘彩绘](/images/creations/plate_paintings/15.jpg)
+![餐盘彩绘](./15.jpg)
 
 ## 《焦虑的三个人》或《黑眼圈与迷茫陈列展》
 
-![餐盘彩绘](/images/creations/plate_paintings/01.jpg)
+![餐盘彩绘](./01.jpg)
 
 ## 《电吉他与大提琴》或《卖艺二人组》
 
-![餐盘彩绘](/images/creations/plate_paintings/02.jpg)
+![餐盘彩绘](./02.jpg)
 
 上面两幅的合影：
 
-![餐盘彩绘](/images/creations/plate_paintings/01_02.jpg)
+![餐盘彩绘](./01_02.jpg)
 
 ## 《小公主》
 
-![餐盘彩绘](/images/creations/plate_paintings/03.jpg)
+![餐盘彩绘](./03.jpg)
 
 ## 《喝红酒的小屁孩儿》
 
-![餐盘彩绘](/images/creations/plate_paintings/04.jpg)
+![餐盘彩绘](./04.jpg)
 
 ## 《傻和尚》
 
-![餐盘彩绘](/images/creations/plate_paintings/05.jpg)
+![餐盘彩绘](./05.jpg)
 
 ## 《玛丽莲·兰兰》
 
-![餐盘彩绘](/images/creations/plate_paintings/06.jpg)
+![餐盘彩绘](./06.jpg)

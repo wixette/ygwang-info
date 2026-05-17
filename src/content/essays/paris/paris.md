@@ -19,7 +19,7 @@ draft: false
 教故事来品评。
 
 <figure class="align-center">
-  <img src="/images/essays/paris/paris.jpg#center" alt="Ernest Hemingway with Lady Duff Twysden, Hadley, and friends" />
+  <img src="./paris.jpg#center" alt="Ernest Hemingway with Lady Duff Twysden, Hadley, and friends" />
   <figcaption>Ernest Hemingway with Lady Duff Twysden, Hadley, and friends, during the July 1925 trip to Spain. Not specified, owned by John F. Kennedy Presidential Library and Museum, Boston [Public domain]</figcaption>
 </figure>
 

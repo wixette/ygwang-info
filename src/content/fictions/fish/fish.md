@@ -6,7 +6,7 @@ draft: false
 ---
 
 
-![一条被洗澡水拍死的鱼](/images/fictions/fish/fish.jpg#center)
+![一条被洗澡水拍死的鱼](./fish.jpg#center)
 
 ## 1
 
