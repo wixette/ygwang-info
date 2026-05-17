@@ -11,6 +11,9 @@
 .post-content > .poem > pre {
     margin: 0;
     padding: 0;
+    background: var(--entry) !important;
+    border-radius: var(--radius);
+    overflow: hidden;
 }
 
 .post-content > .poem > pre > code {
