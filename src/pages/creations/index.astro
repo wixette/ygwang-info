@@ -1,13 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 import ListLayout from '@/layouts/ListLayout.astro';
-import { sortByDate, entrySlug, formatDate } from '@/utils/collections';
+import { sortByDate, entrySlug, formatDate, wordCount, excerpt } from '@/utils/collections';
 
 const allCreations = await getCollection('creations', e => !e.data.draft);
 const creations = sortByDate(allCreations);
 ---
 
-<ListLayout title="创意" breadcrumb="创意">
+<ListLayout title="创意" breadcrumb="创意" rssUrl="/index.xml">
   <div class="section-intro">
     <img src="/images/sections/creations.jpg" alt="咏刚的创意作品" />
     <blockquote>
@@ -20,8 +20,11 @@ const creations = sortByDate(allCreations);
       <header class="entry-header">
         <h2>{creation.data.title}</h2>
       </header>
+      <div class="entry-content">{excerpt(creation.body)}</div>
       <div class="entry-footer">
         <time datetime={creation.data.date.toISOString()}>{formatDate(creation.data.date)}</time>
+        <span>&nbsp;·&nbsp;{wordCount(creation.body)} 字</span>
+        <span>&nbsp;·&nbsp;{creation.data.author}</span>
       </div>
       <a class="entry-link" href={`/creations/${entrySlug(creation)}/`} aria-label={creation.data.title}></a>
     </div>
