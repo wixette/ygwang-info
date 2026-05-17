@@ -6,7 +6,7 @@ draft: false
 ---
 
 
-![H先生的邀请函](/images/fictions/mr_h/mr_h.jpg#center)
+![H先生的邀请函](./mr_h.jpg#center)
 
 ## 1
 

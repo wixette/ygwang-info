@@ -6,7 +6,7 @@ draft: false
 ---
 
 
-![审查、辞职和再生的故事](/images/fictions/resignation/resignation.jpg#center)
+![审查、辞职和再生的故事](./resignation.jpg#center)
 
 ## 1
 

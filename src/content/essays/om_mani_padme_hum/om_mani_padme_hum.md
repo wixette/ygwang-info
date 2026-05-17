@@ -12,10 +12,10 @@ draft: false
 
 做了几张拼写认读卡片，方便大家礼佛诵经。每张都是PNG格式的图片，大家可以直接下载保存。
 
-![佛教六字真言拼写认读卡1](/images/essays/om_mani_padme_hum/om_mani_padme_hum_01.png#center)
+![佛教六字真言拼写认读卡1](./om_mani_padme_hum_01.png#center)
 
-![佛教六字真言拼写认读卡2](/images/essays/om_mani_padme_hum/om_mani_padme_hum_02.png#center)
+![佛教六字真言拼写认读卡2](./om_mani_padme_hum_02.png#center)
 
-![佛教六字真言拼写认读卡3](/images/essays/om_mani_padme_hum/om_mani_padme_hum_03.png#center)
+![佛教六字真言拼写认读卡3](./om_mani_padme_hum_03.png#center)
 
-![佛教六字真言拼写认读卡4](/images/essays/om_mani_padme_hum/om_mani_padme_hum_04.png#center)
+![佛教六字真言拼写认读卡4](./om_mani_padme_hum_04.png#center)

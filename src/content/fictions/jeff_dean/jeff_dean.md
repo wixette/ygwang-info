@@ -6,7 +6,7 @@ draft: false
 ---
 
 
-![和杰夫·迪恩谈恋爱](/images/fictions/jeff_dean/jeff_dean.jpg#center)
+![和杰夫·迪恩谈恋爱](./jeff_dean.jpg#center)
 
 ## 1
 
