@@ -6,7 +6,7 @@ draft: false
 ---
 
 
-![Meowl](./meowl.jpg#center)
+![Meowl](/images/fictions/meowl/meowl.jpg#center)
 
 ## 1
 

@@ -18,9 +18,10 @@ draft: false
 术家应有的长相，还把他和波伏娃开放的私生活当成是《使徒行传》或《传灯录》一般的宗
 教故事来品评。
 
-{{< figure align=center
-  src="./paris.jpg#center"
-  caption="Ernest Hemingway with Lady Duff Twysden, Hadley, and friends, during the July 1925 trip to Spain Not specified, owned by John F. Kennedy Presidential Library and Musum, Boston [Public domain]">}}
+<figure class="align-center">
+  <img src="/images/essays/paris/paris.jpg#center" alt="Ernest Hemingway with Lady Duff Twysden, Hadley, and friends" />
+  <figcaption>Ernest Hemingway with Lady Duff Twysden, Hadley, and friends, during the July 1925 trip to Spain. Not specified, owned by John F. Kennedy Presidential Library and Museum, Boston [Public domain]</figcaption>
+</figure>
 
 后来我知道，自己从没建立过一个属于自己的阅读观。有一次我们约萌萌小姐去看北方昆曲
 剧院的《牡丹亭》，萌萌小姐当时大概在生男友的气，就爱答不理地回我，一个奸尸的故事
