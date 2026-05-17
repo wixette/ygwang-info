@@ -5,19 +5,45 @@ import Breadcrumbs from '@/components/Breadcrumbs.astro';
 interface Props {
   title: string;
   breadcrumb?: string;
+  rssUrl?: string;
 }
 
-const { title, breadcrumb } = Astro.props;
+const { title, breadcrumb, rssUrl } = Astro.props;
 ---
 
 <BaseLayout title={title}>
   <div class="list">
     <header class="page-header">
       {breadcrumb && (
-        <Breadcrumbs crumbs={[{ label: '首页', url: '/' }, { label: breadcrumb }]} />
+        <Breadcrumbs crumbs={[{ label: '主页', url: '/' }, { label: breadcrumb }]} />
       )}
-      <h1>{title}</h1>
+      <h1>
+        {title}
+        {rssUrl && (
+          <a href={rssUrl} title="RSS 订阅" class="rss-link" aria-label="RSS 订阅">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19.01 7.38 20 6.18 20C4.98 20 4 19.01 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
+            </svg>
+          </a>
+        )}
+      </h1>
     </header>
     <slot />
   </div>
 </BaseLayout>
+
+<style>
+h1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rss-link {
+  color: var(--secondary);
+  display: inline-flex;
+  align-items: center;
+}
+.rss-link:hover {
+  color: var(--primary);
+}
+</style>

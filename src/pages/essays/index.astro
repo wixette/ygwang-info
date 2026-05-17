@@ -1,13 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
 import ListLayout from '@/layouts/ListLayout.astro';
-import { sortByDate, entrySlug, formatDate, wordCount } from '@/utils/collections';
+import { sortByDate, entrySlug, formatDate, wordCount, excerpt } from '@/utils/collections';
 
 const allEssays = await getCollection('essays', e => !e.data.draft);
 const essays = sortByDate(allEssays);
 ---
 
-<ListLayout title="杂谈" breadcrumb="杂谈">
+<ListLayout title="杂谈" breadcrumb="杂谈" rssUrl="/index.xml">
   <div class="section-intro">
     <img src="/images/sections/essays.jpg" alt="咏刚的文章" />
     <blockquote>
@@ -20,9 +20,11 @@ const essays = sortByDate(allEssays);
       <header class="entry-header">
         <h2>{essay.data.title}</h2>
       </header>
+      <div class="entry-content">{excerpt(essay.body)}</div>
       <div class="entry-footer">
         <time datetime={essay.data.date.toISOString()}>{formatDate(essay.data.date)}</time>
         <span>&nbsp;·&nbsp;{wordCount(essay.body)} 字</span>
+        <span>&nbsp;·&nbsp;{essay.data.author}</span>
       </div>
       <a class="entry-link" href={`/essays/${entrySlug(essay)}/`} aria-label={essay.data.title}></a>
     </div>

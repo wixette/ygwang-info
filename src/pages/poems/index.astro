@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import ListLayout from '@/layouts/ListLayout.astro';
 import Pagination from '@/components/Pagination.astro';
-import { sortByDate, formatDate, poemSlug } from '@/utils/collections';
+import { sortByDate, formatDate, wordCount, excerpt, poemSlug } from '@/utils/collections';
 
 const PAGE_SIZE = 10;
 
@@ -13,7 +13,7 @@ const currentPage = 1;
 const poems = sorted.slice(0, PAGE_SIZE);
 ---
 
-<ListLayout title="诗歌" breadcrumb="诗歌">
+<ListLayout title="诗歌" breadcrumb="诗歌" rssUrl="/index.xml">
   <div class="section-intro">
     <img src="/images/sections/poems.jpg" alt="咏刚的诗歌" />
     <blockquote>
@@ -26,11 +26,11 @@ const poems = sorted.slice(0, PAGE_SIZE);
       <header class="entry-header">
         <h2>{poem.data.title}</h2>
       </header>
+      <div class="entry-content">{excerpt(poem.body)}</div>
       <div class="entry-footer">
         <time datetime={poem.data.date.toISOString()}>{formatDate(poem.data.date)}</time>
-        {poem.data.form && poem.data.form !== '其他' && (
-          <span>&nbsp;·&nbsp;{poem.data.form}</span>
-        )}
+        <span>&nbsp;·&nbsp;{wordCount(poem.body)} 字</span>
+        <span>&nbsp;·&nbsp;{poem.data.author}</span>
       </div>
       <a class="entry-link" href={`/poems/${poemSlug(poem)}/`} aria-label={poem.data.title}></a>
     </div>
