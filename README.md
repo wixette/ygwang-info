@@ -12,7 +12,7 @@ src/
 ├── pages/            # File-based routes
 ├── styles/           # CSS (global.css, poem.css, themes/classic.css)
 └── utils/            # Shared TypeScript utilities
-static/               # Static assets served as-is (images, SVGs)
+static/               # Static assets served as-is (site SVGs, section images)
 docs/                 # Design documentation
 utils/                # Python helper scripts
 ```
@@ -39,3 +39,8 @@ New posts follow the same frontmatter schema defined in `src/content/config.ts`.
 Poems use a fenced code block inside `<div class="poem">` — the client-side
 `PoemRenderer` component detects traditional-form poems and applies
 character-level styling automatically.
+
+Media files (images, etc.) are co-located with their Markdown source in the
+same directory under `src/content/`. Reference them with relative paths such
+as `./image.jpg`. A custom Astro integration in `astro.config.mjs` handles
+serving them in development and copying them to `dist/` at build time.
