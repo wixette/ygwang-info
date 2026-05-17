@@ -9,12 +9,14 @@ interface Props {
   title: string;
   description?: string;
   currentPath?: string;
+  bodyClass?: string;
 }
 
 const {
   title,
   description = '半轻小屋：王咏刚的诗文、小说、笔记、创意',
   currentPath = Astro.url.pathname,
+  bodyClass,
 } = Astro.props;
 
 const siteTitle = '半轻小屋：王咏刚的诗文、小说、笔记、创意';
@@ -40,7 +42,7 @@ const fullTitle = title === siteTitle ? title : `${title} | 半轻小屋`;
       gtag('config', 'G-0XN65E66G2');
     </script>
   </head>
-  <body>
+  <body class={bodyClass}>
     <Header currentPath={currentPath} />
     <main class="main" id="top">
       <slot />

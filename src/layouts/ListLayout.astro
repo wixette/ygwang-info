@@ -11,7 +11,7 @@ interface Props {
 const { title, breadcrumb, rssUrl } = Astro.props;
 ---
 
-<BaseLayout title={title}>
+<BaseLayout title={title} bodyClass="list">
   <div class="list">
     <header class="page-header">
       {breadcrumb && (
