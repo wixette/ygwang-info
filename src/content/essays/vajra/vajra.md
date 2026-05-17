@@ -15,4 +15,4 @@ draft: false
 
 ## 《金刚经》标题的梵文拼写与认读卡
 
-![金刚经标题的梵文拼写和认读](./vajra_title_01.png#center)
+![金刚经标题的梵文拼写和认读](/images/essays/vajra/vajra_title_01.png#center)
