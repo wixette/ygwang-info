@@ -6,7 +6,7 @@ draft: false
 ---
 
 
-![未名湖的落水狗](./dog_in_the_lake.jpg#center)
+![未名湖的落水狗](/images/fictions/dog_in_the_lake/dog_in_the_lake.jpg#center)
 
 ## 1
 
