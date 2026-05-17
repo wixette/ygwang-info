@@ -48,13 +48,13 @@ export function wordCount(body: string): number {
 /** Extract a plain-text excerpt from raw markdown body (~120 chars). */
 export function excerpt(body: string): string {
   const text = body
-    .replace(/```[\s\S]*?```/g, '')   // fenced code blocks
-    .replace(/`[^`]*`/g, '')          // inline code
-    .replace(/^#{1,6}\s+/gm, '')      // headings
-    .replace(/<[^>]+>/g, ' ')         // HTML tags
-    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1') // links/images → label
-    .replace(/[*_~>#|]/g, '')         // markdown punctuation
-    .replace(/\s+/g, ' ')             // collapse whitespace
+    .replace(/```[^\n]*\n([\s\S]*?)```/g, '$1') // keep code block content, strip fences
+    .replace(/`[^`]*`/g, '')                     // inline code
+    .replace(/^#{1,6}\s+/gm, '')                 // headings
+    .replace(/<[^>]+>/g, ' ')                    // HTML tags
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')  // links/images → label
+    .replace(/[*_~>#|]/g, '')                    // markdown punctuation
+    .replace(/\s+/g, ' ')                        // collapse whitespace
     .trim();
   return text.length > 120 ? text.slice(0, 120) + '…' : text;
 }
