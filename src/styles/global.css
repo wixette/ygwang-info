@@ -524,6 +524,7 @@ pre { position: relative; }
     margin: 8px;
     font-size: 18px;
     line-height: 40px;
+    padding: 0 10px;
     transition: transform 0.1s;
 }
 
