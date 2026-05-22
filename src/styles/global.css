@@ -435,6 +435,7 @@ pre { position: relative; }
 }
 
 .paginav a {
+    display: block;
     padding-inline-start: 14px;
     padding-inline-end: 14px;
     font-size: 14px;
