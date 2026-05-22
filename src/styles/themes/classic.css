@@ -37,6 +37,7 @@ body.dark {
     background: var(--code-bg);
 }
 
-.dark .list {
+.dark .list,
+body.dark.list {
     background: var(--theme);
 }
