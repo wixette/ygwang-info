@@ -287,7 +287,7 @@ body:not(.dark) #sun { display: none; }
     flex-wrap: wrap;
 }
 
-.breadcrumbs a { font-size: 16px; }
+.breadcrumbs a { font-size: 14px; }
 
 .post-content { color: var(--content); }
 
@@ -534,11 +534,12 @@ pre { position: relative; }
 
 /* ── Section intro ──────────────────────────────────────── */
 .section-intro {
-    margin-bottom: calc(var(--gap) * 2);
+    margin-bottom: var(--gap);
 }
 
 .section-intro img {
     margin: 0 auto var(--content-gap);
+    border-radius: var(--radius);
 }
 
 .section-intro blockquote {

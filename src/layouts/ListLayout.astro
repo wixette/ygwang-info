@@ -15,7 +15,7 @@ const { title, breadcrumb, rssUrl } = Astro.props;
   <div class="list">
     <header class="page-header">
       {breadcrumb && (
-        <Breadcrumbs crumbs={[{ label: '主页', url: '/' }, { label: breadcrumb }]} />
+        <Breadcrumbs crumbs={[{ label: '主页', url: '/' }]} />
       )}
       <h1>
         {title}
