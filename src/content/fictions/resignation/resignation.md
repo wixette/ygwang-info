@@ -3,6 +3,7 @@ author: 半轻人
 title: 审查、辞职和再生的故事
 date: 2016-06-02
 draft: false
+toc: true
 ---
 
 
