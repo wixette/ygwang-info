@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 }
 
 const { entry, allEssays } = Astro.props;
-const { Content } = await entry.render();
+const { Content, headings } = await entry.render();
 const { prev, next } = getSiblings(allEssays, entry);
 const slug = entrySlug(entry);
 ---
@@ -29,6 +29,8 @@ const slug = entrySlug(entry);
   ]}
   prev={prev ? { title: prev.data.title, url: `/essays/${entrySlug(prev)}/` } : null}
   next={next ? { title: next.data.title, url: `/essays/${entrySlug(next)}/` } : null}
+  toc={entry.data.toc}
+  headings={headings}
 >
   <Content />
 </PostLayout>

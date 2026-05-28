@@ -3,10 +3,13 @@ import BaseLayout from './BaseLayout.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import PostNav from '@/components/PostNav.astro';
 import PoemRenderer from '@/components/PoemRenderer.astro';
+import TableOfContents from '@/components/TableOfContents.astro';
 import { wordCount, formatDate } from '@/utils/collections';
 
 interface NavEntry { title: string; url: string; }
 interface Crumb { label: string; url?: string; }
+
+interface Heading { depth: number; slug: string; text: string; }
 
 interface Props {
   title: string;
@@ -17,6 +20,8 @@ interface Props {
   prev?: NavEntry | null;
   next?: NavEntry | null;
   isPoem?: boolean;
+  toc?: boolean;
+  headings?: Heading[];
 }
 
 const {
@@ -28,6 +33,8 @@ const {
   prev = null,
   next = null,
   isPoem = false,
+  toc = false,
+  headings = [],
 } = Astro.props;
 
 const wc = wordCount(body);
@@ -48,6 +55,7 @@ const dateStr = formatDate(date);
       </div>
     </header>
     <div class="post-content">
+      {toc && <TableOfContents headings={headings} />}
       <slot />
     </div>
     <footer class="post-footer">
