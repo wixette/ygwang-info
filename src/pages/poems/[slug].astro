@@ -24,6 +24,7 @@ const { prev, next } = getSiblings(allPoems, entry);
   crumbs={[
     { label: '主页', url: '/' },
     { label: '诗歌', url: '/poems/' },
+    { label: String(entry.data.date.getFullYear()), url: `/poems/${entry.data.date.getFullYear()}/` },
     { label: entry.data.title },
   ]}
   prev={prev ? { title: prev.data.title, url: `/poems/${poemSlug(prev)}/` } : null}
