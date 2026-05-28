@@ -5,17 +5,18 @@ import Breadcrumbs from '@/components/Breadcrumbs.astro';
 interface Props {
   title: string;
   breadcrumb?: string;
+  crumbs?: Array<{ label: string; url?: string }>;
   rssUrl?: string;
 }
 
-const { title, breadcrumb, rssUrl } = Astro.props;
+const { title, breadcrumb, crumbs, rssUrl } = Astro.props;
 ---
 
 <BaseLayout title={title} bodyClass="list">
   <div class="list">
     <header class="page-header">
-      {breadcrumb && (
-        <Breadcrumbs crumbs={[{ label: '主页', url: '/' }]} />
+      {(crumbs ?? breadcrumb) && (
+        <Breadcrumbs crumbs={crumbs ?? [{ label: '主页', url: '/' }]} />
       )}
       <h1>
         {title}
