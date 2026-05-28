@@ -5,19 +5,31 @@ import { sortByDate, formatDate, wordCount, excerpt, poemSlug } from '@/utils/co
 
 export async function getStaticPaths() {
   const allPoems = await getCollection('poems', e => !e.data.draft);
-  const years = [...new Set(allPoems.map(p => p.data.date.getFullYear()))];
+  const years = [...new Set(allPoems.map(p => p.data.date.getFullYear()))]
+    .sort((a, b) => b - a); // descending: newer first
 
-  return years.map(year => ({
+  return years.map((year, idx) => ({
     params: { year: String(year) },
     props: {
       year,
       poems: sortByDate(allPoems.filter(p => p.data.date.getFullYear() === year)),
+      prevYear: idx > 0 ? years[idx - 1] : null,             // newer year
+      nextYear: idx < years.length - 1 ? years[idx + 1] : null, // older year
     },
   }));
 }
 
-const { year, poems } = Astro.props;
+const { year, poems, prevYear, nextYear } = Astro.props;
 ---
+
+<style>
+.paginav {
+  background: var(--entry);
+}
+.paginav a:hover {
+  background: var(--tertiary);
+}
+</style>
 
 <ListLayout
   title={`诗歌 · ${year}`}
@@ -41,4 +53,27 @@ const { year, poems } = Astro.props;
       <a class="entry-link" href={`/poems/${poemSlug(poem)}/`} aria-label={poem.data.title}></a>
     </div>
   ))}
+
+  {(prevYear || nextYear) && (
+    <nav class="paginav">
+      {prevYear && (
+        <div class="prev">
+          <a href={`/poems/${prevYear}/`}>
+            <span class="title">« 上一年</span>
+            <br />
+            <span>{prevYear}</span>
+          </a>
+        </div>
+      )}
+      {nextYear && (
+        <div class="next">
+          <a href={`/poems/${nextYear}/`}>
+            <span class="title">下一年 »</span>
+            <br />
+            <span>{nextYear}</span>
+          </a>
+        </div>
+      )}
+    </nav>
+  )}
 </ListLayout>
