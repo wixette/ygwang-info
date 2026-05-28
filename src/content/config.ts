@@ -10,6 +10,7 @@ const poemCollection = defineCollection({
     date: z.coerce.date(),
     draft: z.boolean().default(false),
     form: z.enum(POEM_FORMS).default('其他'),
+    featured: z.boolean().default(false),
     layout: z.string().optional(),
   }),
 });

@@ -1,40 +1,121 @@
 ---
 import { getCollection } from 'astro:content';
 import ListLayout from '@/layouts/ListLayout.astro';
-import Pagination from '@/components/Pagination.astro';
-import { sortByDate, formatDate, wordCount, excerpt, poemSlug } from '@/utils/collections';
-
-const PAGE_SIZE = 10;
+import { sortByDate, formatDate, poemSlug } from '@/utils/collections';
 
 const allPoems = await getCollection('poems', e => !e.data.draft);
 const sorted = sortByDate(allPoems);
-const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
-const currentPage = 1;
-const poems = sorted.slice(0, PAGE_SIZE);
+
+const featured = sorted.filter(p => p.data.featured);
+
+const yearMap = new Map<number, number>();
+for (const poem of sorted) {
+  const y = poem.data.date.getFullYear();
+  yearMap.set(y, (yearMap.get(y) ?? 0) + 1);
+}
+const years = [...yearMap.entries()].sort((a, b) => b[0] - a[0]);
 ---
 
 <ListLayout title="诗歌" breadcrumb="诗歌" rssUrl="/index.xml">
-  <div class="section-intro">
+  <div class="section-intro poems-section">
     <img src="/images/sections/poems.jpg" alt="咏刚的诗歌" />
     <blockquote>
       咏刚按：这里收集的，说是诗歌，也不完全算诗歌。类型很杂，水平参差不齐。有依平水韵写的古近体诗，其中也有个别用了今韵。有半数左右现代诗，风格相当驳杂。有略带禅意的偈子，打机锋、抖机灵的骈文。还有一批是戏谑为主的顺口溜。
     </blockquote>
   </div>
 
-  {poems.map(poem => (
-    <div class="post-entry">
-      <header class="entry-header">
-        <h2>{poem.data.title}</h2>
-      </header>
-      <div class="entry-content">{excerpt(poem.body)}</div>
-      <div class="entry-footer">
-        <time datetime={poem.data.date.toISOString()}>{formatDate(poem.data.date)}</time>
-        <span>&nbsp;·&nbsp;{wordCount(poem.body)} 字</span>
-        <span>&nbsp;·&nbsp;{poem.data.author}</span>
+  {featured.length > 0 && (
+    <section class="poems-section">
+      <h2 class="section-heading">精选诗歌</h2>
+      <div class="featured-grid">
+        {featured.map(poem => (
+          <div class="post-entry featured-entry">
+            <header class="entry-header">
+              <h2>{poem.data.title}</h2>
+            </header>
+            <div class="entry-footer">
+              <time datetime={poem.data.date.toISOString()}>{formatDate(poem.data.date)}</time>
+            </div>
+            <a class="entry-link" href={`/poems/${poemSlug(poem)}/`} aria-label={poem.data.title}></a>
+          </div>
+        ))}
       </div>
-      <a class="entry-link" href={`/poems/${poemSlug(poem)}/`} aria-label={poem.data.title}></a>
-    </div>
-  ))}
+    </section>
+  )}
 
-  <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl="/poems" />
+  <section class="poems-section">
+    <h2 class="section-heading">按年份浏览</h2>
+    <div class="year-grid">
+      {years.map(([year, count]) => (
+        <a class="year-card" href={`/poems/${year}/`}>
+          <span class="year-number">{year}</span>
+          <span class="year-count">{count}&thinsp;首</span>
+        </a>
+      ))}
+    </div>
+  </section>
 </ListLayout>
+
+<style>
+.section-heading {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--secondary);
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.poems-section {
+  margin-bottom: calc(var(--gap) * 1.5);
+}
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.featured-grid .post-entry {
+  margin-bottom: 0;
+}
+
+.year-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(33.333% - 7px), 1fr));
+  gap: 10px;
+}
+
+.year-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 8px;
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: transform 0.1s, background 0.15s;
+}
+
+.year-card:hover {
+  background: var(--tertiary);
+}
+
+.year-card:active {
+  transform: scale(0.96);
+}
+
+.year-number {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.year-count {
+  font-size: 12px;
+  color: var(--secondary);
+  margin-top: 5px;
+}
+</style>

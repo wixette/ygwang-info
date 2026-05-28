@@ -1,32 +1,32 @@
 ---
 import { getCollection } from 'astro:content';
 import ListLayout from '@/layouts/ListLayout.astro';
-import Pagination from '@/components/Pagination.astro';
 import { sortByDate, formatDate, wordCount, excerpt, poemSlug } from '@/utils/collections';
 
 export async function getStaticPaths() {
-  const PAGE_SIZE = 10;
   const allPoems = await getCollection('poems', e => !e.data.draft);
-  const sorted = sortByDate(allPoems);
-  const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
+  const years = [...new Set(allPoems.map(p => p.data.date.getFullYear()))];
 
-  return Array.from({ length: totalPages - 1 }, (_, i) => {
-    const page = i + 2;
-    return {
-      params: { page: String(page) },
-      props: {
-        poems: sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
-        currentPage: page,
-        totalPages,
-      },
-    };
-  });
+  return years.map(year => ({
+    params: { year: String(year) },
+    props: {
+      year,
+      poems: sortByDate(allPoems.filter(p => p.data.date.getFullYear() === year)),
+    },
+  }));
 }
 
-const { poems, currentPage, totalPages } = Astro.props;
+const { year, poems } = Astro.props;
 ---
 
-<ListLayout title="诗歌" breadcrumb="诗歌" rssUrl="/index.xml">
+<ListLayout
+  title={`诗歌 · ${year}`}
+  crumbs={[
+    { label: '主页', url: '/' },
+    { label: '诗歌', url: '/poems/' },
+    { label: String(year) },
+  ]}
+>
   {poems.map(poem => (
     <div class="post-entry">
       <header class="entry-header">
@@ -41,6 +41,4 @@ const { poems, currentPage, totalPages } = Astro.props;
       <a class="entry-link" href={`/poems/${poemSlug(poem)}/`} aria-label={poem.data.title}></a>
     </div>
   ))}
-
-  <Pagination currentPage={currentPage} totalPages={totalPages} baseUrl="/poems" />
 </ListLayout>
