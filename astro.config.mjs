@@ -107,6 +107,30 @@ function contentImagesIntegration() {
   };
 }
 
+// Remark plugin: removes or replaces soft line breaks (\n) inside paragraphs
+// according to CJK line-break rules:
+//   CJK + \n + CJK  →  "" (no space — glyphs join directly)
+//   CJK + \n + ASCII →  "" (no space)
+//   ASCII + \n + CJK  →  "" (no space)
+//   ASCII + \n + ASCII → " " (one space, preserving normal word separation)
+//
+// Covered Unicode ranges:
+//   　–鿿  CJK symbols/punctuation, kana, bopomofo, CJK unified ideographs
+//   豈–￯  CJK compatibility ideographs, fullwidth/halfwidth forms
+function remarkCjkLineBreaks() {
+  const CJK = /[　-鿿豈-￯]/;
+  return function(tree) {
+    visit(tree, 'text', (node) => {
+      node.value = node.value.replace(/\n/g, (_, offset, str) => {
+        const before = offset > 0 ? str[offset - 1] : '';
+        const after = offset < str.length - 1 ? str[offset + 1] : '';
+        if (CJK.test(before) || CJK.test(after)) return '';
+        return ' ';
+      });
+    });
+  };
+}
+
 export default defineConfig({
   site: 'https://ygwang.info',
   integrations: [
@@ -115,7 +139,7 @@ export default defineConfig({
     contentImagesIntegration(),
   ],
   markdown: {
-    remarkPlugins: [remarkMath, remarkContentImages],
+    remarkPlugins: [remarkMath, remarkContentImages, remarkCjkLineBreaks],
     rehypePlugins: [[rehypeKatex, {}]],
     remarkRehype: { allowDangerousHtml: true },
   },
