@@ -22,6 +22,7 @@ const baseCollection = defineCollection({
     author: z.string().default('王咏刚'),
     date: z.coerce.date(),
     draft: z.boolean().default(false),
+    toc: z.boolean().default(false),
     layout: z.string().optional(),
   }),
 });
