@@ -3,6 +3,7 @@ author: 半轻人
 title: 一条被洗澡水拍死的鱼
 date: 2016-04-01
 draft: false
+toc: true
 ---
 
 
