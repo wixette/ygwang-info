@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import PostLayout from '@/layouts/PostLayout.astro';
+import YouTube from '@/components/YouTube.astro';
 import { sortByDate, getSiblings, entrySlug } from '@/utils/collections';
 
 export async function getStaticPaths() {
@@ -32,5 +33,5 @@ const slug = entrySlug(entry);
   toc={entry.data.toc}
   headings={headings}
 >
-  <Content />
+  <Content components={{ YouTube }} />
 </PostLayout>

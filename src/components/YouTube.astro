@@ -1,0 +1,33 @@
+---
+interface Props {
+  id: string;
+  title?: string;
+}
+const { id, title = 'YouTube video' } = Astro.props;
+---
+
+<div class="yt-wrapper">
+  <iframe
+    src={`https://www.youtube.com/embed/${id}`}
+    title={title}
+    frameborder="0"
+    allowfullscreen
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  ></iframe>
+</div>
+
+<style>
+.yt-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  margin: 1.5em 0;
+}
+.yt-wrapper iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+</style>

@@ -44,3 +44,18 @@ Media files (images, etc.) are co-located with their Markdown source in the
 same directory under `src/content/`. Reference them with relative paths such
 as `./image.jpg`. A custom Astro integration in `astro.config.mjs` handles
 serving them in development and copying them to `dist/` at build time.
+
+## Embedding YouTube videos
+
+To embed a YouTube video in a content page:
+
+1. Name the file `.mdx` instead of `.md` (e.g. `my-post/my-post.mdx`).
+2. Use the `<YouTube>` component anywhere in the body:
+
+```mdx
+<YouTube id="VIDEO_ID" title="Optional accessible title" />
+```
+
+The `id` is the YouTube video ID from the URL (`?v=VIDEO_ID`). The component
+renders a responsive 16:9 iframe. No import needed — `YouTube` is injected
+globally by each collection's slug page (`creations`, `fictions`, `essays`).
